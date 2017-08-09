@@ -62,12 +62,10 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
         Future.successful(Ok(html.registration(formWithErrors)))
       },
       registration => {
-        registrationService.register(registration).map(x => Ok(x.value.toString))
+        registrationService.register(registration).map(x => Ok(html.registration_confirmation(x.value.toString)))
       }
 
-    ).recoverWith {
-      case ex => Future.successful(BadRequest)
-    }
+    )
   }
 
 }

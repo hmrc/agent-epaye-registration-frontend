@@ -10,19 +10,37 @@ global.error.500.heading=Sorry, we’re experiencing technical difficulties
 global.error.500.message=Please try again in a few minutes.
 
 # Service specific messages
-app.name = agent-epaye-registration-frontend
+app.name =
 
-##Subscription details
+# Registration details
 registration.title=Add your agent business''s details
 registration.agentname.label=Agent business name
-registration.contactname.label=Business email address
-registration.telephone.label=Business telephone number
-registration.faxnumber.label=Business fax number
-registration.email.label=Business telephone number
-registration.addressline1.label=Business telephone number
-registration.addressline2.label=Business telephone number
-registration.addressline3.label=Business telephone number
-registration.addressline4.label=Business telephone number
+registration.contactname.label=Contact name
+registration.telephone.label=Telephone number
+registration.faxnumber.label=Fax number
+registration.email.label=Email address
+registration.addressline1.label=Address line 1
+registration.addressline2.label=Address line 2
+registration.addressline3.label=Address line 3
+registration.addressline4.label=Address line 4
 registration.postcode.label=Postcode
 
 button.register=Register now
+
+
+# Registration confirmation
+registrationConfirmation.title=Registration confirmation
+registrationConfirmation.payeAgentReference=Agent reference
+registrationConfirmation.p1=Explanatory text about what happens next
+registrationConfirmation.link.signIn=https://www.tax.service.gov.uk/gg/sign-in
+registrationConfirmation.link.helpdesk=https://www.gov.uk/government/organisations/hm-revenue-customs/contact/online-services-helpdesk
+registrationConfirmation.button.printPage=Print this page' control - triggering this control launches the native browser 'print' functionality
+
+button.signIn=Sign in
+button.helpdesk=Online Services Helpdesk
+
+# Validation errors
+error.postcode.invalid=Sorry, the postcode you entered is not valid
+error.telephone.invalid=Sorry, the value must only contain numbers, brackets and spaces
+error.email.invalid=Sorry, the email address entered contains invalid characters
+error.name.invalid=Sorry, the name contains invalid characters

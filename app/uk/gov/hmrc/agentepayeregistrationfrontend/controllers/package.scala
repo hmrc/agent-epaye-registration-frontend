@@ -26,6 +26,7 @@ package object controllers {
     private val postcodeWithoutSpacesRegex = "^[A-Z]{1,2}[0-9][0-9A-Z]?\\s?[0-9][A-Z]{2}$|BFPO\\s?[0-9]{1,5}$".r
     private val telephoneNumberRegex = "^[0-9- +()#x ]*$"
     private val emailRegex =  """(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"""
+    private val validStringRegex = "[a-zA-Z0-9,.()\\-\\!@\\s]+"
 
     private val nonEmptyPostcode: Constraint[String] = Constraint[String] { fieldValue: String =>
       Constraints.nonEmpty(fieldValue) match {
@@ -58,10 +59,21 @@ package object controllers {
         Invalid(ValidationError("error.email.invalid"))
     }
 
+    private val validName: Constraint[String] = Constraint[String] { fieldValue: String =>
+      Constraints.nonEmpty(fieldValue) match {
+        case i @ Invalid(_) => i
+        case Valid =>
+          if (fieldValue.matches(validStringRegex))
+            Valid
+          else
+            Invalid(ValidationError("error.name.invalid"))
+
+      }
+    }
 
     def postcode: Mapping[String] = text verifying nonEmptyPostcode
     def telephone: Mapping[Option[String]] = optional(text(maxLength = 35) verifying telephoneNumber)
-    def name: Mapping[String] = nonEmptyText(maxLength = 56)
+    def name: Mapping[String] = text(maxLength = 56) verifying(validName)
     def emailAddr: Mapping[Option[String]] = optional(text(maxLength = 129) verifying emailAddress)
     def addressLine12: Mapping[String] = nonEmptyText(maxLength = 35)
     def addressLine34: Mapping[Option[String]] = optional(text(maxLength = 35))
