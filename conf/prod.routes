@@ -1,4 +1,4 @@
-->         /agent-epaye-registration-frontend               app.Routes
+->         /agent-epaye-registration               app.Routes
 
 ->         /                     health.Routes
 ->         /template             template.Routes

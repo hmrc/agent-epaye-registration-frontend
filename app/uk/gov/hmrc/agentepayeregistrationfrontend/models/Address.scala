@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-package wiring
+package uk.gov.hmrc.agentepayeregistrationfrontend.models
 
-import uk.gov.hmrc.play.http.ws.{WSHttp, WSGet, WSPost}
+import play.api.libs.json.Json
 
-class WSVerbs extends WSHttp with WSGet with WSPost {
-  override val hooks = NoneRequired
+case class Address(addressLine1: String,
+                   addressLine2: String,
+                   addressLine3: Option[String],
+                   addressLine4: Option[String],
+                   postCode: String)
+
+object Address {
+  implicit val addressFormat = Json.format[Address]
 }

@@ -14,20 +14,29 @@
  * limitations under the License.
  */
 
-import java.net.InetSocketAddress
+import java.net.{InetSocketAddress, URL}
 import java.util.concurrent.TimeUnit.{MILLISECONDS, SECONDS}
-import javax.inject.{Inject, Singleton}
+import javax.inject.{Inject, Provider, Singleton}
 
 import com.codahale.metrics.graphite.{Graphite, GraphiteReporter}
 import com.codahale.metrics.{MetricFilter, SharedMetricRegistries}
 import com.google.inject.AbstractModule
+import com.google.inject.name.Names
 import org.slf4j.MDC
+import play.api.Mode.Mode
 import play.api.inject.ApplicationLifecycle
 import play.api.{Configuration, Environment, Logger}
+import uk.gov.hmrc.play.config.ServicesConfig
+import uk.gov.hmrc.play.http.{HttpGet, HttpPost}
+import wiring.WSVerbs
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class Module(environment: Environment, configuration: Configuration) extends AbstractModule {
+class Module(environment: Environment, configuration: Configuration) extends AbstractModule with ServicesConfig {
+
+
+  override protected lazy val mode: Mode = environment.mode
+  override protected lazy val runModeConfiguration: Configuration = configuration
 
   def configure(): Unit = {
     lazy val appName = configuration.getString("appName").get
@@ -37,7 +46,18 @@ class Module(environment: Environment, configuration: Configuration) extends Abs
     MDC.put("appName", appName)
     loggerDateFormat.foreach(str => MDC.put("logger.json.dateformat", str))
 
+
+    bind(classOf[HttpGet]).toInstance(new WSVerbs)
+    bind(classOf[HttpPost]).toInstance(new WSVerbs)
+    bindBaseUrl("agent-epaye-registration")
     bind(classOf[GraphiteStartUp]).asEagerSingleton()
+  }
+
+  private def bindBaseUrl(serviceName: String) =
+    bind(classOf[URL]).annotatedWith(Names.named(s"$serviceName-baseUrl")).toProvider(new BaseUrlProvider(serviceName))
+
+  private class BaseUrlProvider(serviceName: String) extends Provider[URL] {
+    override lazy val get = new URL(baseUrl(serviceName))
   }
 }
 

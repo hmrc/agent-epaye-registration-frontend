@@ -11,3 +11,18 @@ global.error.500.message=Please try again in a few minutes.
 
 # Service specific messages
 app.name = agent-epaye-registration-frontend
+
+##Subscription details
+registration.title=Add your agent business''s details
+registration.agentname.label=Agent business name
+registration.contactname.label=Business email address
+registration.telephone.label=Business telephone number
+registration.faxnumber.label=Business fax number
+registration.email.label=Business telephone number
+registration.addressline1.label=Business telephone number
+registration.addressline2.label=Business telephone number
+registration.addressline3.label=Business telephone number
+registration.addressline4.label=Business telephone number
+registration.postcode.label=Postcode
+
+button.register=Register now
