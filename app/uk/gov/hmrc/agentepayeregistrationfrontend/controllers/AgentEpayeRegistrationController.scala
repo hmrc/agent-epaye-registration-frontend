@@ -47,7 +47,7 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
       "addressLine2" -> addressLine12,
       "addressLine3" -> addressLine34,
       "addressLine4" -> addressLine34,
-      "postcode" -> postcode
+      "postcode" -> text
     )(RegistrationRequest.apply)(x => Some((x.agentName, x.contactName, x.telephoneNumber, x.faxNumber,
       x.emailAddress, x.address.addressLine1, x.address.addressLine2, x.address.addressLine3, x.address.addressLine4, x.address.postCode)))
   )
@@ -62,7 +62,7 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
         Future.successful(Ok(html.registration(formWithErrors)))
       },
       registration => {
-        registrationService.register(registration).map(x => Ok(html.registration_confirmation(x.value.toString)))
+        registrationService.register(registration).map(x => Ok(html.registration_confirmation(x.value)))
       }
 
     )

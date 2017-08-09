@@ -34,7 +34,6 @@ class AgentEpayeRegistrationConnector @Inject() (@Named("agent-epaye-registratio
 
   def register(request: RegistrationRequest)(implicit hc: HeaderCarrier): Future[PayeAgentReference] = {
     http.POST[RegistrationRequest, JsValue](registrationUrl.toString, request).map { json =>
-      println(json)
       (json \ "payeAgentReference").as[PayeAgentReference]
     }
   }
