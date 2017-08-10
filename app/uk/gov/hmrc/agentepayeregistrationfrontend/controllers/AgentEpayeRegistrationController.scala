@@ -24,7 +24,7 @@ import play.api.data.{Form, Mapping}
 import play.api.data.Forms.{mapping, _}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Action
-import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
+import uk.gov.hmrc.agentepayeregistrationfrontend.models.{Address, RegistrationRequest}
 import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.FieldMappings._
 import uk.gov.hmrc.agentepayeregistrationfrontend.service.AgentEpayeRegistrationService
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html
@@ -43,13 +43,14 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
       "telephoneNumber" -> telephone,
       "faxNumber" -> telephone,
       "emailAddress" -> emailAddr,
-      "addressLine1" -> addressLine12,
-      "addressLine2" -> addressLine12,
-      "addressLine3" -> addressLine34,
-      "addressLine4" -> addressLine34,
-      "postcode" -> text
-    )(RegistrationRequest.apply)(x => Some((x.agentName, x.contactName, x.telephoneNumber, x.faxNumber,
-      x.emailAddress, x.address.addressLine1, x.address.addressLine2, x.address.addressLine3, x.address.addressLine4, x.address.postCode)))
+      "address" -> mapping(
+        "addressLine1" -> addressLine12,
+        "addressLine2" -> addressLine12,
+        "addressLine3" -> addressLine34,
+        "addressLine4" -> addressLine34,
+        "postcode" -> text
+      )(Address.apply)(Address.unapply)
+    )(RegistrationRequest.apply)(RegistrationRequest.unapply)
   )
 
   val showRegistrationForm = Action { implicit request =>

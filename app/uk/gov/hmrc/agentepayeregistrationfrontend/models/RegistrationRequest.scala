@@ -27,18 +27,4 @@ case class RegistrationRequest(agentName: String,
 
 object RegistrationRequest {
   implicit val registrationRequestFormat = Json.format[RegistrationRequest]
-
-  def apply(agentName: String,
-            contactName: String,
-            telephoneNumber: Option[String],
-            faxNumber: Option[String],
-            emailAddress: Option[String],
-            addressLine1: String,
-            addressLine2: String,
-            addressLine3: Option[String],
-            addressLine4: Option[String],
-            postCode: String): RegistrationRequest = RegistrationRequest(
-    agentName, contactName, telephoneNumber, faxNumber, emailAddress,
-    Address(addressLine1, addressLine2, addressLine3, addressLine4, postCode)
-  )
 }
