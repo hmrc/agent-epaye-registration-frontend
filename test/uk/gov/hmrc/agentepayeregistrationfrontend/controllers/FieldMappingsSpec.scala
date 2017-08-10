@@ -83,6 +83,37 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
     }
   }
 
+  "email address bind" should {
+    val emailMapping = FieldMappings.emailAddr.withPrefix("testKey")
+
+    def bind(fieldValue: String) = emailMapping.bind(Map("testKey" -> fieldValue))
+
+    def shouldAcceptFieldValue(fieldValue: String): Unit = {
+      bind(fieldValue) shouldBe Right(Some(fieldValue))
+    }
+
+    def shouldRejectFieldValueAsInvalid(fieldValue: String): Unit = {
+      bind(fieldValue) should matchPattern { case Left(List(FormError("testKey", List("error.email.invalid"), _))) => }
+    }
+
+    "accept valid email" in {
+      shouldAcceptFieldValue("foo@example.org")
+      shouldAcceptFieldValue("foo.bar@example.org")
+      shouldAcceptFieldValue("foo_bar@example.org")
+      shouldAcceptFieldValue("fooBar@example.org")
+      shouldAcceptFieldValue("foo+bar@example.org")
+      shouldAcceptFieldValue("1@example.org")
+    }
+
+    "reject email containing invalid characters" in {
+      shouldRejectFieldValueAsInvalid("example.org")
+      shouldRejectFieldValueAsInvalid("foo@bar@example.org")
+      shouldRejectFieldValueAsInvalid("foo@")
+      shouldRejectFieldValueAsInvalid("@example.org")
+      shouldRejectFieldValueAsInvalid("foo!@example.org")
+    }
+  }
+
   "telephoneNumber and faxNumber bind" should {
     val telephoneMapping = FieldMappings.telephone.withPrefix("testKey")
 
