@@ -1,46 +1,68 @@
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
-import org.scalatestplus.play.OneAppPerSuite
-import play.api.Application
-import play.api.i18n.MessagesApi
-import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.mvc.Result
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{charset, contentType}
-import uk.gov.hmrc.agentepayeregistrationfrontend.support.WireMockSupport
-import uk.gov.hmrc.play.http.HeaderCarrier
-import uk.gov.hmrc.play.test.UnitSpec
 
-class AgentEpayeRegistrationControllerISpec extends UnitSpec with OneAppPerSuite with WireMockSupport {
-  override implicit lazy val app: Application = appBuilder.build()
-
-  private val messagesApi = app.injector.instanceOf[MessagesApi]
-
-  protected implicit val materializer = app.materializer
-
-  implicit def hc(implicit request: FakeRequest[_]): HeaderCarrier = HeaderCarrier.fromHeadersAndSession(request.headers, Some(request.session))
-
-  protected def appBuilder: GuiceApplicationBuilder = {
-    new GuiceApplicationBuilder()
-      .configure(
-        "microservice.services.auth.port" -> wireMockPort,
-        "microservice.services.agent-subscription.port" -> wireMockPort,
-        "microservice.services.address-lookup-frontend.port" -> wireMockPort
-      )
-  }
-
+class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
   private lazy val controller: AgentEpayeRegistrationController = app.injector.instanceOf[AgentEpayeRegistrationController]
 
   "showRegistrationForm shows the registration form page" in {
     val result = await(controller.showRegistrationForm(FakeRequest()))
 
-    checkHtmlResultWithBodyText(result, messagesApi("registrationConfirmation.title"))
+    checkHtmlResultWithBodyText(result, htmlEscapedMessage("registration.title"))
   }
 
-  protected def checkHtmlResultWithBodyText(result: Result, expectedSubstrings: String*): Unit = {
-    status(result) shouldBe 200
-    contentType(result) shouldBe Some("text/html")
-    charset(result) shouldBe Some("utf-8")
-    expectedSubstrings.foreach(s => bodyOf(result) should include(s))
+  "register shows the registration form again if validation fails" when {
+    "the contact name is missing" in {
+      val request = FakeRequest().withFormUrlEncodedBody(
+        validFormDetails.map {
+          case ("contactName", _) => ("contactName", "")
+          case x => x
+        } : _*
+      )
+
+      val result = await(controller.register(request))
+
+      checkHtmlResultWithBodyText(result, htmlEscapedMessage("registration.title"))
+      checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.required"))
+    }
+
+    "the contact name is invalid and the telephone number is invalid" in {
+      val request = FakeRequest().withFormUrlEncodedBody(
+        validFormDetails.map {
+          case ("contactName", _) => ("contactName", "7^$£")
+          case ("telephoneNumber", _) => ("telephoneNumber", "7^$£")
+          case x => x
+        } : _*
+      )
+
+      val result = await(controller.register(request))
+
+      checkHtmlResultWithBodyText(result, htmlEscapedMessage("registration.title"))
+      checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.name.invalid"))
+      checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.telephone.invalid"))
+    }
   }
+
+  "register shows the registration confirmation page if validation passes" in {
+    val request = FakeRequest().withFormUrlEncodedBody(validFormDetails: _*)
+    val result = await(controller.register(request))
+
+    checkHtmlResultWithBodyText(result, htmlEscapedMessage("registrationConfirmation.title"))
+
+    val expectedAgentReference = "HX2000"
+    checkHtmlResultWithBodyText(result, htmlEscapedMessage(expectedAgentReference))
+  }
+
+  val validFormDetails = Seq(
+    "contactName" -> "Charlie Contact",
+    "agentName" -> "Angela Agent",
+    "telephoneNumber" -> "01234567890",
+    "faxNumber" -> "01234567891",
+    "emailAddress" -> "foo@bar.com",
+    "addressLine1" -> "1 Streety Street",
+    "addressLine2" -> "Towny town",
+    "addressLine3" -> "",
+    "addressLine4" -> "",
+    "postcode" -> "AA111AA"
+  )
 }
