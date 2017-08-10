@@ -9,7 +9,7 @@ import uk.gov.hmrc.agentepayeregistrationfrontend.support.WireMockSupport
 import com.github.tomakehurst.wiremock.client.WireMock._
 import play.api.libs.json.Json
 import uk.gov.hmrc.domain.PayeAgentReference
-import uk.gov.hmrc.play.http.{BadRequestException, HeaderCarrier}
+import uk.gov.hmrc.play.http.{BadGatewayException, BadRequestException, HeaderCarrier}
 import uk.gov.hmrc.play.test.UnitSpec
 import wiring.WSVerbs
 
@@ -40,6 +40,14 @@ class AgentEpayeRegistrationConnectorISpec extends UnitSpec with OneAppPerSuite 
       await(connector.register(regRequest)) shouldBe agentRef
     }
 
+    "throw an exception if no connection was possible" in {
+      stopServer()
+
+      intercept[BadGatewayException] {
+        await(connector.register(regRequest))
+      }
+    }
+
     "throw an exception if the response is 400" in {
       stubFor(post(urlEqualTo(s"/agent-epaye-registration/registrations"))
         .willReturn(
@@ -51,12 +59,5 @@ class AgentEpayeRegistrationConnectorISpec extends UnitSpec with OneAppPerSuite 
       }
     }
 
-    "throw an exception if no connection was possible" in {
-      fail("TODO: Stub a network failure rather than an error response ")
-
-      intercept[BadRequestException] {
-        await(connector.register(regRequest))
-      }
-    }
   }
 }
