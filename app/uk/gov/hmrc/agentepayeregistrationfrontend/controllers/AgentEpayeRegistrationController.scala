@@ -48,7 +48,7 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
         "addressLine2" -> addressLine12,
         "addressLine3" -> addressLine34,
         "addressLine4" -> addressLine34,
-        "postcode" -> text
+        "postcode" -> postcode
       )(Address.apply)(Address.unapply)
     )(RegistrationRequest.apply)(RegistrationRequest.unapply)
   )

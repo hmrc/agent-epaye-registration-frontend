@@ -1,6 +1,10 @@
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
+import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, post, stubFor, urlEqualTo}
+import play.api.http.Status
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
+import uk.gov.hmrc.play.http.BadGatewayException
 
 class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
   private lazy val controller: AgentEpayeRegistrationController = app.injector.instanceOf[AgentEpayeRegistrationController]
@@ -44,25 +48,42 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
   }
 
   "register shows the registration confirmation page if validation passes" in {
+    val agentRef = "HX2000"
+
+    stubFor(post(urlEqualTo(s"/agent-epaye-registration/registrations"))
+      .willReturn(
+        aResponse()
+          .withStatus(Status.OK)
+          .withBody(Json.obj("payeAgentReference" -> agentRef).toString())))
+
     val request = FakeRequest().withFormUrlEncodedBody(validFormDetails: _*)
     val result = await(controller.register(request))
 
     checkHtmlResultWithBodyText(result, htmlEscapedMessage("registrationConfirmation.title"))
 
-    val expectedAgentReference = "HX2000"
-    checkHtmlResultWithBodyText(result, htmlEscapedMessage(expectedAgentReference))
+    checkHtmlResultWithBodyText(result, htmlEscapedMessage(agentRef))
+  }
+
+  "register shows the error page if there is a problem with the backend service" in {
+    val request = FakeRequest().withFormUrlEncodedBody(validFormDetails: _*)
+
+    stopServer()
+
+    intercept[BadGatewayException] {
+      await(controller.register(request))
+    }
   }
 
   val validFormDetails = Seq(
-    "contactName" -> "Charlie Contact",
     "agentName" -> "Angela Agent",
+    "contactName" -> "Charlie Contact",
     "telephoneNumber" -> "01234567890",
     "faxNumber" -> "01234567891",
     "emailAddress" -> "foo@bar.com",
-    "addressLine1" -> "1 Streety Street",
-    "addressLine2" -> "Towny town",
-    "addressLine3" -> "",
-    "addressLine4" -> "",
-    "postcode" -> "AA111AA"
+    "address.addressLine1" -> "1 Streety Street",
+    "address.addressLine2" -> "Towny town",
+    "address.addressLine3" -> "",
+    "address.addressLine4" -> "",
+    "address.postcode" -> "AA111AA"
   )
 }
