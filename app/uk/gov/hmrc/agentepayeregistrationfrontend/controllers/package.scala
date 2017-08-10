@@ -61,13 +61,13 @@ package object controllers {
 
     private val validName: Constraint[String] = Constraint[String] { fieldValue: String =>
       Constraints.nonEmpty(fieldValue) match {
-        case i @ Invalid(_) => i
+        case i @ Invalid(_) =>
+          i
         case Valid =>
           if (fieldValue.matches(validStringRegex))
             Valid
           else
             Invalid(ValidationError("error.name.invalid"))
-
       }
     }
 

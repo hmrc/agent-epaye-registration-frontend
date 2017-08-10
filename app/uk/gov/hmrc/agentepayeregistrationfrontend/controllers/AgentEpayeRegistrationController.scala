@@ -19,9 +19,8 @@ package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 import javax.inject.{Inject, Singleton}
 
 import play.api.Configuration
-import play.api.data.Forms._
-import play.api.data.{Form, Mapping}
-import play.api.data.Forms.{mapping, _}
+import play.api.data.Form
+import play.api.data.Forms.mapping
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Action
 import uk.gov.hmrc.agentepayeregistrationfrontend.models.{Address, RegistrationRequest}
@@ -49,10 +48,8 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
       registration => {
         registrationService.register(registration).map(x => Ok(html.registration_confirmation(x.value)))
       }
-
     )
   }
-
 }
 
 object AgentEpayeRegistrationController {

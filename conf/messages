@@ -9,9 +9,6 @@ global.error.500.title=Sorry, we are experiencing technical difficulties - 500
 global.error.500.heading=Sorry, we’re experiencing technical difficulties
 global.error.500.message=Please try again in a few minutes.
 
-# Service specific messages
-app.name =
-
 # Registration details
 registration.title=Add your agent business''s details
 registration.agentname.label=Agent business name
@@ -27,15 +24,14 @@ registration.postcode.label=Postcode
 
 button.register=Register now
 
-
 # Registration confirmation
 registrationConfirmation.title=Registration confirmation
 registrationConfirmation.payeAgentReference=Agent reference
 registrationConfirmation.p1=Explanatory text about what happens next
 registrationConfirmation.link.signIn=https://www.tax.service.gov.uk/gg/sign-in
 registrationConfirmation.link.helpdesk=https://www.gov.uk/government/organisations/hm-revenue-customs/contact/online-services-helpdesk
-registrationConfirmation.button.printPage=Print this page' control - triggering this control launches the native browser 'print' functionality
 
+button.printPage=Print this page
 button.signIn=Sign in
 button.helpdesk=Online Services Helpdesk
 

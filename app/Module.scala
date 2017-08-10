@@ -34,7 +34,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class Module(environment: Environment, configuration: Configuration) extends AbstractModule with ServicesConfig {
 
-
   override protected lazy val mode: Mode = environment.mode
   override protected lazy val runModeConfiguration: Configuration = configuration
 
@@ -45,7 +44,6 @@ class Module(environment: Environment, configuration: Configuration) extends Abs
     Logger.info(s"Starting microservice : $appName : in mode : ${environment.mode}")
     MDC.put("appName", appName)
     loggerDateFormat.foreach(str => MDC.put("logger.json.dateformat", str))
-
 
     bind(classOf[HttpGet]).toInstance(new WSVerbs)
     bind(classOf[HttpPost]).toInstance(new WSVerbs)

@@ -20,7 +20,7 @@ import java.net.URL
 import javax.inject.{Inject, Named, Singleton}
 
 import play.api.libs.json.JsValue
-import uk.gov.hmrc.agentepayeregistrationfrontend.models.{Address, RegistrationRequest}
+import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
 import uk.gov.hmrc.domain.PayeAgentReference
 import uk.gov.hmrc.play.http.{HeaderCarrier, HttpGet, HttpPost}
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
