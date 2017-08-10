@@ -35,7 +35,7 @@ class ErrorHandler @Inject()(implicit configuration: Configuration, val messages
   }
 
   override def onServerError(request: RequestHeader, exception: Throwable): Future[Result] = {
-    Future successful InternalServerError(uk.gov.hmrc.agentepayeregistrationfrontend.views.html.error_template(Messages("global.error.badRequest500.title"),
+    Future successful InternalServerError(uk.gov.hmrc.agentepayeregistrationfrontend.views.html.error_template(Messages("global.error.500.title"),
       Messages("global.error.500.heading"), Messages("global.error.500.heading"))).withHeaders(CACHE_CONTROL -> "no-cache")
   }
 }

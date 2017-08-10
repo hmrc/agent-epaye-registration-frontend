@@ -23,12 +23,12 @@ class BaseControllerISpec extends UnitSpec with OneAppPerSuite with WireMockSupp
 
   protected implicit val materializer = app.materializer
 
-  protected def checkHtmlResultWithBodyText(result: Result, expectedSubstrings: String*): Unit = {
-    status(result) shouldBe 200
+  protected def checkHtmlResultWithBodyText(result: Result, expectedSubstring: String, expectedStatus: Int = 200): Unit = {
+    status(result) shouldBe expectedStatus
     contentType(result) shouldBe Some("text/html")
     charset(result) shouldBe Some("utf-8")
-    expectedSubstrings.foreach(s => bodyOf(result) should include(s))
-  }
+    bodyOf(result) should include(expectedSubstring)
+}
 
   private val messagesApi = app.injector.instanceOf[MessagesApi]
   private implicit val messages: Messages = messagesApi.preferred(Seq.empty[Lang])

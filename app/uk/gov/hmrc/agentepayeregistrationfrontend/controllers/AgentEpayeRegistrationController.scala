@@ -35,23 +35,7 @@ import scala.concurrent.Future
 @Singleton
 class AgentEpayeRegistrationController @Inject()(override val messagesApi: MessagesApi,
                                                  registrationService: AgentEpayeRegistrationService)(implicit config: Configuration) extends FrontendController with I18nSupport {
-
-  private val registrationRequestForm = Form[RegistrationRequest](
-    mapping(
-      "agentName" -> name,
-      "contactName" -> name,
-      "telephoneNumber" -> telephone,
-      "faxNumber" -> telephone,
-      "emailAddress" -> emailAddr,
-      "address" -> mapping(
-        "addressLine1" -> addressLine12,
-        "addressLine2" -> addressLine12,
-        "addressLine3" -> addressLine34,
-        "addressLine4" -> addressLine34,
-        "postcode" -> postcode
-      )(Address.apply)(Address.unapply)
-    )(RegistrationRequest.apply)(RegistrationRequest.unapply)
-  )
+  import AgentEpayeRegistrationController._
 
   val showRegistrationForm = Action { implicit request =>
     Ok(html.registration(registrationRequestForm))
@@ -69,4 +53,23 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
     )
   }
 
+}
+
+object AgentEpayeRegistrationController {
+  val registrationRequestForm = Form[RegistrationRequest](
+    mapping(
+      "agentName" -> name,
+      "contactName" -> name,
+      "telephoneNumber" -> telephone,
+      "faxNumber" -> telephone,
+      "emailAddress" -> emailAddr,
+      "address" -> mapping(
+        "addressLine1" -> addressLine12,
+        "addressLine2" -> addressLine12,
+        "addressLine3" -> addressLine34,
+        "addressLine4" -> addressLine34,
+        "postcode" -> postcode
+      )(Address.apply)(Address.unapply)
+    )(RegistrationRequest.apply)(RegistrationRequest.unapply)
+  )
 }

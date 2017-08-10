@@ -39,11 +39,9 @@ import scala.concurrent.ExecutionContext
   * @param loggingFilter - used to log details of any http requests hitting the service
   * @param auditFilter   - used to call the datastream microservice and publish auditing events
   * @param metricsFilter - used to collect metrics and statistics relating to the service
-  * @param authFilter    - used to add authorisation to endpoints in the service if required
   */
-class Filters @Inject()(loggingFilter: LoggingFilter, auditFilter: MicroserviceAuditFilter, metricsFilter: MetricsFilter,
-                        authFilter: MicroserviceAuthFilter)
-  extends DefaultHttpFilters(loggingFilter, auditFilter, metricsFilter, authFilter)
+class Filters @Inject()(loggingFilter: LoggingFilter, auditFilter: MicroserviceAuditFilter, metricsFilter: MetricsFilter)
+  extends DefaultHttpFilters(loggingFilter, auditFilter, metricsFilter)
 
 class LoggingFilter @Inject()(implicit val mat: Materializer, ec: ExecutionContext, configuration: Configuration) extends FrontendLoggingFilter {
   override def controllerNeedsLogging(controllerName: String): Boolean = configuration.getBoolean(s"controllers.$controllerName.needsLogging").getOrElse(true)
@@ -63,15 +61,4 @@ class MicroserviceAuditFilter @Inject()(implicit val mat: Materializer, ec: Exec
 
 class MicroserviceAuditConnector @Inject()(val environment: Environment) extends AuditConnector with RunMode {
   override lazy val auditingConfig = LoadAuditingConfig(s"auditing")
-}
-
-class MicroserviceAuthFilter @Inject()(implicit val mat: Materializer, ec: ExecutionContext,
-                                       configuration: Configuration, val connector: AuthConn) extends AuthorisationFilter {
-  override def config: FilterConfig = FilterConfig(configuration.underlying.as[Config]("controllers"))
-}
-
-class AuthConn @Inject()(defaultServicesConfig: DefaultServicesConfig,
-                         val http: WSVerbs) extends PlayAuthConnector {
-
-  override val serviceUrl: String = defaultServicesConfig.baseUrl("auth")
 }

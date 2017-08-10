@@ -6,6 +6,8 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import uk.gov.hmrc.play.http.BadGatewayException
 
+import scala.concurrent.Future
+
 class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
   private lazy val controller: AgentEpayeRegistrationController = app.injector.instanceOf[AgentEpayeRegistrationController]
 
@@ -20,6 +22,20 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
       val request = FakeRequest().withFormUrlEncodedBody(
         validFormDetails.map {
           case ("contactName", _) => ("contactName", "")
+          case x => x
+        } : _*
+      )
+
+      val result = await(controller.register(request))
+
+      checkHtmlResultWithBodyText(result, htmlEscapedMessage("registration.title"))
+      checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.required"))
+    }
+
+    "the address line 1 is missing" in {
+      val request = FakeRequest().withFormUrlEncodedBody(
+        validFormDetails.map {
+          case ("address.addressLine1", _) => ("address.addressLine1", "")
           case x => x
         } : _*
       )
@@ -64,7 +80,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
     checkHtmlResultWithBodyText(result, htmlEscapedMessage(agentRef))
   }
 
-  "register shows the error page if there is a problem with the backend service" in {
+  "register throws exception if there is a problem with the backend service" in {
     val request = FakeRequest().withFormUrlEncodedBody(validFormDetails: _*)
 
     stopServer()
