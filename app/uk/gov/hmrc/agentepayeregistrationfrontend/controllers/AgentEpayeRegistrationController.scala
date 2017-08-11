@@ -22,7 +22,7 @@ import play.api.Configuration
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Action
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.agentepayeregistrationfrontend.models.{Address, RegistrationRequest}
 import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.FieldMappings._
 import uk.gov.hmrc.agentepayeregistrationfrontend.service.AgentEpayeRegistrationService
@@ -35,6 +35,10 @@ import scala.concurrent.Future
 class AgentEpayeRegistrationController @Inject()(override val messagesApi: MessagesApi,
                                                  registrationService: AgentEpayeRegistrationService)(implicit config: Configuration) extends FrontendController with I18nSupport {
   import AgentEpayeRegistrationController._
+
+  val root: Action[AnyContent] = Action { implicit request =>
+    Redirect(routes.AgentEpayeRegistrationController.register())
+  }
 
   val showRegistrationForm = Action { implicit request =>
     Ok(html.registration(registrationRequestForm))

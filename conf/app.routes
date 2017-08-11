@@ -1,4 +1,5 @@
 # microservice specific routes
 
+GET     /                   uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.root
 GET     /register           uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.showRegistrationForm
 POST    /register           uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.register
