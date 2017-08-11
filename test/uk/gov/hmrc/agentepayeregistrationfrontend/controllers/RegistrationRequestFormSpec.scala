@@ -21,9 +21,9 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 class RegistrationRequestFormSpec extends UnitSpec {
 
-  "postcode bind" should {
+  "RegistrationRequestForm" should {
 
-    "bind input fields and return RegistrationRequestForm" in {
+    "bind input fields and return RegistrationRequest and fill it back" in {
       val form = AgentEpayeRegistrationController.registrationRequestForm
 
       val value = RegistrationRequest(
