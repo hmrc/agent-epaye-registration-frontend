@@ -1,0 +1,18 @@
+@import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.routes.AgentEpayeRegistrationController
+@import play.api.Configuration
+
+@()(implicit request: Request[_], messages: Messages, config: Configuration)
+
+@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("start.title"), bodyClasses = None) {
+
+    <h1> @Messages("start.label")</h1>
+    <p> @Messages("start.intro")</p>
+
+    <p1>
+    <a href="@Messages("start.helpdesk")"> Contact the online services helpdesk if you need help.</a>
+    </p1>
+
+    <p>
+        <a class="button button-start button--get-started" name="start" id="start now" href="@AgentEpayeRegistrationController.details" role="button">Start now</a>
+    </p>
+}

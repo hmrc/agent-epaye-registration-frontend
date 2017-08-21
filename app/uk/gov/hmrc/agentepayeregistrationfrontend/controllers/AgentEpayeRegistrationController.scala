@@ -23,7 +23,7 @@ import play.api.data.Form
 import play.api.data.Forms.mapping
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.agentepayeregistrationfrontend.models.{Address, RegistrationRequest}
+import uk.gov.hmrc.agentepayeregistrationfrontend.models._
 import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.FieldMappings._
 import uk.gov.hmrc.agentepayeregistrationfrontend.service.AgentEpayeRegistrationService
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html
@@ -37,11 +37,23 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
   import AgentEpayeRegistrationController._
 
   val root: Action[AnyContent] = Action { implicit request =>
-    Redirect(routes.AgentEpayeRegistrationController.register())
+    Ok(html.start())
   }
 
   val showRegistrationForm = Action { implicit request =>
     Ok(html.registration(registrationRequestForm))
+  }
+
+
+  val details = Action.async { implicit request =>
+    registrationNameRequestForm.bindFromRequest().fold(
+      formWithErrors => {
+        Future.successful(Ok(html.details(formWithErrors)))
+      },
+      registrationName => {
+        Future(Redirect(routes.AgentEpayeRegistrationController.showRegistrationForm()))
+      }
+    )
   }
 
   val register = Action.async { implicit request =>
@@ -59,7 +71,6 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
 object AgentEpayeRegistrationController {
   val registrationRequestForm = Form[RegistrationRequest](
     mapping(
-      "agentName" -> name,
       "contactName" -> name,
       "telephoneNumber" -> telephone,
       "faxNumber" -> telephone,
@@ -72,5 +83,11 @@ object AgentEpayeRegistrationController {
         "postcode" -> postcode
       )(Address.apply)(Address.unapply)
     )(RegistrationRequest.apply)(RegistrationRequest.unapply)
+  )
+
+  val registrationNameRequestForm = Form[RegistrationNameRequest](
+    mapping(
+      "agentName" -> name
+    )(RegistrationNameRequest.apply)(RegistrationNameRequest.unapply)
   )
 }

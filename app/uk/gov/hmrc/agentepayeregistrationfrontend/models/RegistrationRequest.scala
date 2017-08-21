@@ -18,13 +18,19 @@ package uk.gov.hmrc.agentepayeregistrationfrontend.models
 
 import play.api.libs.json.Json
 
-case class RegistrationRequest(agentName: String,
-                               contactName: String,
+case class RegistrationRequest(contactName: String,
                                telephoneNumber: Option[String],
                                faxNumber: Option[String],
                                emailAddress: Option[String],
-                                address: Address)
+                               address: Address)
 
 object RegistrationRequest {
   implicit val registrationRequestFormat = Json.format[RegistrationRequest]
 }
+
+case class RegistrationNameRequest(agentName: String)
+
+object RegistrationNameRequest {
+  implicit val registrationNameRequestFormat = Json.format[RegistrationNameRequest]
+}
+

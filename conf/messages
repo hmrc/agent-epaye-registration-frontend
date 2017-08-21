@@ -29,7 +29,7 @@ registrationConfirmation.title=Registration confirmation
 registrationConfirmation.payeAgentReference=Agent reference
 registrationConfirmation.p1=Explanatory text about what happens next
 registrationConfirmation.link.signIn=https://www.tax.service.gov.uk/gg/sign-in
-registrationConfirmation.link.helpdesk=https://www.gov.uk/government/organisations/hm-revenue-customs/contact/online-services-helpdesk
+link.helpdesk=https://www.gov.uk/government/organisations/hm-revenue-customs/contact/online-services-helpdesk
 
 button.printPage=Print this page
 button.signIn=Sign in
@@ -40,3 +40,16 @@ error.postcode.invalid=Sorry, the postcode you entered is not valid
 error.telephone.invalid=Sorry, the value must only contain numbers, brackets and spaces
 error.email.invalid=Sorry, the email address entered contains invalid characters
 error.name.invalid=Sorry, the name contains invalid characters
+
+# start page
+start.title=Agent Reference Service
+start.label=Get an Agent Reference for PAYE for Agents
+start.intro=This service is for PAYE agents and payroll bureau to obtain an Agent Reference to use when registering for PAYE Online for Agents.
+start.helpdesk=Contact the online services helpdesk if you need help.
+
+#details
+details.title=Enter name
+details.label=Enter your agent name
+details.p1=This could be your agency name or payroll bureau name, or your own name if you're acting as an individual
+details.formTitle=Agent name
+button.continue=continue
