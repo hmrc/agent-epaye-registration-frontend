@@ -3,7 +3,7 @@
 GET         /                       uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.root
 GET         /details                uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.showAgentDetailsForm
 POST        /details                uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.agentDetails
-GET         /contact-details        uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.showContactDetailsForm(form: play.api.data.Form[uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest])
 POST        /contact-details        uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.contactDetails
-GET         /address-details        uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.showAddressDetailsForm
-#POST        /address-details        uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.addressDetails
+POST        /address-details        uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.addressDetails
+POST        /summary                uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.summary
+POST        /register               uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.register

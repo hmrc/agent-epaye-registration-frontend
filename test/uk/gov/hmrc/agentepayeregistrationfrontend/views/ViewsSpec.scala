@@ -17,7 +17,6 @@
 package uk.gov.hmrc.agentepayeregistrationfrontend.views
 
 import org.scalatestplus.play.MixedPlaySpec
-import play.api.data.Form
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -26,8 +25,8 @@ import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistra
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.error_template_Scope0.error_template_Scope1.error_template
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.govuk_wrapper_Scope0.govuk_wrapper_Scope1.govuk_wrapper
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template_Scope0.main_template_Scope1.main_template
-import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.registration_Scope0.registration_Scope1.registration
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.registration_confirmation_Scope0.registration_confirmation_Scope1.registration_confirmation
+import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.summary_Scope0.summary_Scope1.summary
 
 class ViewsSpec extends MixedPlaySpec {
 
@@ -47,7 +46,7 @@ class ViewsSpec extends MixedPlaySpec {
     }
   }
 
-  "registration view" should {
+  "summary view" should {
     "render all of the form field values" in new App {
       val form = AgentEpayeRegistrationController.registrationRequestForm
         .copy(data = Map(
@@ -63,7 +62,7 @@ class ViewsSpec extends MixedPlaySpec {
           ("address.postcode" -> "PO111ST")
         ))
 
-      val html = new registration().render(
+      val html = new summary().render(
         detailsForm = form,
         request = FakeRequest(),
         messages = Messages.Implicits.applicationMessages,

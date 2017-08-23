@@ -18,18 +18,13 @@ import javax.inject.Inject
 
 import akka.stream.Materializer
 import com.kenshoo.play.metrics.MetricsFilter
-import com.typesafe.config.Config
-import net.ceedubs.ficus.Ficus._
 import play.api.http.DefaultHttpFilters
 import play.api.{Configuration, Environment}
-import uk.gov.hmrc.auth.core.PlayAuthConnector
-import uk.gov.hmrc.auth.filter.{AuthorisationFilter, FilterConfig}
 import uk.gov.hmrc.play.audit.filters.FrontendAuditFilter
 import uk.gov.hmrc.play.audit.http.config.LoadAuditingConfig
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
-import uk.gov.hmrc.play.config.inject.{DefaultServicesConfig, RunMode}
+import uk.gov.hmrc.play.config.inject.RunMode
 import uk.gov.hmrc.play.http.logging.filters.FrontendLoggingFilter
-import wiring.WSVerbs
 
 import scala.concurrent.ExecutionContext
 

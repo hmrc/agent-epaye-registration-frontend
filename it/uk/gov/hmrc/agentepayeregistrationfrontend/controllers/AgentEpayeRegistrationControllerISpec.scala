@@ -1,6 +1,5 @@
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
-import akka.util.Timeout
 import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, post, stubFor, urlEqualTo}
 import play.api.http.Status
 import play.api.libs.json.Json
@@ -14,95 +13,145 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
   "root context displays start page" in {
     val result = controller.root(FakeRequest())
 
-    status(result) shouldBe 200
-    contentAsString(result) should include ("Get an Agent Reference for PAYE for Agents")
+    checkHtmlResultWithBodyText(result, htmlEscapedMessage("start.title"))
   }
 
-  "showRegistrationForm shows the registration form page" in {
-    val result = await(controller.showContactdetailsForm(FakeRequest()))
+  "showAgentDetailsForm displays the agent details form page" in {
+    val result = await(controller.showAgentDetailsForm(FakeRequest()))
 
-    checkHtmlResultWithBodyText(result, htmlEscapedMessage("registration.title"))
+    checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.agent.title"))
   }
 
+  "agentDetails page" should {
+    "show the agentDetails page with the validation errors" when {
+      "the agent name is missing" in {
+        val request = FakeRequest().withFormUrlEncodedBody(
+          registrationNameRequestForm.map {
+            case ("agentName", _) => ("agentName", "")
+            case x => x
+          }: _*
+        )
 
-  "agentDetails shows the registrationNameRequest form again if validation fails" when {
-    "the agent name is missing" in {
-      val request = FakeRequest().withFormUrlEncodedBody(
-        registrationNameRequestForm.map {
-          case ("agentName", _) => ("agentName", "")
-          case x => x
-        }: _*
-      )
+        val result = await(controller.agentDetails(request))
 
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.agent.title"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.required"))
+      }
+    }
+    "show the contactDetails page if validation passes" in {
+      val request = FakeRequest().withFormUrlEncodedBody(validFormRegestrationDetails: _*)
       val result = await(controller.agentDetails(request))
 
-      checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.title"))
-      checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.required"))
+      checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
+    }
+    "retain all the form state and pass it to the next page" in {
+      fail("TODO")
     }
   }
 
-  "register shows the registration form again if validation fails" when {
+  "contactDetails page" should {
+    "show the contactDetails page with the validation errors" when {
+      "the contact name is missing" in {
+        val request = FakeRequest().withFormUrlEncodedBody(
+          validFormRegestrationDetails.map {
+            case ("contactName", _) => ("contactName", "")
+            case x => x
+          }: _*
+        )
 
-    "the contact name is missing" in {
-      val request = FakeRequest().withFormUrlEncodedBody(
-        validFormRegestrationDetails.map {
-          case ("contactName", _) => ("contactName", "")
-          case x => x
-        }: _*
-      )
+        val result = await(controller.contactDetails(request))
 
-      val result = await(controller.agentDetails(request))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.required"))
+      }
 
-      checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.title"))
-      checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.required"))
+      "the contact name is invalid and the telephone number is invalid" in {
+        val request = FakeRequest().withFormUrlEncodedBody(
+          validFormRegestrationDetails.map {
+            case ("contactName", _) => ("contactName", "7^$£")
+            case ("telephoneNumber", _) => ("telephoneNumber", "7^$£")
+            case x => x
+          }: _*
+        )
+
+        val result = await(controller.contactDetails(request))
+
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.name.invalid"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.telephone.invalid"))
+      }
     }
 
-    "the address line 1 is missing" in {
-      val request = FakeRequest().withFormUrlEncodedBody(
-        validFormRegestrationDetails.map {
-          case ("address.addressLine1", _) => ("address.addressLine1", "")
-          case x => x
-        } : _*
-      )
+    "show the addressDetails page if validation passes" in {
+      val request = FakeRequest().withFormUrlEncodedBody(validFormRegestrationDetails: _*)
+      val result = await(controller.contactDetails(request))
 
-      val result = await(controller.register(request))
-
-      checkHtmlResultWithBodyText(result, htmlEscapedMessage("registration.title"))
-      checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.required"))
+      checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.address.title"))
     }
 
-    "the contact name is invalid and the telephone number is invalid" in {
-      val request = FakeRequest().withFormUrlEncodedBody(
-        validFormRegestrationDetails.map {
-          case ("contactName", _) => ("contactName", "7^$£")
-          case ("telephoneNumber", _) => ("telephoneNumber", "7^$£")
-          case x => x
-        } : _*
-      )
-
-      val result = await(controller.register(request))
-
-      checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.title"))
-      checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.name.invalid"))
-      checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.telephone.invalid"))
+    "retain all the form state and pass it to the next page" in {
+      fail("TODO")
     }
   }
 
-  "register shows the registration confirmation page if validation passes" in {
-    val agentRef = "HX2000"
+  "addressDetails page" should {
+    "show the addressDetails page again with the validation errors" when {
+      "the address line 1 is missing" in {
+        val request = FakeRequest().withFormUrlEncodedBody(
+          validFormRegestrationDetails.map {
+            case ("address.addressLine1", _) => ("address.addressLine1", "")
+            case x => x
+          }: _*
+        )
 
-    stubFor(post(urlEqualTo(s"/agent-epaye-registration/registrations"))
-      .willReturn(
-        aResponse()
-          .withStatus(Status.OK)
-          .withBody(Json.obj("payeAgentReference" -> agentRef).toString())))
+        val result = await(controller.addressDetails(request))
 
-    val request = FakeRequest().withFormUrlEncodedBody(validFormRegestrationDetails: _*)
-    val result = await(controller.register(request))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.address.title"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.required"))
+      }
+    }
 
-    checkHtmlResultWithBodyText(result, htmlEscapedMessage("registrationConfirmation.title"))
+    "show the summary page if validation passes" in {
+      val request = FakeRequest().withFormUrlEncodedBody(validFormRegestrationDetails: _*)
+      val result = await(controller.addressDetails(request))
 
-    checkHtmlResultWithBodyText(result, htmlEscapedMessage(agentRef))
+      checkHtmlResultWithBodyText(result, htmlEscapedMessage("summary.title"))
+    }
+
+    "retain all the form state and pass it to the next page" in {
+      fail("TODO")
+    }
+  }
+
+  "summary" should {
+    "summary shows the registration confirmation page if validation passes" in {
+      val agentRef = "HX2000"
+
+      stubFor(post(urlEqualTo(s"/agent-epaye-registration/registrations"))
+        .willReturn(
+          aResponse()
+            .withStatus(Status.OK)
+            .withBody(Json.obj("payeAgentReference" -> agentRef).toString())))
+
+      val request = FakeRequest().withFormUrlEncodedBody(validFormRegestrationDetails: _*)
+      val result = await(controller.register(request))
+
+      checkHtmlResultWithBodyText(result, htmlEscapedMessage("registrationConfirmation.title"))
+
+      checkHtmlResultWithBodyText(result, htmlEscapedMessage(agentRef))
+    }
+
+    "have retained all the form state and pass it on to the next page" when {
+      "the agent details are to be amended" in {
+        fail("TODO")
+      }
+      "the contact details are to be amended" in {
+        fail("TODO")
+      }
+      "the address details are to be amended" in {
+        fail("TODO")
+      }
+    }
   }
 
   "register throws exception if there is a problem with the backend service" in {

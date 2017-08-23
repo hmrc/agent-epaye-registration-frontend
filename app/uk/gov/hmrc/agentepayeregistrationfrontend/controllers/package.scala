@@ -23,7 +23,7 @@ import play.api.data.validation.{Constraint, Constraints, _}
 package object controllers {
 
   object FieldMappings {
-    private[controllers] val postcodeWithoutSpacesRegex = "^[A-Z]{1,2}[0-9][0-9A-Z]?\\s?[0-9][A-Z]{2}$|BFPO\\s?[0-9]{1,5}$".r
+    private val postcodeWithoutSpacesRegex = "^[A-Z]{1,2}[0-9][0-9A-Z]?\\s?[0-9][A-Z]{2}$|BFPO\\s?[0-9]{1,5}$".r
     private val telephoneNumberRegex = "^[0-9- +()#x ]*$"
     private val emailRegex =  """(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"""
     private val validStringRegex = "[a-zA-Z0-9,.()\\-\\!@\\s]+"
@@ -73,7 +73,7 @@ package object controllers {
 
     def postcode: Mapping[String] = text verifying nonEmptyPostcode
     def telephone: Mapping[Option[String]] = optional(text(maxLength = 35) verifying telephoneNumber)
-    def name: Mapping[String] = text(maxLength = 56) verifying (validName)
+    def name: Mapping[String] = text(maxLength = 56) verifying(validName)
     def emailAddr: Mapping[Option[String]] = optional(text(maxLength = 129) verifying emailAddress)
     def addressLine12: Mapping[String] = nonEmptyText(maxLength = 35)
     def addressLine34: Mapping[Option[String]] = optional(text(maxLength = 35))

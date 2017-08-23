@@ -18,16 +18,13 @@ package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
 import javax.inject.{Inject, Singleton}
 
-import play.api.Logger
 import play.api.Configuration
-import play.api.data._
 import play.api.data.Forms._
 import play.api.data.Form
-import play.api.data.Forms.{mapping, optional, text}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.agentepayeregistrationfrontend.models.{Address, _}
-import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.FieldMappings.{addressLine34, _}
+import uk.gov.hmrc.agentepayeregistrationfrontend.models.{Address, RegistrationRequest}
+import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.FieldMappings._
 import uk.gov.hmrc.agentepayeregistrationfrontend.service.AgentEpayeRegistrationService
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html
 import uk.gov.hmrc.play.frontend.controller.FrontendController
@@ -44,46 +41,74 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
   }
 
   def showAgentDetailsForm = Action { implicit request =>
-    Ok(html.agentDetails(registrationRequestForm))
+    Ok(html.agentDetails(agentDetailsForm))
   }
 
   val agentDetails = Action.async { implicit request =>
     agentDetailsForm.bindFromRequest().fold(
-          formWithErrors => {
-            Future.successful(Ok(html.agentDetails(formWithErrors)))
-          },
-          detailsRegistration => {
-            Future.successful(Redirect(routes.AgentEpayeRegistrationController.showContactDetailsForm(agentDetailsForm)))
-          })
-  }
-
-  //registrationService.register(registration).map(x => Ok(html.registration_confirmation(x.value)))
-
-  def showContactDetailsForm(form: Form[RegistrationRequest]) = Action { implicit request =>
-    Ok(html.contactDetails(form))
+      formWithErrors => {
+        Future.successful(Ok(html.agentDetails(formWithErrors)))
+      },
+      data => {
+        Future.successful(Ok(html.contactDetails(agentDetailsForm.fill(data))))
+      })
   }
 
   val contactDetails = Action.async { implicit request =>
     contactDetailsForm.bindFromRequest().fold(
-          formWithErrors => {
-            Future.successful(Ok(html.contactDetails(contactDetailsForm)))
-          },
-          detailsRegistration => {
-            //Future.successful(Ok(html.addressDetails(contactDetailsForm)))
-            Future.successful(Ok)
-          })
+      formWithErrors => {
+        Future.successful(Ok(html.contactDetails(formWithErrors)))
+      },
+      data => {
+        Future.successful(Ok(html.addressDetails(contactDetailsForm.fill(data))))
+      })
+  }
+
+  val addressDetails = Action.async { implicit request =>
+    registrationRequestForm.bindFromRequest().fold(
+      formWithErrors => {
+        Future.successful(Ok(html.addressDetails(formWithErrors)))
+      },
+      data => {
+        Future.successful(Ok(html.summary(registrationRequestForm.fill(data))))
+      })
+  }
+
+  val summary = Action.async { implicit request =>
+    registrationRequestForm.bindFromRequest().fold(
+      formWithErrors => {
+        Future.successful(Ok(html.summary(formWithErrors)))
+      },
+      data => {
+        Form(single("amend" -> text)).bindFromRequest().fold(
+          _ => registrationService.register(data).map(x => Ok(html.registration_confirmation(x.value))),
+          amend => {
+            val filledForm = registrationRequestForm.fill(data)
+            amend match {
+              case "agentDetails" => Future.successful(Ok(html.agentDetails(filledForm)))
+              case "contactDetails" => Future.successful(Ok(html.contactDetails(filledForm)))
+              case "addressDetails" => Future.successful(Ok(html.addressDetails(filledForm)))
+            }
+          }
+        )
+      })
+  }
+
+  val register = Action.async { implicit request =>
+    registrationRequestForm.bindFromRequest().fold(
+      formWithErrors => {
+        Future.successful(Ok(html.summary(formWithErrors)))
+      },
+      registration => {
+        registrationService.register(registration).map(x => Ok(html.registration_confirmation(x.value)))
       }
-
-
-
-  def showAddressDetailsForm = Action { implicit request =>
-    //Ok(html.addressDetails(registrationRequestForm))
-    Ok
+    )
   }
 }
 
 object AgentEpayeRegistrationController {
-  val agentDetailsForm = Form(
+
+  val agentDetailsForm = Form[RegistrationRequest](
     mapping(
       "agentName" -> name,
       "contactName" -> text,
@@ -100,36 +125,19 @@ object AgentEpayeRegistrationController {
     )(RegistrationRequest.apply)(RegistrationRequest.unapply)
   )
 
-  val contactDetailsForm = Form(
+  val contactDetailsForm = Form[RegistrationRequest](
     mapping(
-      "agentName" -> text,
+      "agentName" -> name,
       "contactName" -> name,
       "telephoneNumber" -> telephone,
       "faxNumber" -> optional(text),
-      "emailAddress" -> optional(email),
+      "emailAddress" -> emailAddr,
       "address" -> mapping(
         "addressLine1" -> text,
         "addressLine2" -> text,
         "addressLine3" -> optional(text),
         "addressLine4" -> optional(text),
         "postcode" -> text
-      )(Address.apply)(Address.unapply)
-    )(RegistrationRequest.apply)(RegistrationRequest.unapply)
-  )
-
-  val addressDetailsForm = Form(
-    mapping(
-      "agentName" -> text,
-      "contactName" -> text,
-      "telephoneNumber" -> optional(text),
-      "faxNumber" -> optional(text),
-      "emailAddress" -> optional(email),
-      "address" -> mapping(
-        "addressLine1" -> addressLine12,
-        "addressLine2" -> addressLine12,
-        "addressLine3" -> addressLine34,
-        "addressLine4" -> addressLine34,
-        "postcode" -> postcode
       )(Address.apply)(Address.unapply)
     )(RegistrationRequest.apply)(RegistrationRequest.unapply)
   )
@@ -137,16 +145,16 @@ object AgentEpayeRegistrationController {
   val registrationRequestForm = Form[RegistrationRequest](
     mapping(
       "agentName" -> name,
-      "contactName" -> text,
-      "telephoneNumber" -> optional(text),
+      "contactName" -> name,
+      "telephoneNumber" -> telephone,
       "faxNumber" -> optional(text),
-      "emailAddress" -> optional(text),
+      "emailAddress" -> emailAddr,
       "address" -> mapping(
-        "addressLine1" -> text,
-        "addressLine2" -> text,
-        "addressLine3" -> optional(text),
-        "addressLine4" -> optional(text),
-        "postcode" -> text
+        "addressLine1" -> addressLine12,
+        "addressLine2" -> addressLine12,
+        "addressLine3" -> addressLine34,
+        "addressLine4" -> addressLine34,
+        "postcode" -> postcode
       )(Address.apply)(Address.unapply)
     )(RegistrationRequest.apply)(RegistrationRequest.unapply)
   )

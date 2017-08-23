@@ -28,10 +28,3 @@ case class RegistrationRequest(agentName: String,
 object RegistrationRequest {
   implicit val registrationRequestFormat = Json.format[RegistrationRequest]
 }
-
-case class RegistrationNameRequest(agentName: String)
-
-object RegistrationNameRequest {
-  implicit val registrationNameRequestFormat = Json.format[RegistrationNameRequest]
-}
-

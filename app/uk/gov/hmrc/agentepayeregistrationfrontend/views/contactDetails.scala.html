@@ -6,11 +6,13 @@
 
 @(detailsForm: Form[RegistrationRequest])(implicit request: Request[_], messages: Messages, config: Configuration)
 
-@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("registration.title"), bodyClasses = None) {
+@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("details.contact.title"), bodyClasses = None) {
 
 <header class="page-header">
-    <h1>@Messages("registration.title")</h1>
+    <h1>@Messages("details.contact.label")</h1>
 </header>
+
+<p>@Messages("details.contact.description")</p>
 
 @form(
 action = AgentEpayeRegistrationController.contactDetails,
@@ -20,37 +22,71 @@ action = AgentEpayeRegistrationController.contactDetails,
 
 
     <div class="form-field">
-        @input(
+    @input(
         detailsForm("contactName"),
-        '_label -> Messages("registration.contactname.label"),
+        '_label -> Messages("details.contact.contactName.label"),
         '_inputClass -> "input--medium input--cleared",
         '_labelClass -> "bold"
-        )
+    )
     </div>
 
     <div class="form-field">
     @input(
         detailsForm("emailAddress"),
-        '_label -> Messages("registration.email.label"),
+        '_label -> Messages("details.contact.emailAddress.label"),
         '_inputClass -> "input--medium input--cleared",
         '_labelClass -> "bold"
     )
     </div>
 
     <div class="form-field">
-        @input(
-                    detailsForm("telephoneNumber"),
-    '_label -> Messages("registration.telephone.label"),
-    '_inputClass -> "input--medium input--cleared",
-    '_labelClass -> "bold"
+    @input(
+        detailsForm("telephoneNumber"),
+        '_label -> Messages("details.contact.telephoneNumber.label"),
+        '_inputClass -> "input--medium input--cleared",
+        '_labelClass -> "bold"
     )
     </div>
 
+    @input(
+    detailsForm("agentName"),
+    '_type -> "hidden"
+    )
+
+    @input(
+    detailsForm("faxNumber"),
+    '_type -> "hidden"
+    )
+
+    @input(
+    detailsForm("address.addressLine1"),
+    '_type -> "hidden"
+    )
+
+    @input(
+    detailsForm("address.addressLine2"),
+    '_type -> "hidden"
+    )
+
+    @input(
+    detailsForm("address.addressLine3"),
+    '_type -> "hidden"
+    )
+
+    @input(
+    detailsForm("address.addressLine4"),
+    '_type -> "hidden"
+    )
+
+    @input(
+    detailsForm("address.postcode"),
+    '_type -> "hidden"
+    )
 
 </fieldset>
 
 <div class="form-field">
-    <button class="button" type="submit" id="subscribe">@Messages("button.register")</button>
+    <button class="button" type="submit" id="continue">@Messages("button.continue")</button>
 </div>
 }
 }
