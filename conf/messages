@@ -9,7 +9,7 @@ global.error.500.title=Sorry, we are experiencing technical difficulties - 500
 global.error.500.heading=Sorry, we’re experiencing technical difficulties
 global.error.500.message=Please try again in a few minutes.
 
-# Registration details
+# Registration agentDetails
 registration.title=Add your agent business''s details
 registration.agentname.label=Agent business name
 registration.contactname.label=Contact name
@@ -47,7 +47,7 @@ start.label=Get an Agent Reference for PAYE for Agents
 start.intro=This service is for PAYE agents and payroll bureau to obtain an Agent Reference to use when registering for PAYE Online for Agents.
 start.helpdesk=Contact the online services helpdesk if you need help.
 
-#details
+#agentDetails
 details.title=Enter name
 details.label=Enter your agent name
 details.p1=This could be your agency name or payroll bureau name, or your own name if you're acting as an individual

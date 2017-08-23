@@ -18,7 +18,8 @@ package uk.gov.hmrc.agentepayeregistrationfrontend.models
 
 import play.api.libs.json.Json
 
-case class RegistrationRequest(contactName: String,
+case class RegistrationRequest(agentName: String,
+                               contactName: String,
                                telephoneNumber: Option[String],
                                faxNumber: Option[String],
                                emailAddress: Option[String],

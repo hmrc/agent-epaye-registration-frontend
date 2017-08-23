@@ -19,13 +19,13 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
   }
 
   "showRegistrationForm shows the registration form page" in {
-    val result = await(controller.showRegistrationForm(FakeRequest()))
+    val result = await(controller.showContactdetailsForm(FakeRequest()))
 
     checkHtmlResultWithBodyText(result, htmlEscapedMessage("registration.title"))
   }
 
 
-  "details shows the registrationNameRequest form again if validation fails" when {
+  "agentDetails shows the registrationNameRequest form again if validation fails" when {
     "the agent name is missing" in {
       val request = FakeRequest().withFormUrlEncodedBody(
         registrationNameRequestForm.map {
@@ -34,7 +34,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
         }: _*
       )
 
-      val result = await(controller.details(request))
+      val result = await(controller.agentDetails(request))
 
       checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.title"))
       checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.required"))
@@ -51,7 +51,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
         }: _*
       )
 
-      val result = await(controller.details(request))
+      val result = await(controller.agentDetails(request))
 
       checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.title"))
       checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.required"))

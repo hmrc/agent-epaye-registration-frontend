@@ -1,0 +1,56 @@
+@import uk.gov.hmrc.play.views.html.helpers.form
+@import uk.gov.hmrc.play.views.html.helpers.input
+@import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.routes.AgentEpayeRegistrationController
+@import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
+@import play.api.Configuration
+
+@(detailsForm: Form[RegistrationRequest])(implicit request: Request[_], messages: Messages, config: Configuration)
+
+@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("registration.title"), bodyClasses = None) {
+
+<header class="page-header">
+    <h1>@Messages("registration.title")</h1>
+</header>
+
+@form(
+action = AgentEpayeRegistrationController.contactDetails,
+'class -> "form js-form") {
+
+<fieldset class="form-field-group">
+
+
+    <div class="form-field">
+        @input(
+        detailsForm("contactName"),
+        '_label -> Messages("registration.contactname.label"),
+        '_inputClass -> "input--medium input--cleared",
+        '_labelClass -> "bold"
+        )
+    </div>
+
+    <div class="form-field">
+    @input(
+        detailsForm("emailAddress"),
+        '_label -> Messages("registration.email.label"),
+        '_inputClass -> "input--medium input--cleared",
+        '_labelClass -> "bold"
+    )
+    </div>
+
+    <div class="form-field">
+        @input(
+                    detailsForm("telephoneNumber"),
+    '_label -> Messages("registration.telephone.label"),
+    '_inputClass -> "input--medium input--cleared",
+    '_labelClass -> "bold"
+    )
+    </div>
+
+
+</fieldset>
+
+<div class="form-field">
+    <button class="button" type="submit" id="subscribe">@Messages("button.register")</button>
+</div>
+}
+}
