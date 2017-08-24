@@ -16,9 +16,7 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend.views
 
-import org.scalatestplus.play.MixedPlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
-import play.api.data.Field
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -35,7 +33,7 @@ import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.start_Scope0.start_
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.summary_Scope0.summary_Scope1.summary
 import uk.gov.hmrc.play.test.UnitSpec
 
-class ViewsSpec extends UnitSpec with GuiceOneAppPerTest{
+class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
 
   private val filledForm = AgentEpayeRegistrationController.registrationRequestForm
     .copy(data = Map(
