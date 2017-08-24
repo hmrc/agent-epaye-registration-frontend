@@ -3,8 +3,8 @@ package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, post, stubFor, urlEqualTo}
 import play.api.http.Status
 import play.api.libs.json.Json
+import play.api.mvc.Result
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
 import uk.gov.hmrc.play.http.BadGatewayException
 
 class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
@@ -26,7 +26,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
     "show the agentDetails page with the validation errors" when {
       "the agent name is missing" in {
         val request = FakeRequest().withFormUrlEncodedBody(
-          registrationNameRequestForm.map {
+          validFormRegestrationDetails.map {
             case ("agentName", _) => ("agentName", "")
             case x => x
           }: _*
@@ -45,7 +45,10 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
       checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
     }
     "retain all the form state and pass it to the next page" in {
-      fail("TODO")
+      val request = FakeRequest().withFormUrlEncodedBody(validFormRegestrationDetails: _*)
+
+      val result = await(controller.agentDetails(request))
+      checkAllFormValuesArePresent(result, validFormRegestrationDetails)
     }
   }
 
@@ -90,7 +93,10 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
     }
 
     "retain all the form state and pass it to the next page" in {
-      fail("TODO")
+      val request = FakeRequest().withFormUrlEncodedBody(validFormRegestrationDetails: _*)
+
+      val result = await(controller.contactDetails(request))
+      checkAllFormValuesArePresent(result, validFormRegestrationDetails)
     }
   }
 
@@ -119,12 +125,15 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
     }
 
     "retain all the form state and pass it to the next page" in {
-      fail("TODO")
+      val request = FakeRequest().withFormUrlEncodedBody(validFormRegestrationDetails: _*)
+
+      val result = await(controller.addressDetails(request))
+      checkAllFormValuesArePresent(result, validFormRegestrationDetails)
     }
   }
 
   "summary" should {
-    "summary shows the registration confirmation page if validation passes" in {
+    "show the registration confirmation page if validation passes" in {
       val agentRef = "HX2000"
 
       stubFor(post(urlEqualTo(s"/agent-epaye-registration/registrations"))
@@ -141,15 +150,33 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
       checkHtmlResultWithBodyText(result, htmlEscapedMessage(agentRef))
     }
 
-    "have retained all the form state and pass it on to the next page" when {
-      "the agent details are to be amended" in {
-        fail("TODO")
+    "retain all the form state and pass it on to the appropriate page" when {
+      "amending the agent details" in {
+        val request = FakeRequest().withFormUrlEncodedBody(
+          validFormRegestrationDetails ++ Seq(("amend", "agentDetails")) : _*)
+
+        val result = await(controller.summary(request))
+
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.agent.title"))
+        checkAllFormValuesArePresent(result, validFormRegestrationDetails)
       }
-      "the contact details are to be amended" in {
-        fail("TODO")
+      "amending the contact details" in {
+        val request = FakeRequest().withFormUrlEncodedBody(
+          validFormRegestrationDetails ++ Seq(("amend", "contactDetails")) : _*)
+
+        val result = await(controller.summary(request))
+
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
+        checkAllFormValuesArePresent(result, validFormRegestrationDetails)
       }
-      "the address details are to be amended" in {
-        fail("TODO")
+      "amending the address details" in {
+        val request = FakeRequest().withFormUrlEncodedBody(
+          validFormRegestrationDetails ++ Seq(("amend", "addressDetails")) : _*)
+
+        val result = await(controller.summary(request))
+
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.address.title"))
+        checkAllFormValuesArePresent(result, validFormRegestrationDetails)
       }
     }
   }
@@ -165,6 +192,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
   }
 
   val validFormRegestrationDetails = Seq(
+    "agentName" -> "Angela Agent",
     "contactName" -> "Charlie Contact",
     "telephoneNumber" -> "01234567890",
     "faxNumber" -> "01234567891",
@@ -176,9 +204,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
     "address.postcode" -> "AA111AA"
   )
 
-  val registrationNameRequestForm = Seq(
-    "agentName" -> "Angela Agent"
-  )
-
-
+  private def checkAllFormValuesArePresent(result: Result, formKeyValues: Seq[(String, String)]) = {
+    formKeyValues.map(t => htmlEscapedMessage(t._2)).foreach(checkHtmlResultWithBodyText(result, _))
+  }
 }
