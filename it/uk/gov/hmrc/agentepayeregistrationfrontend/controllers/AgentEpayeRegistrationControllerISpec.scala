@@ -80,7 +80,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
         val result = await(controller.contactDetails(request))
 
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
-        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.name.invalid"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.string.invalid"))
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.telephone.invalid"))
       }
     }
@@ -143,11 +143,21 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
             .withBody(Json.obj("payeAgentReference" -> agentRef).toString())))
 
       val request = FakeRequest().withFormUrlEncodedBody(validFormRegestrationDetails: _*)
-      val result = await(controller.register(request))
+      val result = await(controller.summary(request))
 
       checkHtmlResultWithBodyText(result, htmlEscapedMessage("registrationConfirmation.title"))
 
       checkHtmlResultWithBodyText(result, htmlEscapedMessage(agentRef))
+    }
+
+    "throw an exception upon registration if there is a problem with the backend service" in {
+      val request = FakeRequest().withFormUrlEncodedBody(validFormRegestrationDetails: _*)
+
+      stopServer()
+
+      intercept[BadGatewayException] {
+        await(controller.summary(request))
+      }
     }
 
     "retain all the form state and pass it on to the appropriate page" when {
@@ -181,21 +191,10 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
     }
   }
 
-  "register throws exception if there is a problem with the backend service" in {
-    val request = FakeRequest().withFormUrlEncodedBody(validFormRegestrationDetails: _*)
-
-    stopServer()
-
-    intercept[BadGatewayException] {
-      await(controller.register(request))
-    }
-  }
-
   val validFormRegestrationDetails = Seq(
     "agentName" -> "Angela Agent",
     "contactName" -> "Charlie Contact",
     "telephoneNumber" -> "01234567890",
-    "faxNumber" -> "01234567891",
     "emailAddress" -> "foo@bar.com",
     "address.addressLine1" -> "1 Streety Street",
     "address.addressLine2" -> "Towny town",

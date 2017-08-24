@@ -16,7 +16,6 @@
       @input(detailsForm("agentName"), '_type -> "hidden")
       @input(detailsForm("contactName"), '_type -> "hidden")
       @input(detailsForm("telephoneNumber"), '_type -> "hidden")
-      @input(detailsForm("faxNumber"), '_type -> "hidden")
       @input(detailsForm("emailAddress"), '_type -> "hidden")
       @input(detailsForm("address.addressLine1"), '_type -> "hidden")
       @input(detailsForm("address.addressLine2"), '_type -> "hidden")
@@ -39,9 +38,14 @@
     <tr>
       <td>@Messages("summary.header.contactDetails")</td>
       <td>
-        @Messages("summary.details.contactName") @detailsForm("contactName").value<br>
-        @Messages("summary.details.telephoneNumber") @detailsForm("telephoneNumber").value<br>
-        @Messages("summary.details.emailAddress") @detailsForm("emailAddress").value
+        @Messages("summary.details.contactName") @detailsForm("contactName").value
+        @if( detailsForm("telephoneNumber").value.nonEmpty ) {
+          <br>@Messages("summary.details.telephoneNumber") @detailsForm("telephoneNumber").value
+        }
+        @if( detailsForm("emailAddress").value.nonEmpty ) {
+          <br>
+          @Messages("summary.details.emailAddress") @detailsForm("emailAddress").value
+        }
       </td>
       <td class="change-answer">
         <button class="button button--secondary" type="submit" name="amend" value="contactDetails">
@@ -57,8 +61,13 @@
       <td>
         @detailsForm("address.addressLine1").value<br>
         @detailsForm("address.addressLine2").value<br>
-        @detailsForm("address.addressLine3").value<br>
-        @detailsForm("address.addressLine4").value
+        @if( detailsForm("address.addressLine3").value.nonEmpty ) {
+          @detailsForm("address.addressLine3").value<br>
+        }
+        @if( detailsForm("address.addressLine4").value.nonEmpty ) {
+          @detailsForm("address.addressLine4").value<br>
+        }
+        @detailsForm("address.postcode").value
       </td>
       <td class="change-answer">
         <button class="button button--secondary" type="submit" name="amend" value="addressDetails">

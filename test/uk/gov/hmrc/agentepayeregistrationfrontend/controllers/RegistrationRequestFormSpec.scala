@@ -30,7 +30,6 @@ class RegistrationRequestFormSpec extends UnitSpec {
         agentName = "agentName",
         contactName = "",
         telephoneNumber = None,
-        faxNumber = None,
         emailAddress = None,
         address = Address(
           addressLine1 = "",
@@ -63,7 +62,6 @@ class RegistrationRequestFormSpec extends UnitSpec {
         agentName = "agentName",
         contactName = "contactName",
         telephoneNumber = Some("098765321"),
-        faxNumber = None,
         emailAddress = Some("foo@bar.com"),
         address = Address(
           addressLine1 = "",
@@ -98,7 +96,6 @@ class RegistrationRequestFormSpec extends UnitSpec {
         agentName = "agentName",
         contactName = "contactName",
         telephoneNumber = Some("098765321"),
-        faxNumber = Some("0123456798"),
         emailAddress = Some("foo@bar.com"),
         address = Address(
           addressLine1 = "Address line 1",
@@ -113,7 +110,6 @@ class RegistrationRequestFormSpec extends UnitSpec {
         "agentName" -> "agentName",
         "contactName" -> "contactName",
         "telephoneNumber" -> "098765321",
-        "faxNumber" -> "0123456798",
         "emailAddress" -> "foo@bar.com",
         "address.addressLine1" -> "Address line 1",
         "address.addressLine2" -> "Sometown Somewhere",

@@ -48,40 +48,12 @@ action = AgentEpayeRegistrationController.contactDetails,
     )
     </div>
 
-    @input(
-    detailsForm("agentName"),
-    '_type -> "hidden"
-    )
-
-    @input(
-    detailsForm("faxNumber"),
-    '_type -> "hidden"
-    )
-
-    @input(
-    detailsForm("address.addressLine1"),
-    '_type -> "hidden"
-    )
-
-    @input(
-    detailsForm("address.addressLine2"),
-    '_type -> "hidden"
-    )
-
-    @input(
-    detailsForm("address.addressLine3"),
-    '_type -> "hidden"
-    )
-
-    @input(
-    detailsForm("address.addressLine4"),
-    '_type -> "hidden"
-    )
-
-    @input(
-    detailsForm("address.postcode"),
-    '_type -> "hidden"
-    )
+    @input(detailsForm("agentName"), '_type -> "hidden")
+    @input(detailsForm("address.addressLine1"), '_type -> "hidden")
+    @input(detailsForm("address.addressLine2"), '_type -> "hidden")
+    @input(detailsForm("address.addressLine3"), '_type -> "hidden")
+    @input(detailsForm("address.addressLine4"), '_type -> "hidden")
+    @input(detailsForm("address.postcode"), '_type -> "hidden")
 
 </fieldset>
 

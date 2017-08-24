@@ -93,17 +93,6 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
         )
       })
   }
-
-  val register = Action.async { implicit request =>
-    registrationRequestForm.bindFromRequest().fold(
-      formWithErrors => {
-        Future.successful(Ok(html.summary(formWithErrors)))
-      },
-      registration => {
-        registrationService.register(registration).map(x => Ok(html.registration_confirmation(x.value)))
-      }
-    )
-  }
 }
 
 object AgentEpayeRegistrationController {
@@ -113,7 +102,6 @@ object AgentEpayeRegistrationController {
       "agentName" -> name,
       "contactName" -> text,
       "telephoneNumber" -> optional(text),
-      "faxNumber" -> optional(text),
       "emailAddress" -> optional(text),
       "address" -> mapping(
         "addressLine1" -> text,
@@ -130,7 +118,6 @@ object AgentEpayeRegistrationController {
       "agentName" -> name,
       "contactName" -> name,
       "telephoneNumber" -> telephone,
-      "faxNumber" -> optional(text),
       "emailAddress" -> emailAddr,
       "address" -> mapping(
         "addressLine1" -> text,
@@ -147,7 +134,6 @@ object AgentEpayeRegistrationController {
       "agentName" -> name,
       "contactName" -> name,
       "telephoneNumber" -> telephone,
-      "faxNumber" -> optional(text),
       "emailAddress" -> emailAddr,
       "address" -> mapping(
         "addressLine1" -> addressLine12,

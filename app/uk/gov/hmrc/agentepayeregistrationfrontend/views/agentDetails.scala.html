@@ -30,50 +30,14 @@
       </div>
     </fieldset>
 
-      @input(
-        detailsForm("contactName"),
-        '_type -> "hidden"
-      )
-
-      @input(
-        detailsForm("telephoneNumber"),
-        '_type -> "hidden"
-      )
-
-      @input(
-        detailsForm("faxNumber"),
-        '_type -> "hidden"
-      )
-
-      @input(
-        detailsForm("emailAddress"),
-        '_type -> "hidden"
-      )
-
-      @input(
-        detailsForm("address.addressLine1"),
-        '_type -> "hidden"
-      )
-
-      @input(
-        detailsForm("address.addressLine2"),
-        '_type -> "hidden"
-      )
-
-      @input(
-        detailsForm("address.addressLine3"),
-        '_type -> "hidden"
-      )
-
-      @input(
-        detailsForm("address.addressLine4"),
-        '_type -> "hidden"
-      )
-
-      @input(
-        detailsForm("address.postcode"),
-        '_type -> "hidden"
-      )
+      @input(detailsForm("contactName"), '_type -> "hidden")
+      @input(detailsForm("telephoneNumber"), '_type -> "hidden")
+      @input(detailsForm("emailAddress"), '_type -> "hidden")
+      @input(detailsForm("address.addressLine1"), '_type -> "hidden")
+      @input(detailsForm("address.addressLine2"), '_type -> "hidden")
+      @input(detailsForm("address.addressLine3"), '_type -> "hidden")
+      @input(detailsForm("address.addressLine4"), '_type -> "hidden")
+      @input(detailsForm("address.postcode"), '_type -> "hidden")
 
     <div class="form-field">
       <button class="button" type="submit" id="continue">@Messages("button.continue")</button>

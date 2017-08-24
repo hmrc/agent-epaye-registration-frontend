@@ -6,4 +6,3 @@ POST        /details                uk.gov.hmrc.agentepayeregistrationfrontend.c
 POST        /contact-details        uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.contactDetails
 POST        /address-details        uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.addressDetails
 POST        /summary                uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.summary
-POST        /register               uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.register

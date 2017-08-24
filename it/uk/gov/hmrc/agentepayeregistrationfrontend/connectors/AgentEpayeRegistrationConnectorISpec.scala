@@ -23,7 +23,6 @@ class AgentEpayeRegistrationConnectorISpec extends UnitSpec with OneAppPerSuite 
   private val regRequest = RegistrationRequest("Dave Agent",
     "John Contact",
     Some("0123456789"),
-    Some("0123456780"),
     Some("email@test.com"),
     address)
 
