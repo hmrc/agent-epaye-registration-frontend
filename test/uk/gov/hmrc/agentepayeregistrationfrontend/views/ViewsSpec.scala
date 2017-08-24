@@ -16,8 +16,7 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend.views
 
-import org.scalatestplus.play.MixedPlaySpec
-import play.api.data.Field
+import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -32,8 +31,9 @@ import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template_Scope
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.registration_confirmation_Scope0.registration_confirmation_Scope1.registration_confirmation
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.start_Scope0.start_Scope1.start
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.summary_Scope0.summary_Scope1.summary
+import uk.gov.hmrc.play.test.UnitSpec
 
-class ViewsSpec extends MixedPlaySpec {
+class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
 
   private val filledForm = AgentEpayeRegistrationController.registrationRequestForm
     .copy(data = Map(
@@ -60,12 +60,12 @@ class ViewsSpec extends MixedPlaySpec {
         messages = Messages.Implicits.applicationMessages,
         configuration = app.configuration )
       val content = contentAsString(html)
-      content must include (pageTitle)
-      content must include (heading)
-      content must include (message)
+      content should include (pageTitle)
+      content should include (heading)
+      content should include (message)
 
       val html2 = new error_template().f(pageTitle, heading, message)(Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) mustBe(content)
+      contentAsString(html2) shouldBe(content)
     }
   }
 
@@ -78,14 +78,14 @@ class ViewsSpec extends MixedPlaySpec {
       val content = contentAsString(html)
 
       import Messages.Implicits.applicationMessages
-      content must include (Messages("start.title"))
-      content must include (Messages("start.label"))
-      content must include (Messages("start.intro"))
-      content must include (Messages("start.helpdesklink.text1"))
-      content must include (Messages("start.helpdesklink.text2"))
+      content should include (Messages("start.title"))
+      content should include (Messages("start.label"))
+      content should include (Messages("start.intro"))
+      content should include (Messages("start.helpdesklink.text1"))
+      content should include (Messages("start.helpdesklink.text2"))
 
       val html2 = new start().f()(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) mustBe(content)
+      contentAsString(html2) shouldBe(content)
     }
   }
 
@@ -98,10 +98,10 @@ class ViewsSpec extends MixedPlaySpec {
         config = app.configuration)
       val content = contentAsString(html)
 
-      filledForm.data.values.foreach(formValue => content must include (formValue))
+      filledForm.data.values.foreach(formValue => content should include (formValue))
 
       val html2 = new agentDetails().f(filledForm)(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) mustBe(content)
+      contentAsString(html2) shouldBe(content)
     }
   }
 
@@ -114,10 +114,10 @@ class ViewsSpec extends MixedPlaySpec {
         config = app.configuration)
       val content = contentAsString(html)
 
-      filledForm.data.values.foreach(formValue => content must include (formValue))
+      filledForm.data.values.foreach(formValue => content should include (formValue))
 
       val html2 = new contactDetails().f(filledForm)(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) mustBe(content)
+      contentAsString(html2) shouldBe(content)
     }
   }
 
@@ -130,10 +130,10 @@ class ViewsSpec extends MixedPlaySpec {
         config = app.configuration)
       val content = contentAsString(html)
 
-      filledForm.data.values.foreach(formValue => content must include (formValue))
+      filledForm.data.values.foreach(formValue => content should include (formValue))
 
       val html2 = new addressDetails().f(filledForm)(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) mustBe(content)
+      contentAsString(html2) shouldBe(content)
     }
   }
 
@@ -146,10 +146,10 @@ class ViewsSpec extends MixedPlaySpec {
         config = app.configuration)
       val content = contentAsString(html)
 
-      filledForm.data.values.foreach(formValue => content must include (formValue))
+      filledForm.data.values.foreach(formValue => content should include (formValue))
 
       val html2 = new summary().f(filledForm)(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) mustBe(content)
+      contentAsString(html2) shouldBe(content)
     }
   }
 
@@ -163,14 +163,14 @@ class ViewsSpec extends MixedPlaySpec {
 
       val content = contentAsString(html)
 
-      content must include ("My custom agent reference")
+      content should include ("My custom agent reference")
 
       val html2 = new registration_confirmation().f(
         "My custom agent reference"
       )(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
 
       val content2 = contentAsString(html2)
-      contentAsString(html2) mustBe(content)
+      contentAsString(html2) shouldBe(content)
     }
   }
 
@@ -190,13 +190,13 @@ class ViewsSpec extends MixedPlaySpec {
         configuration = app.configuration )
 
       val content = contentAsString(html)
-      content must include ("My custom page title")
-      content must include ("My custom sidebar links")
-      content must include ("My custom content header")
-      content must include ("my-custom-body-class")
-      content must include ("my-custom-main-class")
-      content must include ("My custom script")
-      content must include ("My custom main content HTML")
+      content should include ("My custom page title")
+      content should include ("My custom sidebar links")
+      content should include ("My custom content header")
+      content should include ("my-custom-body-class")
+      content should include ("my-custom-main-class")
+      content should include ("My custom script")
+      content should include ("My custom main content HTML")
 
       val html2 = view.f(
         "My custom page title",
@@ -206,7 +206,7 @@ class ViewsSpec extends MixedPlaySpec {
         Some("my-custom-main-class"),
         Some(Html("My custom script"))
       )(Html("My custom main content HTML"))(Messages.Implicits.applicationMessages, FakeRequest(), app.configuration)
-      contentAsString(html2) mustBe(content)
+      contentAsString(html2) shouldBe(content)
     }
   }
 
@@ -228,15 +228,15 @@ class ViewsSpec extends MixedPlaySpec {
         configuration = app.configuration)
 
       val content = contentAsString(html)
-      content must include ("My custom page title")
-      content must include ("my-custom-main-class")
-      content must include ("myCustom=\"attributes\"")
-      content must include ("my-custom-body-class")
-      content must include ("My custom sidebar")
-      content must include ("My custom content header")
-      content must include ("My custom main content")
-      content must include ("My custom service info content")
-      content must include ("My custom script")
+      content should include ("My custom page title")
+      content should include ("my-custom-main-class")
+      content should include ("myCustom=\"attributes\"")
+      content should include ("my-custom-body-class")
+      content should include ("My custom sidebar")
+      content should include ("My custom content header")
+      content should include ("My custom main content")
+      content should include ("My custom service info content")
+      content should include ("My custom script")
 
       val html2 = new govuk_wrapper().f("My custom page title",
         Some("my-custom-main-class"),
@@ -248,7 +248,7 @@ class ViewsSpec extends MixedPlaySpec {
         Html("My custom service info content"),
         Some(Html("My custom script")),
         Seq("My custom GA code"))(Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) mustBe(content)
+      contentAsString(html2) shouldBe(content)
     }
   }
 }

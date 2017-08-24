@@ -39,9 +39,7 @@
       <td>@Messages("summary.header.contactDetails")</td>
       <td>
         @Messages("summary.details.contactName") @detailsForm("contactName").value
-        @if( detailsForm("telephoneNumber").value.nonEmpty ) {
           <br>@Messages("summary.details.telephoneNumber") @detailsForm("telephoneNumber").value
-        }
         @if( detailsForm("emailAddress").value.nonEmpty ) {
           <br>
           @Messages("summary.details.emailAddress") @detailsForm("emailAddress").value
