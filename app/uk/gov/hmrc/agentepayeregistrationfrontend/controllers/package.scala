@@ -25,6 +25,7 @@ package object controllers {
   object FieldMappings {
     private val postcodeWithoutSpacesRegex = "^[A-Z]{1,2}[0-9][0-9A-Z]?\\s?[0-9][A-Z]{2}$|BFPO\\s?[0-9]{1,5}$".r
     private val telephoneNumberRegex = "^[0-9- +()#x ]*$"
+    private val emailRegex = """(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"""
     private val validStringRegex = "[A-Za-z0-9\\-,.&'\\\\/ ]+"
     private val nonEmptyPostcode: Constraint[String] = Constraint[String] { fieldValue: String =>
       Constraints.nonEmpty(fieldValue) match {
@@ -51,9 +52,13 @@ package object controllers {
     }
 
     private val emailAddress: Constraint[String] = Constraint[String] { fieldValue: String =>
-      Constraints.emailAddress(fieldValue) match {
-        case i @ Invalid(_) => i
-        case Valid => Valid
+      Constraints.nonEmpty(fieldValue) match {
+        case i: Invalid => i
+        case Valid => fieldValue match {
+          case value if !value.matches(emailRegex) =>
+            Invalid(ValidationError("error.email.invalid"))
+          case _ => Valid
+        }
       }
     }
 
