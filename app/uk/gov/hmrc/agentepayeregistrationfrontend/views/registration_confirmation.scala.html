@@ -1,7 +1,7 @@
 @import uk.gov.hmrc.play.views.html.helpers.form
 @import uk.gov.hmrc.play.views.html.helpers.input
 @import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.routes.AgentEpayeRegistrationController
-@import  uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
+@import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
 @import play.api.Configuration
 
 @(payeAgentReference: String)(implicit request: Request[_], messages: Messages, config: Configuration)
@@ -9,15 +9,14 @@
 @uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("registrationConfirmation.title"), bodyClasses = None) {
 
 <div class="transaction-banner--complete">
-    <h1 class="transaction-banner__heading">@Messages("registrationConfirmation.title")</h1>
-    <p>
-        @Messages("registrationConfirmation.payeAgentReference")<br>
-        <strong class="heading-medium">@payeAgentReference</strong>
-    </p>
+    <h1 class="transaction-banner__heading">@Messages("registrationConfirmation.label")</h1>
+    <p><strong class="heading-medium">@payeAgentReference</strong></p>
 </div>
 
-<p class="panel-indent">@Html(Messages("registrationConfirmation.p1"))</p>
+<p>
+    <strong>@Messages("registrationConfirmation.boldSaveReminder")</strong>
+    @Messages("registrationConfirmation.normalSaveReminder")
+</p>
 
-<a href="@Messages("registrationConfirmation.link.signIn")" class="button" id="buttonSignIn">@Messages("button.signIn")</a>
-<a href="@Messages("registrationConfirmation.link.helpdesk")" class="button" id="buttonHelpdesk">@Messages("button.helpdesk")</a>
+<p>@Messages("registrationConfirmation.noteAboutDelay")</p>
 }

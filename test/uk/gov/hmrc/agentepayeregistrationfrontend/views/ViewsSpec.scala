@@ -16,61 +16,140 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend.views
 
-import org.scalatestplus.play.MixedPlaySpec
-import play.api.data.Form
+import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
 import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController
+import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.addressDetails_Scope0.addressDetails_Scope1.addressDetails
+import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.agentDetails_Scope0.agentDetails_Scope1.agentDetails
+import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.contactDetails_Scope0.contactDetails_Scope1.contactDetails
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.error_template_Scope0.error_template_Scope1.error_template
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.govuk_wrapper_Scope0.govuk_wrapper_Scope1.govuk_wrapper
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template_Scope0.main_template_Scope1.main_template
-import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.registration_Scope0.registration_Scope1.registration
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.registration_confirmation_Scope0.registration_confirmation_Scope1.registration_confirmation
+import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.start_Scope0.start_Scope1.start
+import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.summary_Scope0.summary_Scope1.summary
+import uk.gov.hmrc.play.test.UnitSpec
 
-class ViewsSpec extends MixedPlaySpec {
+class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
+
+  private val filledForm = AgentEpayeRegistrationController.registrationRequestForm
+    .copy(data = Map(
+      ("contactName" -> "My contact name"),
+      ("agentName" -> "My agent name"),
+      ("telephoneNumber" -> "9876543210"),
+      ("emailAddress" -> "my@email.com"),
+      ("address.addressLine1" -> "My address line 1"),
+      ("address.addressLine2" -> "My address line 2"),
+      ("address.addressLine3" -> "My address line 3"),
+      ("address.addressLine4" -> "My address line 4"),
+      ("address.postcode" -> "PO111ST")
+    ))
 
   "error_template view" should {
-
     "render title, heading and message" in new App {
+      val pageTitle = "My custom page title"
+      val heading = "My custom heading"
+      val message = "My custom message"
       val html = new error_template().render(
-        pageTitle = "My custom page title",
-        heading = "My custom heading",
-        message = "My custom message",
+        pageTitle = pageTitle,
+        heading = heading,
+        message = message,
         messages = Messages.Implicits.applicationMessages,
         configuration = app.configuration )
       val content = contentAsString(html)
-      content must include ("My custom page title")
-      content must include ("My custom heading")
-      content must include ("My custom message")
+      content should include (pageTitle)
+      content should include (heading)
+      content should include (message)
+
+      val html2 = new error_template().f(pageTitle, heading, message)(Messages.Implicits.applicationMessages, app.configuration)
+      contentAsString(html2) shouldBe(content)
     }
   }
 
-  "registration view" should {
-    "render all of the form field values" in new App {
-      val form = AgentEpayeRegistrationController.registrationRequestForm
-        .copy(data = Map(
-          ("contactName" -> "My contact name"),
-          ("agentName" -> "My agent name"),
-          ("telephoneNumber" -> "9876543210"),
-          ("faxNumber" -> "0123456789"),
-          ("emailAddress" -> "my@email.com"),
-          ("address.addressLine1" -> "My address line 1"),
-          ("address.addressLine2" -> "My address line 2"),
-          ("address.addressLine3" -> "My address line 3"),
-          ("address.addressLine4" -> "My address line 4"),
-          ("address.postcode" -> "PO111ST")
-        ))
-
-      val html = new registration().render(
-        detailsForm = form,
+  "start view" should {
+    "render title and messages" in new App {
+      val html = new start().render(
         request = FakeRequest(),
         messages = Messages.Implicits.applicationMessages,
         config = app.configuration)
       val content = contentAsString(html)
 
-      form.data.values.foreach(formValue => content must include (formValue))
+      import Messages.Implicits.applicationMessages
+      content should include (Messages("start.title"))
+      content should include (Messages("start.label"))
+      content should include (Messages("start.intro"))
+      content should include (Messages("start.helpdesklink.text1"))
+      content should include (Messages("start.helpdesklink.text2"))
+
+      val html2 = new start().f()(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
+      contentAsString(html2) shouldBe(content)
+    }
+  }
+
+  "agent details view" should {
+    "render all of the form field values" in new App {
+      val html = new agentDetails().render(
+        detailsForm = filledForm,
+        request = FakeRequest(),
+        messages = Messages.Implicits.applicationMessages,
+        config = app.configuration)
+      val content = contentAsString(html)
+
+      filledForm.data.values.foreach(formValue => content should include (formValue))
+
+      val html2 = new agentDetails().f(filledForm)(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
+      contentAsString(html2) shouldBe(content)
+    }
+  }
+
+  "contact details view" should {
+    "render all of the form field values" in new App {
+      val html = new contactDetails().render(
+        detailsForm = filledForm,
+        request = FakeRequest(),
+        messages = Messages.Implicits.applicationMessages,
+        config = app.configuration)
+      val content = contentAsString(html)
+
+      filledForm.data.values.foreach(formValue => content should include (formValue))
+
+      val html2 = new contactDetails().f(filledForm)(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
+      contentAsString(html2) shouldBe(content)
+    }
+  }
+
+  "address details view" should {
+    "render all of the form field values" in new App {
+      val html = new addressDetails().render(
+        detailsForm = filledForm,
+        request = FakeRequest(),
+        messages = Messages.Implicits.applicationMessages,
+        config = app.configuration)
+      val content = contentAsString(html)
+
+      filledForm.data.values.foreach(formValue => content should include (formValue))
+
+      val html2 = new addressDetails().f(filledForm)(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
+      contentAsString(html2) shouldBe(content)
+    }
+  }
+
+  "summary view" should {
+    "render all of the form field values" in new App {
+      val html = new summary().render(
+        detailsForm = filledForm,
+        request = FakeRequest(),
+        messages = Messages.Implicits.applicationMessages,
+        config = app.configuration)
+      val content = contentAsString(html)
+
+      filledForm.data.values.foreach(formValue => content should include (formValue))
+
+      val html2 = new summary().f(filledForm)(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
+      contentAsString(html2) shouldBe(content)
     }
   }
 
@@ -84,14 +163,14 @@ class ViewsSpec extends MixedPlaySpec {
 
       val content = contentAsString(html)
 
-      content must include ("My custom agent reference")
+      content should include ("My custom agent reference")
 
       val html2 = new registration_confirmation().f(
         "My custom agent reference"
       )(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
 
       val content2 = contentAsString(html2)
-      content2 mustBe(content)
+      contentAsString(html2) shouldBe(content)
     }
   }
 
@@ -111,15 +190,14 @@ class ViewsSpec extends MixedPlaySpec {
         configuration = app.configuration )
 
       val content = contentAsString(html)
-      content must include ("My custom page title")
-      content must include ("My custom sidebar links")
-      content must include ("My custom content header")
-      content must include ("my-custom-body-class")
-      content must include ("my-custom-main-class")
-      content must include ("My custom script")
-      content must include ("My custom main content HTML")
+      content should include ("My custom page title")
+      content should include ("My custom sidebar links")
+      content should include ("My custom content header")
+      content should include ("my-custom-body-class")
+      content should include ("my-custom-main-class")
+      content should include ("My custom script")
+      content should include ("My custom main content HTML")
 
-      //f:((String,Option[Html],Option[Html],Option[String],Option[String],Option[Html])
       val html2 = view.f(
         "My custom page title",
         Some(Html("My custom sidebar links")),
@@ -128,8 +206,7 @@ class ViewsSpec extends MixedPlaySpec {
         Some("my-custom-main-class"),
         Some(Html("My custom script"))
       )(Html("My custom main content HTML"))(Messages.Implicits.applicationMessages, FakeRequest(), app.configuration)
-      val content2 = contentAsString(html2)
-      content2 mustBe(content)
+      contentAsString(html2) shouldBe(content)
     }
   }
 
@@ -151,15 +228,15 @@ class ViewsSpec extends MixedPlaySpec {
         configuration = app.configuration)
 
       val content = contentAsString(html)
-      content must include ("My custom page title")
-      content must include ("my-custom-main-class")
-      content must include ("myCustom=\"attributes\"")
-      content must include ("my-custom-body-class")
-      content must include ("My custom sidebar")
-      content must include ("My custom content header")
-      content must include ("My custom main content")
-      content must include ("My custom service info content")
-      content must include ("My custom script")
+      content should include ("My custom page title")
+      content should include ("my-custom-main-class")
+      content should include ("myCustom=\"attributes\"")
+      content should include ("my-custom-body-class")
+      content should include ("My custom sidebar")
+      content should include ("My custom content header")
+      content should include ("My custom main content")
+      content should include ("My custom service info content")
+      content should include ("My custom script")
 
       val html2 = new govuk_wrapper().f("My custom page title",
         Some("my-custom-main-class"),
@@ -171,8 +248,7 @@ class ViewsSpec extends MixedPlaySpec {
         Html("My custom service info content"),
         Some(Html("My custom script")),
         Seq("My custom GA code"))(Messages.Implicits.applicationMessages, app.configuration)
-      val content2 = contentAsString(html2)
-      content2 mustBe(content)
+      contentAsString(html2) shouldBe(content)
     }
   }
 }

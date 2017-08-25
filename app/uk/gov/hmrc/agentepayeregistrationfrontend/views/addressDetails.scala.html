@@ -1,0 +1,74 @@
+@import uk.gov.hmrc.play.views.html.helpers.form
+@import uk.gov.hmrc.play.views.html.helpers.input
+@import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.routes.AgentEpayeRegistrationController
+@import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
+@import play.api.Configuration
+
+@(detailsForm: Form[RegistrationRequest])(implicit request: Request[_], messages: Messages, config: Configuration)
+
+@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("details.address.title"), bodyClasses = None) {
+
+@form(
+action = AgentEpayeRegistrationController.addressDetails,
+'class -> "form js-form") {
+
+<h1 class="form-title heading-large">@Messages("details.address.label")</h1>
+
+<fieldset class="form-field-group">
+
+    <div class="form-field">
+    @input(
+        detailsForm("address.addressLine1"),
+        '_label -> Messages("details.address.addressline1.label"),
+        '_inputClass -> "input--medium input--cleared",
+        '_labelClass -> "bold"
+    )
+    </div>
+
+    <div class="form-field">
+    @input(
+        detailsForm("address.addressLine2"),
+        '_label -> Messages("details.address.addressline2.label"),
+        '_inputClass -> "input--medium input--cleared",
+        '_labelClass -> "bold"
+    )
+    </div>
+
+    <div class="form-field">
+    @input(
+        detailsForm("address.addressLine3"),
+        '_label -> Messages("details.address.addressline3.label"),
+        '_inputClass -> "input--medium input--cleared",
+        '_labelClass -> "bold"
+    )
+    </div>
+
+    <div class="form-field">
+    @input(
+        detailsForm("address.addressLine4"),
+        '_label -> Messages("details.address.addressline4.label"),
+        '_inputClass -> "input--medium input--cleared",
+        '_labelClass -> "bold"
+    )
+    </div>
+
+    <div class="form-field">
+    @input(
+        detailsForm("address.postcode"),
+        '_label -> Messages("details.address.postcode.label"),
+        '_inputClass -> "input--medium input--cleared",
+        '_labelClass -> "bold"
+    )
+    </div>
+
+    @input(detailsForm("agentName"), '_type -> "hidden")
+    @input(detailsForm("contactName"), '_type -> "hidden")
+    @input(detailsForm("telephoneNumber"), '_type -> "hidden")
+    @input(detailsForm("emailAddress"), '_type -> "hidden")
+</fieldset>
+
+<div class="form-field">
+    <button class="button" type="submit" id="subscribe">@Messages("button.continue")</button>
+</div>
+}
+}

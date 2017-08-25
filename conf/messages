@@ -9,34 +9,61 @@ global.error.500.title=Sorry, we are experiencing technical difficulties - 500
 global.error.500.heading=Sorry, we’re experiencing technical difficulties
 global.error.500.message=Please try again in a few minutes.
 
-# Registration details
-registration.title=Add your agent business''s details
-registration.agentname.label=Agent business name
-registration.contactname.label=Contact name
-registration.telephone.label=Telephone number
-registration.faxnumber.label=Fax number
-registration.email.label=Email address
-registration.addressline1.label=Address line 1
-registration.addressline2.label=Address line 2
-registration.addressline3.label=Address line 3
-registration.addressline4.label=Address line 4
-registration.postcode.label=Postcode
+# Validation errors
+error.postcode.invalid=You can only enter these characters: A-Z, a-z, 0-9
+error.telephone.invalid=You can only enter these characters: 0-9-+()#x space
+error.string.invalid=You can only enter these characters: A-Z a-z 0-9 -,.&''\/ space
 
-button.register=Register now
+# start page
+start.title=Agent EPAYE Registration
+start.label=Get an Agent Reference for PAYE for Agents
+start.intro=We have designed this service for PAYE agents and payroll bureaux registering for the PAYE for Agents online service.
+start.helpdesklink.text1=Contact the online services helpdesk
+start.helpdesklink.text2=if you need help.
+
+# Agent Details page
+details.agent.title=Agent EPAYE Registration
+details.agent.label=Enter your agent name
+details.agent.description=This could be your agency name or payroll bureau name, or your own name if you''re acting as an individual
+details.agent.agentName.label=Agent name
+
+# Contact Details page
+details.contact.title=Agent EPAYE Registration
+details.contact.label=Enter your contact details
+details.contact.description=HMRC will treat this as your main contact for PAYE for Agents registration.
+details.contact.contactName.label=Contact name
+details.contact.emailAddress.label=Email address
+details.contact.telephoneNumber.label=Telephone number
+
+# Address Details page
+details.address.title=Agent EPAYE Registration
+details.address.label=Enter you business address
+details.address.addressline1.label=Address line 1
+details.address.addressline2.label=Address line 2
+details.address.addressline3.label=Address line 3
+details.address.addressline4.label=Address line 4
+details.address.postcode.label=Postcode
+
+# Summary page
+summary.title=Agent EPAYE Registration
+summary.label=Check your answers
+summary.header.agentDetails=Agent details
+summary.header.contactDetails=Contact details
+summary.header.addressDetails=Address
+summary.register.title=Now send your application
+summary.register.description=By sending this application you are confirming that, to the best of your knowledge, the details you are providing are correct.
+summary.details.agencyName=Agency name:
+summary.details.contactName=Contact name:
+summary.details.telephoneNumber=Telephone number:
+summary.details.emailAddress=Email address:
+summary.link.change=Change
 
 # Registration confirmation
-registrationConfirmation.title=Registration confirmation
-registrationConfirmation.payeAgentReference=Agent reference
-registrationConfirmation.p1=Explanatory text about what happens next
-registrationConfirmation.link.signIn=https://www.tax.service.gov.uk/gg/sign-in
-registrationConfirmation.link.helpdesk=https://www.gov.uk/government/organisations/hm-revenue-customs/contact/online-services-helpdesk
+registrationConfirmation.title=Agent EPAYE Registration
+registrationConfirmation.label=Save your Agent Reference:
+registrationConfirmation.boldSaveReminder=You must save this number for your agency''s records.
+registrationConfirmation.normalSaveReminder=You''ll need it to register for PAYE online.
+registrationConfirmation.noteAboutDelay=Please note, there can be a delay of up to four working days before you can complete your registration. This allows for the uploading of your reference details onto the Government Gateway.
 
-button.printPage=Print this page
-button.signIn=Sign in
-button.helpdesk=Online Services Helpdesk
-
-# Validation errors
-error.postcode.invalid=Sorry, the postcode you entered is not valid
-error.telephone.invalid=Sorry, the value must only contain numbers, brackets and spaces
-error.email.invalid=Sorry, the email address entered contains invalid characters
-error.name.invalid=Sorry, the name contains invalid characters
+button.continue=Continue
+button.register=Send application

@@ -19,8 +19,8 @@ package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 import javax.inject.{Inject, Singleton}
 
 import play.api.Configuration
+import play.api.data.Forms._
 import play.api.data.Form
-import play.api.data.Forms.mapping
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.agentepayeregistrationfrontend.models.{Address, RegistrationRequest}
@@ -37,32 +37,103 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
   import AgentEpayeRegistrationController._
 
   val root: Action[AnyContent] = Action { implicit request =>
-    Redirect(routes.AgentEpayeRegistrationController.register())
+    Ok(html.start())
   }
 
-  val showRegistrationForm = Action { implicit request =>
-    Ok(html.registration(registrationRequestForm))
+  def showAgentDetailsForm = Action { implicit request =>
+    Ok(html.agentDetails(agentDetailsForm))
   }
 
-  val register = Action.async { implicit request =>
+  val agentDetails = Action.async { implicit request =>
+    agentDetailsForm.bindFromRequest().fold(
+      formWithErrors => {
+        Future.successful(Ok(html.agentDetails(formWithErrors)))
+      },
+      data => {
+        Future.successful(Ok(html.contactDetails(agentDetailsForm.fill(data))))
+      })
+  }
+
+  val contactDetails = Action.async { implicit request =>
+    contactDetailsForm.bindFromRequest().fold(
+      formWithErrors => {
+        Future.successful(Ok(html.contactDetails(formWithErrors)))
+      },
+      data => {
+        Future.successful(Ok(html.addressDetails(contactDetailsForm.fill(data))))
+      })
+  }
+
+  val addressDetails = Action.async { implicit request =>
     registrationRequestForm.bindFromRequest().fold(
       formWithErrors => {
-        Future.successful(Ok(html.registration(formWithErrors)))
+        Future.successful(Ok(html.addressDetails(formWithErrors)))
       },
-      registration => {
-        registrationService.register(registration).map(x => Ok(html.registration_confirmation(x.value)))
-      }
-    )
+      data => {
+        Future.successful(Ok(html.summary(registrationRequestForm.fill(data))))
+      })
+  }
+
+  val summary = Action.async { implicit request =>
+    registrationRequestForm.bindFromRequest().fold(
+      formWithErrors => {
+        Future.successful(Ok(html.summary(formWithErrors)))
+      },
+      data => {
+        Form(single("amend" -> text)).bindFromRequest().fold(
+          _ => registrationService.register(data).map(x => Ok(html.registration_confirmation(x.value))),
+          amend => {
+            val filledForm = registrationRequestForm.fill(data)
+            amend match {
+              case "agentDetails" => Future.successful(Ok(html.agentDetails(filledForm)))
+              case "contactDetails" => Future.successful(Ok(html.contactDetails(filledForm)))
+              case "addressDetails" => Future.successful(Ok(html.addressDetails(filledForm)))
+            }
+          }
+        )
+      })
   }
 }
 
 object AgentEpayeRegistrationController {
+
+  val agentDetailsForm = Form[RegistrationRequest](
+    mapping(
+      "agentName" -> name,
+      "contactName" -> text,
+      "telephoneNumber" -> optional(text),
+      "emailAddress" -> optional(text),
+      "address" -> mapping(
+        "addressLine1" -> text,
+        "addressLine2" -> text,
+        "addressLine3" -> optional(text),
+        "addressLine4" -> optional(text),
+        "postcode" -> text
+      )(Address.apply)(Address.unapply)
+    )(RegistrationRequest.apply)(RegistrationRequest.unapply)
+  )
+
+  val contactDetailsForm = Form[RegistrationRequest](
+    mapping(
+      "agentName" -> name,
+      "contactName" -> name,
+      "telephoneNumber" -> telephone,
+      "emailAddress" -> emailAddr,
+      "address" -> mapping(
+        "addressLine1" -> text,
+        "addressLine2" -> text,
+        "addressLine3" -> optional(text),
+        "addressLine4" -> optional(text),
+        "postcode" -> text
+      )(Address.apply)(Address.unapply)
+    )(RegistrationRequest.apply)(RegistrationRequest.unapply)
+  )
+
   val registrationRequestForm = Form[RegistrationRequest](
     mapping(
       "agentName" -> name,
       "contactName" -> name,
       "telephoneNumber" -> telephone,
-      "faxNumber" -> telephone,
       "emailAddress" -> emailAddr,
       "address" -> mapping(
         "addressLine1" -> addressLine12,

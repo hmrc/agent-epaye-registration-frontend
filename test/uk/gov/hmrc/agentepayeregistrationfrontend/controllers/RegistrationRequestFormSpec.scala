@@ -21,6 +21,72 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 class RegistrationRequestFormSpec extends UnitSpec {
 
+  "agentDetailsForm" should {
+
+    "bind input fields and return RegistrationRequest and fill it back" in {
+      val form = AgentEpayeRegistrationController.agentDetailsForm
+
+      val value = RegistrationRequest(
+        agentName = "agentName",
+        contactName = "",
+        telephoneNumber = None,
+        emailAddress = None,
+        address = Address(
+          addressLine1 = "",
+          addressLine2 = "",
+          addressLine3 = None,
+          addressLine4 = None,
+          postCode = ""
+        )
+      )
+
+      val fieldValues = Map(
+        "agentName" -> "agentName",
+        "contactName" -> "",
+        "address.addressLine1" -> "",
+        "address.addressLine2" -> "",
+        "address.postcode" -> ""
+      )
+
+      form.bind(fieldValues).value shouldBe Some(value)
+      form.fill(value).data shouldBe fieldValues
+    }
+  }
+
+  "contactDetailsForm" should {
+
+    "bind input fields and return RegistrationRequest and fill it back" in {
+      val form = AgentEpayeRegistrationController.contactDetailsForm
+
+      val value = RegistrationRequest(
+        agentName = "agentName",
+        contactName = "contactName",
+        telephoneNumber = Some("098765321"),
+        emailAddress = Some("foo@bar.com"),
+        address = Address(
+          addressLine1 = "",
+          addressLine2 = "",
+          addressLine3 = None,
+          addressLine4 = None,
+          postCode = ""
+        )
+      )
+
+      val fieldValues = Map(
+        "agentName" -> "agentName",
+        "contactName" -> "contactName",
+        "telephoneNumber" -> "098765321",
+        "emailAddress" -> "foo@bar.com",
+        "address.addressLine1" -> "",
+        "address.addressLine2" -> "",
+        "address.postcode" -> ""
+      )
+
+      form.bind(fieldValues).value shouldBe Some(value)
+      form.fill(value).data shouldBe fieldValues
+    }
+  }
+
   "RegistrationRequestForm" should {
 
     "bind input fields and return RegistrationRequest and fill it back" in {
@@ -30,7 +96,6 @@ class RegistrationRequestFormSpec extends UnitSpec {
         agentName = "agentName",
         contactName = "contactName",
         telephoneNumber = Some("098765321"),
-        faxNumber = Some("0123456798"),
         emailAddress = Some("foo@bar.com"),
         address = Address(
           addressLine1 = "Address line 1",
@@ -45,7 +110,6 @@ class RegistrationRequestFormSpec extends UnitSpec {
         "agentName" -> "agentName",
         "contactName" -> "contactName",
         "telephoneNumber" -> "098765321",
-        "faxNumber" -> "0123456798",
         "emailAddress" -> "foo@bar.com",
         "address.addressLine1" -> "Address line 1",
         "address.addressLine2" -> "Sometown Somewhere",
