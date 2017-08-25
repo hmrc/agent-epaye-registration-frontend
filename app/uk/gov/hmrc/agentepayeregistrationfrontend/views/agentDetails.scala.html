@@ -8,16 +8,13 @@
 
 @uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("details.contact.title"), bodyClasses = None) {
 
-  <header class="page-header">
-    <h1> @Messages("details.agent.label")</h1>
-  </header>
-
-  <p> @Messages("details.agent.description")</p>
-
   @form(
     action = AgentEpayeRegistrationController.agentDetails,
     'class -> "form js-form") {
 
+    <h1 class="form-title heading-large">@Messages("details.agent.label")</h1>
+
+    <p>@Messages("details.agent.description")</p>
 
     <fieldset class="form-field-group">
       <div class="form-field">

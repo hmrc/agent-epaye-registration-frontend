@@ -8,10 +8,6 @@
 
 @uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("summary.title"), bodyClasses = None) {
 
-  <header class="page-header">
-    <h1>@Messages("summary.label")</h1>
-  </header>
-
   @form(action = AgentEpayeRegistrationController.summary, 'class -> "form js-form") {
       @input(detailsForm("agentName"), '_type -> "hidden")
       @input(detailsForm("contactName"), '_type -> "hidden")
@@ -23,13 +19,15 @@
       @input(detailsForm("address.addressLine4"), '_type -> "hidden")
       @input(detailsForm("address.postcode"), '_type -> "hidden")
 
+  <h1 class="form-title heading-large">@Messages("summary.label")</h1>
+
   <table class="form-group">
     <tbody>
     <tr>
       <td>@Messages("summary.header.agentDetails")</td>
       <td>@Messages("summary.details.agencyName") @detailsForm("agentName").value<br></td>
-      <td class="change-answer">
-        <button class="button button--secondary" type="submit" name="amend" value="agentDetails">
+      <td>
+        <button class="button button--link" type="submit" name="amend" value="agentDetails">
           @Messages("summary.link.change")
           <span class="visuallyhidden">your details</span>
         </button>
@@ -43,8 +41,8 @@
           <br>
           @Messages("summary.details.emailAddress") @detailsForm("emailAddress").value
       </td>
-      <td class="change-answer">
-        <button class="button button--secondary" type="submit" name="amend" value="contactDetails">
+      <td>
+        <button class="button button--link" type="submit" name="amend" value="contactDetails">
           @Messages("summary.link.change")
           <span class="visuallyhidden">contact details</span>
         </button>
@@ -61,8 +59,8 @@
           @detailsForm("address.addressLine4").value<br>
         @detailsForm("address.postcode").value
       </td>
-      <td class="change-answer">
-        <button class="button button--secondary" type="submit" name="amend" value="addressDetails">
+      <td>
+        <button class="button button--link" type="submit" name="amend" value="addressDetails">
           @Messages("summary.link.change")
           <span class="visuallyhidden">address details</span>
         </button>
