@@ -37,7 +37,7 @@ details.contact.telephoneNumber.label=Telephone number
 
 # Address Details page
 details.address.title=Agent EPAYE Registration
-details.address.label=Enter you business address
+details.address.label=Enter your business address
 details.address.addressline1.label=Address line 1
 details.address.addressline2.label=Address line 2
 details.address.addressline3.label=Address line 3
