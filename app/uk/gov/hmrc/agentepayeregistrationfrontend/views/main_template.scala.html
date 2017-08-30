@@ -15,11 +15,12 @@
     }
 }
 
-@govuk_wrapper(title,
+@govuk_wrapper(
+               title,
                mainClass,
                bodyClasses = bodyClasses,
                sidebar = sidebar,
                contentHeader = contentHeader,
-               mainContent = mainContent,
+               mainContent = layouts.article(mainContent),
                serviceInfoContent = serviceInfoContent,
                scriptElem = scriptElem)

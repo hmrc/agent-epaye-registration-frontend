@@ -24,7 +24,7 @@ start.helpdesklink.text2=if you need help.
 # Agent Details page
 details.agent.title=Agent EPAYE Registration
 details.agent.label=Enter your agent name
-details.agent.description=This could be your agency name or payroll bureau name, or your own name if you''re acting as an individual
+details.agent.description=This could be your agency name or payroll bureau name, or your own name if you''re acting as an individual.
 details.agent.agentName.label=Agent name
 
 # Contact Details page
