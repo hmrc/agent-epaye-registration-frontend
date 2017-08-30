@@ -12,6 +12,14 @@
         scriptElem: Option[Html] = None,
         gaCode: Seq[String] = Seq.empty)(implicit messages: Messages, configuration: Configuration)
 
+@betaBanner = {
+    @uiLayouts.betaBanner(userLoggedIn = false,
+        betaFeedbackUrl = "",
+        betaFeedbackUnauthenticatedUrl = "",
+        showFeedbackLinkInBetaBanner = false)
+}
+
+
 @head = {
 @uiLayouts.head(
     linkElem = None,
@@ -49,7 +57,7 @@
 
 @serviceInfo = {
 @uiLayouts.serviceInfo(
-    betaBanner = HtmlFormat.empty,
+    betaBanner = betaBanner,
     includeGridWrapper = false,
     Some(serviceInfoContent))
 }

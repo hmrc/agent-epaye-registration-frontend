@@ -12,63 +12,62 @@
 action = AgentEpayeRegistrationController.addressDetails,
 'class -> "form js-form") {
 
-<h1 class="form-title heading-large">@Messages("details.address.label")</h1>
-
-<fieldset class="form-field-group">
+    <header class="page-header">
+        <h1>@Messages("details.address.label")</h1>
+    </header>
 
     <div class="form-field">
-    @input(
-        detailsForm("address.addressLine1"),
-        '_label -> Messages("details.address.addressline1.label"),
-        '_inputClass -> "input--medium input--cleared",
-        '_labelClass -> "bold"
-    )
+        @input(
+            detailsForm("address.addressLine1"),
+            '_label -> Messages("details.address.addressline1.label"),
+            '_inputClass -> "input--medium input--cleared",
+            '_labelClass -> "bold"
+        )
     </div>
 
     <div class="form-field">
-    @input(
-        detailsForm("address.addressLine2"),
-        '_label -> Messages("details.address.addressline2.label"),
-        '_inputClass -> "input--medium input--cleared",
-        '_labelClass -> "bold"
-    )
+        @input(
+            detailsForm("address.addressLine2"),
+            '_label -> Messages("details.address.addressline2.label"),
+            '_inputClass -> "input--medium input--cleared",
+            '_labelClass -> "bold"
+        )
     </div>
 
     <div class="form-field">
-    @input(
-        detailsForm("address.addressLine3"),
-        '_label -> Messages("details.address.addressline3.label"),
-        '_inputClass -> "input--medium input--cleared",
-        '_labelClass -> "bold"
-    )
+        @input(
+            detailsForm("address.addressLine3"),
+            '_label -> Messages("details.address.addressline3.label"),
+            '_inputClass -> "input--medium input--cleared",
+            '_labelClass -> "bold"
+        )
     </div>
 
     <div class="form-field">
-    @input(
-        detailsForm("address.addressLine4"),
-        '_label -> Messages("details.address.addressline4.label"),
-        '_inputClass -> "input--medium input--cleared",
-        '_labelClass -> "bold"
-    )
+        @input(
+            detailsForm("address.addressLine4"),
+            '_label -> Messages("details.address.addressline4.label"),
+            '_inputClass -> "input--medium input--cleared",
+            '_labelClass -> "bold"
+        )
     </div>
 
     <div class="form-field">
-    @input(
-        detailsForm("address.postcode"),
-        '_label -> Messages("details.address.postcode.label"),
-        '_inputClass -> "input--medium input--cleared",
-        '_labelClass -> "bold"
-    )
+        @input(
+            detailsForm("address.postcode"),
+            '_label -> Messages("details.address.postcode.label"),
+            '_inputClass -> "input--small input--cleared",
+            '_labelClass -> "bold"
+        )
     </div>
 
-    @input(detailsForm("agentName"), '_type -> "hidden")
-    @input(detailsForm("contactName"), '_type -> "hidden")
-    @input(detailsForm("telephoneNumber"), '_type -> "hidden")
-    @input(detailsForm("emailAddress"), '_type -> "hidden")
-</fieldset>
+    <input type="hidden" name="agentName" id="agentName" value="@detailsForm("agentName").value">
+    <input type="hidden" name="contactName" id="contactName" value="@detailsForm("contactName").value">
+    <input type="hidden" name="telephoneNumber" id="telephoneNumber" value="@detailsForm("telephoneNumber").value">
+    <input type="hidden" name="emailAddress" id="emailAddress" value="@detailsForm("emailAddress").value">
 
-<div class="form-field">
-    <button class="button" type="submit" id="subscribe">@Messages("button.continue")</button>
-</div>
-}
+    <div class="form-field">
+        <button class="button" type="submit" id="subscribe">@Messages("button.continue")</button>
+    </div>
+    }
 }

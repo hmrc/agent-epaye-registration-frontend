@@ -9,75 +9,69 @@
 @uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("summary.title"), bodyClasses = None) {
 
   @form(action = AgentEpayeRegistrationController.summary, 'class -> "form js-form") {
-      @input(detailsForm("agentName"), '_type -> "hidden")
-      @input(detailsForm("contactName"), '_type -> "hidden")
-      @input(detailsForm("telephoneNumber"), '_type -> "hidden")
-      @input(detailsForm("emailAddress"), '_type -> "hidden")
-      @input(detailsForm("address.addressLine1"), '_type -> "hidden")
-      @input(detailsForm("address.addressLine2"), '_type -> "hidden")
-      @input(detailsForm("address.addressLine3"), '_type -> "hidden")
-      @input(detailsForm("address.addressLine4"), '_type -> "hidden")
-      @input(detailsForm("address.postcode"), '_type -> "hidden")
 
-  <h1 class="form-title heading-large">@Messages("summary.label")</h1>
+        <input type="hidden" name="agentName" id="agentName" value="@detailsForm("agentName").value">
+        <input type="hidden" name="contactName" id="contactName" value="@detailsForm("contactName").value">
+        <input type="hidden" name="telephoneNumber" id="telephoneNumber" value="@detailsForm("telephoneNumber").value">
+        <input type="hidden" name="emailAddress" id="emailAddress" value="@detailsForm("emailAddress").value">
+        <input type="hidden" name="address.addressLine1" id="address.addressLine1" value="@detailsForm("address.addressLine1").value">
+        <input type="hidden" name="address.addressLine2" id="address.addressLine2" value="@detailsForm("address.addressLine2").value">
+        <input type="hidden" name="address.addressLine3" id="address.addressLine3" value="@detailsForm("address.addressLine3").value">
+        <input type="hidden" name="address.addressLine4" id="address.addressLine4" value="@detailsForm("address.addressLine4").value">
+        <input type="hidden" name="address.postcode" id="address.postcode" value="@detailsForm("address.postcode").value">
 
-  <table class="form-group">
-    <tbody>
-    <tr>
-      <td>@Messages("summary.header.agentDetails")</td>
-      <td>@Messages("summary.details.agencyName") @detailsForm("agentName").value<br></td>
-      <td>
-        <button class="button button--link" type="submit" name="amend" value="agentDetails">
-          @Messages("summary.link.change")
-          <span class="visuallyhidden">your details</span>
-        </button>
-      </td>
-    </tr>
-    <tr>
-      <td>@Messages("summary.header.contactDetails")</td>
-      <td>
-        @Messages("summary.details.contactName") @detailsForm("contactName").value
-          <br>@Messages("summary.details.telephoneNumber") @detailsForm("telephoneNumber").value
-          <br>
-          @Messages("summary.details.emailAddress") @detailsForm("emailAddress").value
-      </td>
-      <td>
-        <button class="button button--link" type="submit" name="amend" value="contactDetails">
-          @Messages("summary.link.change")
-          <span class="visuallyhidden">contact details</span>
-        </button>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        @Messages("summary.header.addressDetails")
-      </td>
-      <td>
-        @detailsForm("address.addressLine1").value<br>
-        @detailsForm("address.addressLine2").value<br>
-          @detailsForm("address.addressLine3").value<br>
-          @detailsForm("address.addressLine4").value<br>
-        @detailsForm("address.postcode").value
-      </td>
-      <td>
-        <button class="button button--link" type="submit" name="amend" value="addressDetails">
-          @Messages("summary.link.change")
-          <span class="visuallyhidden">address details</span>
-        </button>
-      </td>
-    </tr>
+        <header class="page-header">
+            <h1>@Messages("summary.label")</h1>
+        </header>
 
-    </tbody>
-  </table>
+        <div class="tabular-data__entry divider--bottom">
+            <span class="tabular-data__heading tabular-data__heading--label">@Messages("summary.header.agentDetails")</span>
+            <div class="tabular-data__data-1">
+                @Messages("summary.details.agencyName") @detailsForm("agentName").value
+            </div>
+            <button class="button--link-style tabular-data__data-2" type="submit" name="amend" value="agentDetails">
+              @Messages("summary.link.change")
+              <span class="visuallyhidden">your details</span>
+            </button>
+        </div>
 
-  <h2 class="heading-medium">@Messages("summary.register.title")</h2>
+        <div class="tabular-data__entry divider--bottom">
+            <span class="tabular-data__heading tabular-data__heading--label">@Messages("summary.header.contactDetails")</span>
+            <div class="tabular-data__data-1">
+                @Messages("summary.details.contactName") @detailsForm("contactName").value
+                  <br>@Messages("summary.details.telephoneNumber") @detailsForm("telephoneNumber").value
+                  <br>
+                  @Messages("summary.details.emailAddress") @detailsForm("emailAddress").value
+            </div>
+            <button class="button--link-style tabular-data__data-2" type="submit" name="amend" value="contactDetails">
+              @Messages("summary.link.change")
+              <span class="visuallyhidden">contact details</span>
+            </button>
+        </div>
 
-  <p class="text">@Messages("summary.register.description")</p>
+        <div class="tabular-data__entry divider--bottom">
+            <span class="tabular-data__heading tabular-data__heading--label">@Messages("summary.header.addressDetails")</span>
+            <div class="tabular-data__data-1">
+                @detailsForm("address.addressLine1").value <br>
+                @detailsForm("address.addressLine2").value <br>
+                @detailsForm("address.addressLine3").value @if(detailsForm("address.addressLine3").value){<br>}
+                @detailsForm("address.addressLine4").value @if(detailsForm("address.addressLine4").value){<br>}
+                @detailsForm("address.postcode").value
+            </div>
+            <button class="button--link-style tabular-data__data-2" type="submit" name="amend" value="addressDetails">
+              @Messages("summary.link.change")
+              <span class="visuallyhidden">address details</span>
+            </button>
+        </div>
 
-  <div class="form-group">
-    <button class="button" type="submit" id="register" name="register">@Messages("button.register")</button>
-  </div>
+        <br>
+        <h2>@Messages("summary.register.title")</h2>
 
+        <p class="text">@Messages("summary.register.description")</p>
 
-  }
+        <div class="form-group">
+            <button class="button" type="submit" id="register" name="register">@Messages("button.register")</button>
+        </div>
+
+    }
 }
