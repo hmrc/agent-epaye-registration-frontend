@@ -13,6 +13,8 @@ global.error.500.message=Please try again in a few minutes.
 error.postcode.invalid=You can only enter these characters: A-Z, a-z, 0-9
 error.telephone.invalid=You can only enter these characters: 0-9-+()#x space
 error.string.invalid=You can only enter these characters: A-Z a-z 0-9 -,.&''\/ space
+error.maxLength=You can only enter up to {0} characters
+error.email=Email entered is not valid
 
 # start page
 start.title=Agent EPAYE Registration

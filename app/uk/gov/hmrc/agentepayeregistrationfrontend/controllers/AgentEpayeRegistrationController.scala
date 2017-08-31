@@ -37,6 +37,10 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
   import AgentEpayeRegistrationController._
 
   val root: Action[AnyContent] = Action { implicit request =>
+    Redirect(routes.AgentEpayeRegistrationController.start().url)
+  }
+
+  val start: Action[AnyContent] = Action { implicit request =>
     Ok(html.start())
   }
 
