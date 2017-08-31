@@ -7,6 +7,7 @@ import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers.redirectLocation
 import uk.gov.hmrc.play.http.BadGatewayException
+import scala.concurrent.duration._
 
 class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
   private lazy val controller: AgentEpayeRegistrationController = app.injector.instanceOf[AgentEpayeRegistrationController]
@@ -15,7 +16,9 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
     val result = controller.root(FakeRequest())
 
     status(result) shouldBe 303
-    redirectLocation(result).get should include("/start")
+
+    val timeout = 2.seconds
+    redirectLocation(result)(timeout).get should include("/start")
   }
 
   "start displays start page" in {
