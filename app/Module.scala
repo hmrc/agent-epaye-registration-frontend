@@ -48,6 +48,7 @@ class Module(environment: Environment, configuration: Configuration) extends Abs
     bind(classOf[HttpGet]).toInstance(new WSVerbs)
     bind(classOf[HttpPost]).toInstance(new WSVerbs)
     bindBaseUrl("agent-epaye-registration")
+    bindBaseUrl("auth")
     bind(classOf[GraphiteStartUp]).asEagerSingleton()
   }
 

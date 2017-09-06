@@ -37,4 +37,8 @@ class AgentEpayeRegistrationConnector @Inject() (@Named("agent-epaye-registratio
       (json \ "payeAgentReference").as[PayeAgentReference]
     }
   }
+
+  def extract(implicit hc: HeaderCarrier): Future[Seq[String]] = {
+    http.GET[Seq[String]](registrationUrl.toString).map { _ => Seq.empty}
+  }
 }

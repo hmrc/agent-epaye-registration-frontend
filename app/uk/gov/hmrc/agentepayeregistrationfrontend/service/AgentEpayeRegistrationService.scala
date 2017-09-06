@@ -31,4 +31,6 @@ class AgentEpayeRegistrationService @Inject()(registrationConnector: AgentEpayeR
   def register(request: RegistrationRequest)(implicit hc: HeaderCarrier): Future[PayeAgentReference] =
     registrationConnector.register(request)
 
+  def extract(implicit hc: HeaderCarrier): Future[Seq[String]] = registrationConnector.extract
+
 }
