@@ -24,6 +24,7 @@ import uk.gov.hmrc.play.audit.filters.FrontendAuditFilter
 import uk.gov.hmrc.play.audit.http.config.LoadAuditingConfig
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.config.inject.RunMode
+import uk.gov.hmrc.play.frontend.filters.SessionCookieCryptoFilter
 import uk.gov.hmrc.play.http.logging.filters.FrontendLoggingFilter
 
 import scala.concurrent.ExecutionContext
@@ -36,7 +37,7 @@ import scala.concurrent.ExecutionContext
   * @param metricsFilter - used to collect metrics and statistics relating to the service
   */
 class Filters @Inject()(loggingFilter: LoggingFilter, auditFilter: MicroserviceAuditFilter, metricsFilter: MetricsFilter)
-  extends DefaultHttpFilters(loggingFilter, auditFilter, metricsFilter)
+  extends DefaultHttpFilters(loggingFilter, auditFilter, metricsFilter, SessionCookieCryptoFilter)
 
 class LoggingFilter @Inject()(implicit val mat: Materializer, ec: ExecutionContext, configuration: Configuration) extends FrontendLoggingFilter {
   override def controllerNeedsLogging(controllerName: String): Boolean = configuration.getBoolean(s"controllers.$controllerName.needsLogging").getOrElse(true)

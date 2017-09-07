@@ -18,7 +18,7 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.Configuration
+import play.api.{Configuration, Environment}
 import play.api.i18n.MessagesApi
 import play.api.mvc.Result
 import play.api.test.FakeRequest
@@ -30,7 +30,7 @@ import scala.concurrent.Future
 
 class ErrorHandlerSpec extends PlaySpec with MockitoSugar with GuiceOneAppPerSuite with BeforeAndAfterEach {
   val messagesApi = app.injector.instanceOf[MessagesApi]
-  val handler = new ErrorHandler()(app.injector.instanceOf[Configuration], messagesApi)
+  val handler = new ErrorHandler()(app.injector.instanceOf[Configuration], app.injector.instanceOf[Environment], messagesApi)
 
   "ErrorHandler should show the error page" when {
     "a server error occurs" in {
