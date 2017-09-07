@@ -49,6 +49,7 @@ class Module(environment: Environment, configuration: Configuration) extends Abs
     bind(classOf[HttpPost]).toInstance(new WSVerbs)
     bindBaseUrl("agent-epaye-registration")
     bindBaseUrl("auth")
+    bindProperty("extract.auth.stride.enrolment")
     bind(classOf[GraphiteStartUp]).asEagerSingleton()
   }
 
@@ -57,6 +58,14 @@ class Module(environment: Environment, configuration: Configuration) extends Abs
 
   private class BaseUrlProvider(serviceName: String) extends Provider[URL] {
     override lazy val get = new URL(baseUrl(serviceName))
+  }
+
+  private def bindProperty(propertyName: String) =
+    bind(classOf[String]).annotatedWith(Names.named(propertyName)).toProvider(new PropertyProvider(propertyName))
+
+  private class PropertyProvider(confKey: String) extends Provider[String] {
+    override lazy val get = configuration.getString(confKey)
+      .getOrElse(throw new IllegalStateException(s"No value found for configuration property $confKey"))
   }
 }
 

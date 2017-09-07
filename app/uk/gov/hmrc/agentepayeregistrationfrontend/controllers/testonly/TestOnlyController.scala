@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers.testonly
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{Inject, Named, Singleton}
 
 import play.api.{Configuration, Environment, Mode}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -34,7 +34,7 @@ import uk.gov.hmrc.play.frontend.controller.FrontendController
 import scala.concurrent.Future
 
 @Singleton
-class TestOnlyController @Inject()(
+class TestOnlyController @Inject()(@Named("extract.auth.stride.enrolment") strideEnrolment: String,
                                     override val messagesApi: MessagesApi,
                                     val authConnector: AuthConnector,
                                     registrationService: AgentEpayeRegistrationService,
@@ -42,10 +42,10 @@ class TestOnlyController @Inject()(
                                   (implicit val config: Configuration)
   extends FrontendController with I18nSupport with AuthorisedFunctions with Redirects {
 
-  // This implementation is only for test/demo purpose (APB-1227)
+  //TODO This implementation is only for test/demo purpose. The actual implementation will be done along the completion of APB-1125
   val extract: Action[AnyContent] = Action.async {
     implicit request => {
-      authorised(Enrolment("T2 Technical") and AuthProviders(PrivilegedApplication)) {
+      authorised(Enrolment(strideEnrolment) and AuthProviders(PrivilegedApplication)) {
         registrationService.extract.map { _ =>
           Ok(html.start())
         }

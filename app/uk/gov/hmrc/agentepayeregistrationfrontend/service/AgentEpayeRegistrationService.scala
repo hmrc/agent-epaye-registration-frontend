@@ -31,6 +31,7 @@ class AgentEpayeRegistrationService @Inject()(registrationConnector: AgentEpayeR
   def register(request: RegistrationRequest)(implicit hc: HeaderCarrier): Future[PayeAgentReference] =
     registrationConnector.register(request)
 
+  //TODO This implementation is only for test/demo purpose. The actual implementation will be done along the completion of APB-1125
   def extract(implicit hc: HeaderCarrier): Future[Seq[String]] = registrationConnector.extract
 
 }
