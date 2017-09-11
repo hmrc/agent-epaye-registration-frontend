@@ -25,7 +25,7 @@ class TestOnlyControllerISpec extends BaseControllerISpec with AuthStub with Reg
   private lazy val controller = app.injector.instanceOf[TestOnlyController]
 
   "TestOnlyController" should {
-    "load start page after successful authorisation" in {
+    "return 200 OK after successful authorisation" in {
       givenAuthorisedFor("ValidStrideEnrolment", "PrivilegedApplication")
       givenRegistrationDetails
       val result = await(controller.extract(authenticatedRequest("GET", "/agent-epaye-registration/test-only/extract")))
