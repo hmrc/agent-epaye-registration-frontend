@@ -46,7 +46,7 @@ class TestOnlyController @Inject()(@Named("extract.auth.stride.enrolment") strid
 
   // This implementation is only for test/demo purpose.
   // The actual implementation will be done in EMAC Helpdesk Tool
-  val extract: Action[RawBuffer] = Action.async(parse.raw) {
+  val extract: Action[AnyContent] = Action.async {
     implicit request => {
       authorised(Enrolment(strideEnrolment) and AuthProviders(PrivilegedApplication)) {
         proxyPassTo(s"$registrationBaseUrl/agent-epaye-registration/registrations")
@@ -62,20 +62,20 @@ class TestOnlyController @Inject()(@Named("extract.auth.stride.enrolment") strid
   /**
     * Passes request to the upstream service with additional headers (if any) and returns response downstream as-is
     */
-  def proxyPassTo(url: String)(implicit request: Request[RawBuffer], hc: HeaderCarrier, wr: Writeable[ByteString]): Future[Result] = {
+def proxyPassTo[A](url: String)(implicit request: Request[A], hc: HeaderCarrier): Future[Result] = {
+    val requestContentType: Seq[(String,String)] = request.headers.get("Content-Type").map(("Content-Type",_)).toSeq
     val upstreamRequest = ws.url(url)
       .withMethod(request.method)
       .withQueryString(request.queryString.toSeq.flatMap({ case (k, sv) => sv.map(v => (k, v)) }): _*)
-      .withHeaders(hc.withExtraHeaders(request.headers.headers: _*).headers: _*)
-      .withBody(request.body.initialData)
+      .withHeaders(hc.withExtraHeaders(requestContentType:_*).headers: _*)
     Logger("TestOnlyController").warn("Sending upstream proxy request: "+upstreamRequest.toString)
     upstreamRequest.stream()
       .map {
         case StreamedResponse(response, body) =>
-          val contentType = response.headers.get("Content-Type").flatMap(_.headOption)
+          val responseContentType = response.headers.get("Content-Type").flatMap(_.headOption)
           val length = response.headers.get("Content-Length").flatMap(_.headOption).map(_.toLong)
 
-          Results.Status(response.status).sendEntity(HttpEntity.Streamed(body, length, contentType))
+          Results.Status(response.status).sendEntity(HttpEntity.Streamed(body, length, responseContentType))
             .withHeaders(response.headers.toSeq.flatMap({ case (k, sv) => sv.map(v => (k, v)) }): _*)
       }
   }
