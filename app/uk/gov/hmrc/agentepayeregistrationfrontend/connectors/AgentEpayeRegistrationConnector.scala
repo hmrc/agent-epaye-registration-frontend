@@ -37,9 +37,4 @@ class AgentEpayeRegistrationConnector @Inject() (@Named("agent-epaye-registratio
       (json \ "payeAgentReference").as[PayeAgentReference]
     }
   }
-
-  //TODO This implementation is only for test/demo purpose. The actual implementation will be done along the completion of APB-1125
-  def extract(implicit hc: HeaderCarrier): Future[Seq[String]] = {
-    http.GET[Seq[String]](registrationUrl.toString).map { _ => Seq.empty}
-  }
 }
