@@ -16,23 +16,17 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
-import javax.inject.{Inject, Named, Singleton}
+import javax.inject.{Inject, Singleton}
 
-import play.api.{Configuration, Environment, Mode}
-import play.api.data.Forms._
+import play.api.Configuration
 import play.api.data.Form
+import play.api.data.Forms._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.agentepayeregistrationfrontend.connectors.AuthConnector
-import uk.gov.hmrc.agentepayeregistrationfrontend.models.{Address, RegistrationRequest}
 import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.FieldMappings._
+import uk.gov.hmrc.agentepayeregistrationfrontend.models.{Address, RegistrationRequest}
 import uk.gov.hmrc.agentepayeregistrationfrontend.service.AgentEpayeRegistrationService
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html
-import uk.gov.hmrc.auth.core.authorise.Enrolment
-import uk.gov.hmrc.auth.core.{AuthorisedFunctions, InsufficientEnrolments, NoActiveSession}
-import uk.gov.hmrc.auth.core.retrieve.AuthProvider.PrivilegedApplication
-import uk.gov.hmrc.auth.core.retrieve.AuthProviders
-import uk.gov.hmrc.auth.frontend.Redirects
 import uk.gov.hmrc.play.frontend.controller.FrontendController
 
 import scala.concurrent.Future

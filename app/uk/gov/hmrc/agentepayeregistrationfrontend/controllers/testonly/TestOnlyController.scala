@@ -21,12 +21,10 @@ import javax.inject.{Inject, Named, Singleton}
 
 import akka.util.ByteString
 import play.api.http.{HttpEntity, Writeable}
-import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.ws.{StreamedResponse, WSClient}
 import play.api.mvc._
-import play.api.{Configuration, Environment, Mode}
+import play.api.{Configuration, Environment, Logger, Mode}
 import uk.gov.hmrc.agentepayeregistrationfrontend.connectors.AuthConnector
-import uk.gov.hmrc.agentepayeregistrationfrontend.service.AgentEpayeRegistrationService
 import uk.gov.hmrc.auth.core.authorise.Enrolment
 import uk.gov.hmrc.auth.core.retrieve.AuthProvider.PrivilegedApplication
 import uk.gov.hmrc.auth.core.retrieve.AuthProviders
@@ -65,13 +63,13 @@ class TestOnlyController @Inject()(@Named("extract.auth.stride.enrolment") strid
     * Passes request to the upstream service with additional headers (if any) and returns response downstream as-is
     */
   def proxyPassTo(url: String)(implicit request: Request[RawBuffer], hc: HeaderCarrier, wr: Writeable[ByteString]): Future[Result] = {
-    request.body
-    ws.url(url)
+    val upstreamRequest = ws.url(url)
       .withMethod(request.method)
       .withQueryString(request.queryString.toSeq.flatMap({ case (k, sv) => sv.map(v => (k, v)) }): _*)
       .withHeaders(hc.withExtraHeaders(request.headers.headers: _*).headers: _*)
       .withBody(request.body.initialData)
-      .stream()
+    Logger("TestOnlyController").warn("Sending upstream proxy request: "+upstreamRequest.toString)
+    upstreamRequest.stream()
       .map {
         case StreamedResponse(response, body) =>
           val contentType = response.headers.get("Content-Type").flatMap(_.headOption)
