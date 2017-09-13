@@ -41,7 +41,6 @@ import scala.concurrent.Future
 class TestOnlyController @Inject()(@Named("extract.auth.stride.enrolment") strideEnrolment: String,
                                    override val messagesApi: MessagesApi,
                                    val authConnector: AuthConnector,
-                                   registrationService: AgentEpayeRegistrationService,
                                    val env: Environment,
                                    ws: WSClient,
                                    @Named("agent-epaye-registration-baseUrl") registrationBaseUrl: URL)
