@@ -62,7 +62,7 @@ class TestOnlyController @Inject()(@Named("extract.auth.stride.enrolment") strid
   /**
     * Passes request to the upstream service with additional headers (if any) and returns response downstream as-is
     */
-  def proxyPassTo[A](url: String)(implicit request: Request[A], hc: HeaderCarrier): Future[Result] = {
+def proxyPassTo[A](url: String)(implicit request: Request[A], hc: HeaderCarrier): Future[Result] = {
     val requestContentType: Seq[(String,String)] = request.headers.get("Content-Type").map(("Content-Type",_)).toSeq
     val upstreamRequest = ws.url(url)
       .withMethod(request.method)
