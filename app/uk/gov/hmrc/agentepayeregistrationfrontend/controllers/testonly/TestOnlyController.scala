@@ -39,13 +39,12 @@ import scala.concurrent.Future
 
 @Singleton
 class TestOnlyController @Inject()(@Named("extract.auth.stride.enrolment") strideEnrolment: String,
-                                   override val messagesApi: MessagesApi,
                                    val authConnector: AuthConnector,
                                    val env: Environment,
                                    ws: WSClient,
                                    @Named("agent-epaye-registration-baseUrl") registrationBaseUrl: URL)
                                   (implicit val config: Configuration)
-  extends FrontendController with I18nSupport with AuthorisedFunctions with Redirects {
+  extends FrontendController with AuthorisedFunctions with Redirects {
 
   // This implementation is only for test/demo purpose.
   // The actual implementation will be done in EMAC Helpdesk Tool
