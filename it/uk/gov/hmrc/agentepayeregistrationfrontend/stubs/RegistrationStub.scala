@@ -7,7 +7,7 @@ trait RegistrationStub {
   me: WireMockSupport =>
 
   def givenRegistrationDetails = {
-    stubFor(get(urlEqualTo("/agent-epaye-registration/registrations"))
+    stubFor(get(urlPathMatching("/agent-epaye-registration/registrations"))
       .withHeader("Authorization",containing("Bearer"))
       .willReturn(aResponse()
         .withStatus(200)
