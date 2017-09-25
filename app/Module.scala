@@ -23,19 +23,14 @@ import com.codahale.metrics.{MetricFilter, SharedMetricRegistries}
 import com.google.inject.AbstractModule
 import com.google.inject.name.Names
 import org.slf4j.MDC
-import play.api.Mode.Mode
 import play.api.inject.ApplicationLifecycle
-import play.api.{Configuration, Environment, Logger}
-import uk.gov.hmrc.play.config.ServicesConfig
+import play.api.{Configuration, Environment, Logger, Mode}
 import uk.gov.hmrc.play.http.{HttpGet, HttpPost}
 import wiring.WSVerbs
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class Module(environment: Environment, configuration: Configuration) extends AbstractModule with ServicesConfig {
-
-  override protected lazy val mode: Mode = environment.mode
-  override protected lazy val runModeConfiguration: Configuration = configuration
+class Module(val environment: Environment, val configuration: Configuration) extends AbstractModule with ServicesConfig {
 
   def configure(): Unit = {
     lazy val appName = configuration.getString("appName").get
@@ -67,27 +62,28 @@ class Module(environment: Environment, configuration: Configuration) extends Abs
     override lazy val get = configuration.getString(confKey)
       .getOrElse(throw new IllegalStateException(s"No value found for configuration property $confKey"))
   }
+
 }
 
 @Singleton
-class GraphiteStartUp @Inject()(configuration: Configuration,
+class GraphiteStartUp @Inject()(val configuration: Configuration,
+                                val environment: Environment,
                                 lifecycle: ApplicationLifecycle,
-                                implicit val ec: ExecutionContext) {
+                                implicit val ec: ExecutionContext) extends ServicesConfig {
 
-  val metricsPluginEnabled: Boolean = configuration.getBoolean("metrics.enabled").getOrElse(false)
+  val metricsPluginEnabled: Boolean = getConfBool("metrics.enabled", defBool = false)
 
-  val graphitePublisherEnabled: Boolean = configuration.getBoolean("microservice.metrics.graphite.enabled").getOrElse(false)
+  val graphitePublisherEnabled: Boolean = getConfBool("microservice.metrics.graphite.enabled", defBool = false)
 
   val graphiteEnabled: Boolean = metricsPluginEnabled && graphitePublisherEnabled
 
-  val registryName: String = configuration.getString("metrics.name").getOrElse("default")
+  val registryName: String = getConfString("metrics.name", "default")
 
   val graphite = new Graphite(new InetSocketAddress(
-    configuration.getString("graphite.host").getOrElse("graphite"),
-    configuration.getInt("graphite.port").getOrElse(2003)))
+    getConfString("graphite.host", "graphite"),
+    getConfInt("graphite.port", 2003)))
 
-  val prefix: String = configuration.getString("graphite.prefix").
-    getOrElse(s"tax.${configuration.getString("appName")}")
+  val prefix: String = getConfString("graphite.prefix", s"tax.${configuration.getString("appName").get}")
 
   val reporter: GraphiteReporter = GraphiteReporter.forRegistry(
     SharedMetricRegistries.getOrCreate(registryName))
@@ -99,11 +95,60 @@ class GraphiteStartUp @Inject()(configuration: Configuration,
 
   private def startGraphite() {
     Logger.info("Graphite metrics enabled, starting the reporter")
-    reporter.start(configuration.getLong("graphite.interval").getOrElse(10L), SECONDS)
+    reporter.start(getConfInt("graphite.interval", 10).toLong, SECONDS)
   }
 
   if (graphiteEnabled) startGraphite()
   lifecycle.addStopHook { () =>
     Future successful reporter.stop()
   }
+}
+
+trait ServicesConfig {
+
+  def environment: Environment
+
+  def configuration: Configuration
+
+  lazy val env = if (environment.mode.equals(Mode.Test)) "Test" else configuration.getString("run.mode").getOrElse("Dev")
+  private lazy val rootServices = "microservice.services"
+  private lazy val services = s"$env.microservice.services"
+  private lazy val playServices = s"govuk-tax.$env.services"
+
+  private lazy val defaultProtocol: String =
+    configuration.getString(s"$rootServices.protocol")
+      .getOrElse(configuration.getString(s"$services.protocol")
+        .getOrElse("http"))
+
+  def baseUrl(serviceName: String) = {
+    val protocol = getConfString(s"$serviceName.protocol", defaultProtocol)
+    val host = getConfString(s"$serviceName.host", throw new RuntimeException(s"Could not find config $serviceName.host"))
+    val port = getConfInt(s"$serviceName.port", throw new RuntimeException(s"Could not find config $serviceName.port"))
+    s"$protocol://$host:$port"
+  }
+
+  def getConfString(confKey: String, defString: => String) = {
+    configuration.getString(s"$rootServices.$confKey").
+      getOrElse(configuration.getString(s"$services.$confKey").
+          getOrElse(configuration.getString(s"$env.$confKey").
+            getOrElse(configuration.getString(s"$playServices.$confKey").
+              getOrElse(defString))))
+  }
+
+  def getConfInt(confKey: String, defInt: => Int) = {
+    configuration.getInt(s"$rootServices.$confKey").
+      getOrElse(configuration.getInt(s"$services.$confKey").
+          getOrElse(configuration.getInt(s"$env.$confKey").
+            getOrElse(configuration.getInt(s"$playServices.$confKey").
+              getOrElse(defInt))))
+  }
+
+  def getConfBool(confKey: String, defBool: => Boolean) = {
+    configuration.getBoolean(s"$rootServices.$confKey").
+      getOrElse(configuration.getBoolean(s"$services.$confKey").
+        getOrElse(configuration.getBoolean(s"$env.$confKey").
+          getOrElse(configuration.getBoolean(s"$playServices.$confKey").
+            getOrElse(defBool))))
+  }
+
 }
