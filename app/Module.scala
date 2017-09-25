@@ -77,31 +77,82 @@ class GraphiteStartUp @Inject()(val configuration: Configuration,
 
   val graphiteEnabled: Boolean = metricsPluginEnabled && graphitePublisherEnabled
 
-  val registryName: String = getConfString("metrics.name", "default")
+  if (graphiteEnabled) {
+    val graphite = new Graphite(new InetSocketAddress(
+      getConfString("graphite.host", "graphite"),
+      getConfInt("graphite.port", 2003)))
 
-  val graphite = new Graphite(new InetSocketAddress(
-    getConfString("graphite.host", "graphite"),
-    getConfInt("graphite.port", 2003)))
+    val prefix: String = getConfString("graphite.prefix", s"tax.${configuration.getString("appName").get}")
 
-  val prefix: String = getConfString("graphite.prefix", s"tax.${configuration.getString("appName").get}")
+    val registryName: String = getConfString("metrics.name", "default")
 
-  val reporter: GraphiteReporter = GraphiteReporter.forRegistry(
-    SharedMetricRegistries.getOrCreate(registryName))
-    .prefixedWith(s"$prefix.${java.net.InetAddress.getLocalHost.getHostName}")
-    .convertRatesTo(SECONDS)
-    .convertDurationsTo(MILLISECONDS)
-    .filter(MetricFilter.ALL)
-    .build(graphite)
+    val reporter: GraphiteReporter = GraphiteReporter.forRegistry(
+      SharedMetricRegistries.getOrCreate(registryName))
+      .prefixedWith(s"$prefix.${java.net.InetAddress.getLocalHost.getHostName}")
+      .convertRatesTo(SECONDS)
+      .convertDurationsTo(MILLISECONDS)
+      .filter(MetricFilter.ALL)
+      .build(graphite)
 
-  private def startGraphite() {
     Logger.info("Graphite metrics enabled, starting the reporter")
     reporter.start(getConfInt("graphite.interval", 10).toLong, SECONDS)
+
+    lifecycle.addStopHook { () =>
+      Future successful reporter.stop()
+    }
+  } else {
+    Logger.warn(s"Graphite metrics disabled, plugin = $metricsPluginEnabled and publisher = $graphitePublisherEnabled")
   }
 
-  if (graphiteEnabled) startGraphite()
-  lifecycle.addStopHook { () =>
-    Future successful reporter.stop()
+}
+
+trait ServicesConfig {
+
+  def environment: Environment
+
+  def configuration: Configuration
+
+  lazy val env = if (environment.mode.equals(Mode.Test)) "Test" else configuration.getString("run.mode").getOrElse("Dev")
+  private lazy val rootServices = "microservice.services"
+  private lazy val services = s"$env.microservice.services"
+  private lazy val playServices = s"govuk-tax.$env.services"
+
+  private lazy val defaultProtocol: String =
+    configuration.getString(s"$rootServices.protocol")
+      .getOrElse(configuration.getString(s"$services.protocol")
+        .getOrElse("http"))
+
+  def baseUrl(serviceName: String) = {
+    val protocol = getConfString(s"$serviceName.protocol", defaultProtocol)
+    val host = getConfString(s"$serviceName.host", throw new RuntimeException(s"Could not find config $serviceName.host"))
+    val port = getConfInt(s"$serviceName.port", throw new RuntimeException(s"Could not find config $serviceName.port"))
+    s"$protocol://$host:$port"
   }
+
+  def getConfString(confKey: String, defString: => String) = {
+    configuration.getString(s"$rootServices.$confKey").
+      getOrElse(configuration.getString(s"$services.$confKey").
+          getOrElse(configuration.getString(s"$env.$confKey").
+            getOrElse(configuration.getString(s"$playServices.$confKey").
+              getOrElse(defString))))
+  }
+
+  def getConfInt(confKey: String, defInt: => Int) = {
+    configuration.getInt(s"$rootServices.$confKey").
+      getOrElse(configuration.getInt(s"$services.$confKey").
+          getOrElse(configuration.getInt(s"$env.$confKey").
+            getOrElse(configuration.getInt(s"$playServices.$confKey").
+              getOrElse(defInt))))
+  }
+
+  def getConfBool(confKey: String, defBool: => Boolean) = {
+    configuration.getBoolean(s"$rootServices.$confKey").
+      getOrElse(configuration.getBoolean(s"$services.$confKey").
+        getOrElse(configuration.getBoolean(s"$env.$confKey").
+          getOrElse(configuration.getBoolean(s"$playServices.$confKey").
+            getOrElse(defBool))))
+  }
+
 }
 
 trait ServicesConfig {
