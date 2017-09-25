@@ -71,9 +71,9 @@ class GraphiteStartUp @Inject()(val configuration: Configuration,
                                 lifecycle: ApplicationLifecycle,
                                 implicit val ec: ExecutionContext) extends ServicesConfig {
 
-  val metricsPluginEnabled: Boolean = getConfBool("metrics.enabled", defBool = false)
+  val metricsPluginEnabled: Boolean = getConfBool("metrics.enabled", default = false)
 
-  val graphitePublisherEnabled: Boolean = getConfBool("microservice.metrics.graphite.enabled", defBool = false)
+  val graphitePublisherEnabled: Boolean = getConfBool("microservice.metrics.graphite.enabled", default = false)
 
   val graphiteEnabled: Boolean = metricsPluginEnabled && graphitePublisherEnabled
 
@@ -112,14 +112,16 @@ trait ServicesConfig {
 
   def configuration: Configuration
 
-  lazy val env = if (environment.mode.equals(Mode.Test)) "Test" else configuration.getString("run.mode").getOrElse("Dev")
-  private lazy val rootServices = "microservice.services"
-  private lazy val services = s"$env.microservice.services"
-  private lazy val playServices = s"govuk-tax.$env.services"
+  val env: String = if (environment.mode == Mode.Test) "Test"
+                    else configuration.getString("run.mode").getOrElse("Dev")
 
-  private lazy val defaultProtocol: String =
+  private val rootServices = "microservice.services"
+  private val envServices = s"$env.microservice.services"
+  private val playServices = s"govuk-tax.$env.services"
+
+  private val defaultProtocol: String =
     configuration.getString(s"$rootServices.protocol")
-      .getOrElse(configuration.getString(s"$services.protocol")
+      .getOrElse(configuration.getString(s"$envServices.protocol")
         .getOrElse("http"))
 
   def baseUrl(serviceName: String) = {
@@ -129,28 +131,24 @@ trait ServicesConfig {
     s"$protocol://$host:$port"
   }
 
-  def getConfString(confKey: String, defString: => String) = {
-    configuration.getString(s"$rootServices.$confKey").
-      getOrElse(configuration.getString(s"$services.$confKey").
-          getOrElse(configuration.getString(s"$env.$confKey").
-            getOrElse(configuration.getString(s"$playServices.$confKey").
-              getOrElse(defString))))
-  }
+  private def keys(confKey: String) = Seq(
+    s"$rootServices.$confKey",
+    s"$envServices.$confKey",
+    confKey,
+    s"$env.$confKey",
+    s"$playServices.$confKey"
+  )
 
-  def getConfInt(confKey: String, defInt: => Int) = {
-    configuration.getInt(s"$rootServices.$confKey").
-      getOrElse(configuration.getInt(s"$services.$confKey").
-          getOrElse(configuration.getInt(s"$env.$confKey").
-            getOrElse(configuration.getInt(s"$playServices.$confKey").
-              getOrElse(defInt))))
-  }
+  private def read[A](confKey: String)(f: String => Option[A]): Option[A] =
+    keys(confKey).map(f).reduce(_.orElse(_))
 
-  def getConfBool(confKey: String, defBool: => Boolean) = {
-    configuration.getBoolean(s"$rootServices.$confKey").
-      getOrElse(configuration.getBoolean(s"$services.$confKey").
-        getOrElse(configuration.getBoolean(s"$env.$confKey").
-          getOrElse(configuration.getBoolean(s"$playServices.$confKey").
-            getOrElse(defBool))))
-  }
+  def getConfString(confKey: String, default: => String): String =
+    read[String](confKey)(configuration.getString(_)).getOrElse(default)
+
+  def getConfInt(confKey: String, default: => Int): Int =
+    read[Int](confKey)(configuration.getInt(_)).getOrElse(default)
+
+  def getConfBool(confKey: String, default: => Boolean): Boolean =
+    read[Boolean](confKey)(configuration.getBoolean(_)).getOrElse(default)
 
 }
