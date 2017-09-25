@@ -77,31 +77,33 @@ class GraphiteStartUp @Inject()(val configuration: Configuration,
 
   val graphiteEnabled: Boolean = metricsPluginEnabled && graphitePublisherEnabled
 
-  val registryName: String = getConfString("metrics.name", "default")
+  if (graphiteEnabled) {
+    val graphite = new Graphite(new InetSocketAddress(
+      getConfString("graphite.host", "graphite"),
+      getConfInt("graphite.port", 2003)))
 
-  val graphite = new Graphite(new InetSocketAddress(
-    getConfString("graphite.host", "graphite"),
-    getConfInt("graphite.port", 2003)))
+    val prefix: String = getConfString("graphite.prefix", s"tax.${configuration.getString("appName").get}")
 
-  val prefix: String = getConfString("graphite.prefix", s"tax.${configuration.getString("appName").get}")
+    val registryName: String = getConfString("metrics.name", "default")
 
-  val reporter: GraphiteReporter = GraphiteReporter.forRegistry(
-    SharedMetricRegistries.getOrCreate(registryName))
-    .prefixedWith(s"$prefix.${java.net.InetAddress.getLocalHost.getHostName}")
-    .convertRatesTo(SECONDS)
-    .convertDurationsTo(MILLISECONDS)
-    .filter(MetricFilter.ALL)
-    .build(graphite)
+    val reporter: GraphiteReporter = GraphiteReporter.forRegistry(
+      SharedMetricRegistries.getOrCreate(registryName))
+      .prefixedWith(s"$prefix.${java.net.InetAddress.getLocalHost.getHostName}")
+      .convertRatesTo(SECONDS)
+      .convertDurationsTo(MILLISECONDS)
+      .filter(MetricFilter.ALL)
+      .build(graphite)
 
-  private def startGraphite() {
     Logger.info("Graphite metrics enabled, starting the reporter")
     reporter.start(getConfInt("graphite.interval", 10).toLong, SECONDS)
+
+    lifecycle.addStopHook { () =>
+      Future successful reporter.stop()
+    }
+  } else {
+    Logger.warn(s"Graphite metrics disabled, plugin = $metricsPluginEnabled and publisher = $graphitePublisherEnabled")
   }
 
-  if (graphiteEnabled) startGraphite()
-  lifecycle.addStopHook { () =>
-    Future successful reporter.stop()
-  }
 }
 
 trait ServicesConfig {
