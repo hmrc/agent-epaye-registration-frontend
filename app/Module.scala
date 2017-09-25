@@ -154,3 +154,52 @@ trait ServicesConfig {
   }
 
 }
+
+trait ServicesConfig {
+
+  def environment: Environment
+
+  def configuration: Configuration
+
+  lazy val env = if (environment.mode.equals(Mode.Test)) "Test" else configuration.getString("run.mode").getOrElse("Dev")
+  private lazy val rootServices = "microservice.services"
+  private lazy val services = s"$env.microservice.services"
+  private lazy val playServices = s"govuk-tax.$env.services"
+
+  private lazy val defaultProtocol: String =
+    configuration.getString(s"$rootServices.protocol")
+      .getOrElse(configuration.getString(s"$services.protocol")
+        .getOrElse("http"))
+
+  def baseUrl(serviceName: String) = {
+    val protocol = getConfString(s"$serviceName.protocol", defaultProtocol)
+    val host = getConfString(s"$serviceName.host", throw new RuntimeException(s"Could not find config $serviceName.host"))
+    val port = getConfInt(s"$serviceName.port", throw new RuntimeException(s"Could not find config $serviceName.port"))
+    s"$protocol://$host:$port"
+  }
+
+  def getConfString(confKey: String, defString: => String) = {
+    configuration.getString(s"$rootServices.$confKey").
+      getOrElse(configuration.getString(s"$services.$confKey").
+          getOrElse(configuration.getString(s"$env.$confKey").
+            getOrElse(configuration.getString(s"$playServices.$confKey").
+              getOrElse(defString))))
+  }
+
+  def getConfInt(confKey: String, defInt: => Int) = {
+    configuration.getInt(s"$rootServices.$confKey").
+      getOrElse(configuration.getInt(s"$services.$confKey").
+          getOrElse(configuration.getInt(s"$env.$confKey").
+            getOrElse(configuration.getInt(s"$playServices.$confKey").
+              getOrElse(defInt))))
+  }
+
+  def getConfBool(confKey: String, defBool: => Boolean) = {
+    configuration.getBoolean(s"$rootServices.$confKey").
+      getOrElse(configuration.getBoolean(s"$services.$confKey").
+        getOrElse(configuration.getBoolean(s"$env.$confKey").
+          getOrElse(configuration.getBoolean(s"$playServices.$confKey").
+            getOrElse(defBool))))
+  }
+
+}
