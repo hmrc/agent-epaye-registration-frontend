@@ -119,7 +119,7 @@ class ServicesConfigTest extends UnitSpec {
           |  microservice {
           |   services {
           |     foo {
-          |       bar = 9999
+          |       bar = 9922299
           |     }
           |   }
           |  }
@@ -127,7 +127,7 @@ class ServicesConfigTest extends UnitSpec {
           |
           |Dev {
           |  foo {
-          |     bar = 9999
+          |     bar = 33
           |  }
           |}
         """.stripMargin, Mode.Test)
@@ -161,7 +161,7 @@ class ServicesConfigTest extends UnitSpec {
           |
           |Dev {
           |  foo {
-          |     bar = 9999
+          |     bar = 33
           |  }
           |}
         """.stripMargin, Mode.Prod)
