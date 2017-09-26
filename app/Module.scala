@@ -140,7 +140,7 @@ trait ServicesConfig {
   )
 
   private def read[A](confKey: String)(f: String => Option[A]): Option[A] =
-    keys(confKey).map(f).reduce(_.orElse(_))
+    keys(confKey).foldLeft[Option[A]](None)((a,k) => a.orElse(f(k)))
 
   def getConfString(confKey: String, default: => String): String =
     read[String](confKey)(configuration.getString(_)).getOrElse(default)
