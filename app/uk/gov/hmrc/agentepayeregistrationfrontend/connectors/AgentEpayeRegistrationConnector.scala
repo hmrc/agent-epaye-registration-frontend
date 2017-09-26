@@ -19,22 +19,31 @@ package uk.gov.hmrc.agentepayeregistrationfrontend.connectors
 import java.net.URL
 import javax.inject.{Inject, Named, Singleton}
 
+import com.codahale.metrics.MetricRegistry
+import com.kenshoo.play.metrics.Metrics
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
 import uk.gov.hmrc.domain.PayeAgentReference
 import uk.gov.hmrc.play.http.{HeaderCarrier, HttpGet, HttpPost}
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
+import uk.gov.hmrc.agent.kenshoo.monitoring.HttpAPIMonitor
 
 import scala.concurrent.Future
 
 @Singleton
-class AgentEpayeRegistrationConnector @Inject() (@Named("agent-epaye-registration-baseUrl") baseUrl: URL, http: HttpGet with HttpPost) {
+class AgentEpayeRegistrationConnector @Inject() (@Named("agent-epaye-registration-baseUrl") baseUrl: URL,
+                                                 http: HttpGet with HttpPost,
+                                                 metrics: Metrics) extends HttpAPIMonitor {
+
+  override val kenshooRegistry: MetricRegistry = metrics.defaultRegistry
 
   private val registrationUrl = new URL(baseUrl, s"/agent-epaye-registration/registrations")
 
   def register(request: RegistrationRequest)(implicit hc: HeaderCarrier): Future[PayeAgentReference] = {
-    http.POST[RegistrationRequest, JsValue](registrationUrl.toString, request).map { json =>
-      (json \ "payeAgentReference").as[PayeAgentReference]
+    monitor(s"ConsumedAPI-Agent-Epaye-Registration-POST") {
+      http.POST[RegistrationRequest, JsValue](registrationUrl.toString, request).map { json =>
+        (json \ "payeAgentReference").as[PayeAgentReference]
+      }
     }
   }
 }
