@@ -40,8 +40,10 @@ class AgentEpayeRegistrationConnector @Inject() (@Named("agent-epaye-registratio
   private val registrationUrl = new URL(baseUrl, s"/agent-epaye-registration/registrations")
 
   def register(request: RegistrationRequest)(implicit hc: HeaderCarrier): Future[PayeAgentReference] = {
-    http.POST[RegistrationRequest, JsValue](registrationUrl.toString, request).map { json =>
-      (json \ "payeAgentReference").as[PayeAgentReference]
+    monitor(s"ConsumedAPI-Agent-Epaye-Registration-POST") {
+      http.POST[RegistrationRequest, JsValue](registrationUrl.toString, request).map { json =>
+        (json \ "payeAgentReference").as[PayeAgentReference]
+      }
     }
   }
 }
