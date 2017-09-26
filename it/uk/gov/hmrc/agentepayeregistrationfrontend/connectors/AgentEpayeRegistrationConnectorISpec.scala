@@ -7,17 +7,19 @@ import play.api.http.Status
 import uk.gov.hmrc.agentepayeregistrationfrontend.models.{Address, RegistrationRequest}
 import uk.gov.hmrc.agentepayeregistrationfrontend.support.WireMockSupport
 import com.github.tomakehurst.wiremock.client.WireMock._
+import com.kenshoo.play.metrics.Metrics
 import play.api.libs.json.Json
 import uk.gov.hmrc.domain.PayeAgentReference
 import uk.gov.hmrc.play.http.{BadGatewayException, BadRequestException, HeaderCarrier}
 import uk.gov.hmrc.play.test.UnitSpec
 import wiring.WSVerbs
+import org.scalatest.mockito.MockitoSugar
 
-class AgentEpayeRegistrationConnectorISpec extends UnitSpec with OneAppPerSuite with WireMockSupport {
+class AgentEpayeRegistrationConnectorISpec extends UnitSpec with OneAppPerSuite with WireMockSupport with MockitoSugar {
   private implicit val hc = HeaderCarrier()
 
   private lazy val connector: AgentEpayeRegistrationConnector =
-    new AgentEpayeRegistrationConnector(new URL(s"http://localhost:$wireMockPort"), new WSVerbs)
+    new AgentEpayeRegistrationConnector(new URL(s"http://localhost:$wireMockPort"), new WSVerbs, mock[Metrics])
 
   private val address = Address("29 Acacia Road", "Nuttytown", Some("Bannastate"), Some("Country"), "AA11AA")
   private val regRequest = RegistrationRequest("Dave Agent",
