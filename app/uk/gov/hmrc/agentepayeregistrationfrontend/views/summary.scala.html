@@ -6,7 +6,7 @@
 
 @(detailsForm : Form[RegistrationRequest])(implicit request: Request[_], messages: Messages, config: Configuration)
 
-@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("summary.title"), bodyClasses = None) {
+@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("summary.title"), bodyClasses = Some("full-width")) {
 
   @form(action = AgentEpayeRegistrationController.summary, 'class -> "form js-form") {
 
@@ -24,12 +24,19 @@
             <h1>@Messages("summary.label")</h1>
         </header>
 
+
+        <div class="tabular-data__entry divider--bottom">
+          <span class="tabular-data__heading tabular-data__heading--label">Name</span>
+          <div class="tabular-data__data-1">John Smith</div>
+          <a class="tabular-data__data-2--after-details" href="#edit" style="top: inherit">Change</a>
+        </div>
+
         <div class="tabular-data__entry divider--bottom">
             <span class="tabular-data__heading tabular-data__heading--label">@Messages("summary.header.agentDetails")</span>
             <div class="tabular-data__data-1">
                 @Messages("summary.details.agencyName") @detailsForm("agentName").value
             </div>
-            <button class="button--link-style tabular-data__data-2" type="submit" name="amend" value="agentDetails">
+            <button class="button--link-style tabular-data__data-2--after-details" type="submit" name="amend" value="agentDetails" style="top: inherit">
               @Messages("summary.link.change")
               <span class="visuallyhidden">your details</span>
             </button>
@@ -43,7 +50,7 @@
                   <br>
                   @Messages("summary.details.emailAddress") @detailsForm("emailAddress").value
             </div>
-            <button class="button--link-style tabular-data__data-2" type="submit" name="amend" value="contactDetails">
+            <button class="button--link-style tabular-data__data-2--after-details" type="submit" name="amend" value="contactDetails" style="top: inherit">
               @Messages("summary.link.change")
               <span class="visuallyhidden">contact details</span>
             </button>
@@ -58,7 +65,7 @@
                 @detailsForm("address.addressLine4").value @if(detailsForm("address.addressLine4").value){<br>}
                 @detailsForm("address.postcode").value
             </div>
-            <button class="button--link-style tabular-data__data-2" type="submit" name="amend" value="addressDetails">
+            <button class="button--link-style tabular-data__data-2--after-details" type="submit" name="amend" value="addressDetails" style="top: inherit">
               @Messages("summary.link.change")
               <span class="visuallyhidden">address details</span>
             </button>
