@@ -6,7 +6,7 @@
 
 @(detailsForm : Form[RegistrationRequest])(implicit request: Request[_], messages: Messages, config: Configuration)
 
-@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("summary.title"), bodyClasses = Some("full-width")) {
+@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("summary.title"), bodyClasses = None) {
 
   @form(action = AgentEpayeRegistrationController.summary, 'class -> "form js-form") {
 
