@@ -184,10 +184,9 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
 
       "there are valid symbols in the input" in {
         shouldAcceptFieldValue("441234567890")
-        shouldAcceptFieldValue("#441234567890")
+        shouldAcceptFieldValue(" 441234567890")
         shouldAcceptFieldValue("(44)1234567890")
-        shouldAcceptFieldValue("++441234567890")
-        shouldAcceptFieldValue("01234-567890")
+        shouldAcceptFieldValue("(44) 123 45 67890")
       }
 
       "there is whitespace in the field" in {
@@ -242,8 +241,8 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
       }
 
       "there are valid symbols in the input" in {
-        shouldAcceptFieldValue("My Agency address/Street ")
-        shouldAcceptFieldValue("Tester's Agency address/Street")
+        shouldAcceptFieldValue("My Agency address,Street ")
+        shouldAcceptFieldValue("Testers Agency address,Street")
       }
 
       "there is a valid address" in {
@@ -278,9 +277,9 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
       }
 
       "there are valid symbols in the input" in {
-        shouldAcceptFieldValue("My Agency address/Street ")
-        shouldAcceptFieldValue("Tester's Agency address/Street")
-        shouldAcceptFieldValue("A-Z a-z 0-9 -,.&'\\/ ")
+        shouldAcceptFieldValue("My Agency address,Street ")
+        shouldAcceptFieldValue("Testers Agency address,Street")
+        shouldAcceptFieldValue("A-Z a-z 0-9 -,.()-!@ ")
       }
 
       "there is a valid address" in {
@@ -320,9 +319,9 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
       "there is an invalid character" in {
         shouldRejectFieldValueAsInvalid("My;Agency")
         shouldRejectFieldValueAsInvalid("My Agency #1")
-        shouldRejectFieldValueAsInvalid("My!Agency")
-        shouldRejectFieldValueAsInvalid("My@Agency")
-        shouldRejectFieldValueAsInvalid("My(Agency)")
+        shouldRejectFieldValueAsInvalid("My*Agency")
+        shouldRejectFieldValueAsInvalid("My&Agency")
+        shouldRejectFieldValueAsInvalid("My{Agency}")
       }
 
       "there are more than 56 characters" in {
@@ -348,10 +347,10 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
         shouldAcceptFieldValue("My-Agency")
         shouldAcceptFieldValue("My,Agency")
         shouldAcceptFieldValue("My.Agency")
-        shouldAcceptFieldValue("My&Agency")
-        shouldAcceptFieldValue("My'Agency")
-        shouldAcceptFieldValue("My\\Agency")
-        shouldAcceptFieldValue("My/Agency")
+        shouldAcceptFieldValue("My(Agency")
+        shouldAcceptFieldValue("My)Agency")
+        shouldAcceptFieldValue("My !Agency")
+        shouldAcceptFieldValue("My@Agency")
       }
 
       "there are numbers and letters" in {

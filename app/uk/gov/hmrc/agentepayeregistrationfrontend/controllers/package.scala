@@ -23,9 +23,9 @@ import play.api.data.validation.{Constraint, Constraints, _}
 package object controllers {
 
   object FieldMappings {
-    private val postcodeWithoutSpacesRegex = "^[A-Z]{1,2}[0-9][0-9A-Z]?\\s?[0-9][A-Z]{2}$|BFPO\\s?[0-9]{1,5}$".r
-    private val telephoneNumberRegex = "^[0-9- +()#x ]*$"
-    private val validStringRegex = "[A-Za-z0-9\\-,.&'\\\\/ ]+"
+    private val postcodeWithoutSpacesRegex = "^[A-Z]{1,2}[0-9][0-9A-Z]?[0-9][A-Z]{2}$|BFPO[0-9]{1,5}$".r
+    private val telephoneNumberRegex = "^[0-9 ()]*$"
+    private val validStringRegex = "[a-zA-Z0-9,.()\\-\\!@\\s]+"
     private val nonEmptyPostcode: Constraint[String] = Constraint[String] { fieldValue: String =>
       Constraints.nonEmpty(fieldValue) match {
         case i: Invalid =>
