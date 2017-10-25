@@ -10,11 +10,11 @@ global.error.500.heading=Sorry, we’re experiencing technical difficulties
 global.error.500.message=Please try again in a few minutes.
 
 # Validation errors
-error.postcode.invalid=You can only enter these characters: A-Z, a-z, 0-9
+error.postcode.invalid=You can only enter these characters: A-Z 0-9
 error.telephone.invalid=You can only enter these characters: 0-9 ( ) space
 error.string.invalid=You can only enter these characters: a-z A-Z 0-9 ,.() - ! @ space
 error.maxLength=You can only enter up to {0} characters
-error.email=You can only enter these characters: a-z A-Z 0-9 , . ( ) - ! @ space
+error.email=Enter a valid email address
 
 # start page
 start.title=Agent EPAYE Registration
