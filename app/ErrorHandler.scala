@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 
-import play.api.{Configuration, Environment, Mode}
+import play.api.{ Configuration, Environment, Mode }
 import play.api.http.HeaderNames.CACHE_CONTROL
 import play.api.http.HttpErrorHandler
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.i18n.{ I18nSupport, Messages, MessagesApi }
 import play.api.mvc.Results._
-import play.api.mvc.{RequestHeader, Result}
+import play.api.mvc.{ RequestHeader, Result }
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.error_template
-import uk.gov.hmrc.auth.core.{InsufficientEnrolments, NoActiveSession}
-import uk.gov.hmrc.auth.frontend.Redirects
+import uk.gov.hmrc.auth.core.{ InsufficientEnrolments, NoActiveSession }
 
 import scala.concurrent.Future
+import uk.gov.hmrc.play.frontend.config.AuthRedirects
 
 @Singleton
-class ErrorHandler @Inject()(implicit val config: Configuration, val env: Environment, val messagesApi: MessagesApi)
-  extends HttpErrorHandler with I18nSupport with Redirects {
+class ErrorHandler @Inject() (implicit val config: Configuration, val env: Environment, val messagesApi: MessagesApi)
+  extends HttpErrorHandler with I18nSupport with AuthRedirects {
 
   override def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] = {
     Future successful

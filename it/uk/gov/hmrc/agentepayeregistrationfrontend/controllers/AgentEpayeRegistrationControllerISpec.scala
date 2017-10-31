@@ -1,12 +1,12 @@
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
-import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, post, stubFor, urlEqualTo}
+import com.github.tomakehurst.wiremock.client.WireMock.{ aResponse, post, stubFor, urlEqualTo }
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers.redirectLocation
-import uk.gov.hmrc.play.http.BadGatewayException
+import uk.gov.hmrc.http.BadGatewayException
 import scala.concurrent.duration._
 
 class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
@@ -40,8 +40,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
           validFormRegestrationDetails.map {
             case ("agentName", _) => ("agentName", "")
             case x => x
-          }: _*
-        )
+          }: _*)
 
         val result = await(controller.agentDetails(request))
 
@@ -70,8 +69,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
           validFormRegestrationDetails.map {
             case ("contactName", _) => ("contactName", "")
             case x => x
-          }: _*
-        )
+          }: _*)
 
         val result = await(controller.contactDetails(request))
 
@@ -85,8 +83,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
             case ("contactName", _) => ("contactName", "7^$£")
             case ("telephoneNumber", _) => ("telephoneNumber", "7^$£")
             case x => x
-          }: _*
-        )
+          }: _*)
 
         val result = await(controller.contactDetails(request))
 
@@ -118,8 +115,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
           validFormRegestrationDetails.map {
             case ("address.addressLine1", _) => ("address.addressLine1", "")
             case x => x
-          }: _*
-        )
+          }: _*)
 
         val result = await(controller.addressDetails(request))
 
@@ -174,7 +170,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
     "retain all the form state and pass it on to the appropriate page" when {
       "amending the agent details" in {
         val request = FakeRequest().withFormUrlEncodedBody(
-          validFormRegestrationDetails ++ Seq(("amend", "agentDetails")) : _*)
+          validFormRegestrationDetails ++ Seq(("amend", "agentDetails")): _*)
 
         val result = await(controller.summary(request))
 
@@ -183,7 +179,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
       }
       "amending the contact details" in {
         val request = FakeRequest().withFormUrlEncodedBody(
-          validFormRegestrationDetails ++ Seq(("amend", "contactDetails")) : _*)
+          validFormRegestrationDetails ++ Seq(("amend", "contactDetails")): _*)
 
         val result = await(controller.summary(request))
 
@@ -192,7 +188,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
       }
       "amending the address details" in {
         val request = FakeRequest().withFormUrlEncodedBody(
-          validFormRegestrationDetails ++ Seq(("amend", "addressDetails")) : _*)
+          validFormRegestrationDetails ++ Seq(("amend", "addressDetails")): _*)
 
         val result = await(controller.summary(request))
 
@@ -211,8 +207,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
     "address.addressLine2" -> "Towny town",
     "address.addressLine3" -> "",
     "address.addressLine4" -> "",
-    "address.postcode" -> "AA111AA"
-  )
+    "address.postcode" -> "AA111AA")
 
   private def checkAllFormValuesArePresent(result: Result, formKeyValues: Seq[(String, String)]) = {
     formKeyValues.map(t => htmlEscapedMessage(t._2)).foreach(checkHtmlResultWithBodyText(result, _))

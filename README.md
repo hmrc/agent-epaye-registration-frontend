@@ -16,6 +16,10 @@ The OPRA system provides a way for PAYE agents (not otherwise known to PAYE syst
 
 ## Running the app locally
 
+    ./run_local.sh
+
+or
+
     sm --start AGENT_EPAYE_REG -f
     sm --stop AGENT_EPAYE_REGISTRATION_FRONTEND
     sbt -Dplay.http.router=testOnlyDoNotUseInAppConf.Routes run
@@ -23,6 +27,10 @@ The OPRA system provides a way for PAYE agents (not otherwise known to PAYE syst
 It should then be listening on port 9446
 
     browse http://localhost:9446/agent-epaye-registration
+    
+## Stop local upstream services
+
+    sm --stop AGENT_EPAYE_REG
 
 ### License
 

@@ -8,12 +8,10 @@ trait RegistrationStub {
 
   def givenRegistrationDetails = {
     stubFor(get(urlPathMatching("/agent-epaye-registration/registrations"))
-      .withHeader("Authorization",containing("Bearer"))
+      .withHeader("Authorization", containing("Bearer"))
       .willReturn(aResponse()
         .withStatus(200)
-          .withBody("[]")
-      )
-    )
+        .withBody("[]")))
     this
   }
 }

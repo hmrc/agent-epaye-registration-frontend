@@ -16,17 +16,17 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend.service
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 
 import uk.gov.hmrc.agentepayeregistrationfrontend.connectors.AgentEpayeRegistrationConnector
 import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
 import uk.gov.hmrc.domain.PayeAgentReference
-import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
+import uk.gov.hmrc.http.HeaderCarrier
 
 @Singleton
-class AgentEpayeRegistrationService @Inject()(registrationConnector: AgentEpayeRegistrationConnector)  {
+class AgentEpayeRegistrationService @Inject() (registrationConnector: AgentEpayeRegistrationConnector) {
 
   def register(request: RegistrationRequest)(implicit hc: HeaderCarrier): Future[PayeAgentReference] =
     registrationConnector.register(request)

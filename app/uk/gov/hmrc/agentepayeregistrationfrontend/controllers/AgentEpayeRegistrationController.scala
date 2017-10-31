@@ -16,15 +16,15 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 
 import play.api.Configuration
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
+import play.api.i18n.{ I18nSupport, MessagesApi }
+import play.api.mvc.{ Action, AnyContent }
 import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.FieldMappings._
-import uk.gov.hmrc.agentepayeregistrationfrontend.models.{Address, RegistrationRequest}
+import uk.gov.hmrc.agentepayeregistrationfrontend.models.{ Address, RegistrationRequest }
 import uk.gov.hmrc.agentepayeregistrationfrontend.service.AgentEpayeRegistrationService
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html
 import uk.gov.hmrc.play.frontend.controller.FrontendController
@@ -32,8 +32,9 @@ import uk.gov.hmrc.play.frontend.controller.FrontendController
 import scala.concurrent.Future
 
 @Singleton
-class AgentEpayeRegistrationController @Inject()(override val messagesApi: MessagesApi,
-                                                 registrationService: AgentEpayeRegistrationService)(implicit config: Configuration) extends FrontendController with I18nSupport {
+class AgentEpayeRegistrationController @Inject() (
+  override val messagesApi: MessagesApi,
+  registrationService: AgentEpayeRegistrationService)(implicit config: Configuration) extends FrontendController with I18nSupport {
   import AgentEpayeRegistrationController._
 
   val root: Action[AnyContent] = Action { implicit request =>
@@ -93,8 +94,7 @@ class AgentEpayeRegistrationController @Inject()(override val messagesApi: Messa
               case "contactDetails" => Future.successful(Ok(html.contactDetails(filledForm)))
               case "addressDetails" => Future.successful(Ok(html.addressDetails(filledForm)))
             }
-          }
-        )
+          })
       })
   }
 }
@@ -112,10 +112,7 @@ object AgentEpayeRegistrationController {
         "addressLine2" -> text,
         "addressLine3" -> optional(text),
         "addressLine4" -> optional(text),
-        "postcode" -> text
-      )(Address.apply)(Address.unapply)
-    )(RegistrationRequest.apply)(RegistrationRequest.unapply)
-  )
+        "postcode" -> text)(Address.apply)(Address.unapply))(RegistrationRequest.apply)(RegistrationRequest.unapply))
 
   val contactDetailsForm = Form[RegistrationRequest](
     mapping(
@@ -128,10 +125,7 @@ object AgentEpayeRegistrationController {
         "addressLine2" -> text,
         "addressLine3" -> optional(text),
         "addressLine4" -> optional(text),
-        "postcode" -> text
-      )(Address.apply)(Address.unapply)
-    )(RegistrationRequest.apply)(RegistrationRequest.unapply)
-  )
+        "postcode" -> text)(Address.apply)(Address.unapply))(RegistrationRequest.apply)(RegistrationRequest.unapply))
 
   val registrationRequestForm = Form[RegistrationRequest](
     mapping(
@@ -144,8 +138,5 @@ object AgentEpayeRegistrationController {
         "addressLine2" -> addressLine12,
         "addressLine3" -> addressLine34,
         "addressLine4" -> addressLine34,
-        "postcode" -> postcode
-      )(Address.apply)(Address.unapply)
-    )(RegistrationRequest.apply)(RegistrationRequest.unapply)
-  )
+        "postcode" -> postcode)(Address.apply)(Address.unapply))(RegistrationRequest.apply)(RegistrationRequest.unapply))
 }

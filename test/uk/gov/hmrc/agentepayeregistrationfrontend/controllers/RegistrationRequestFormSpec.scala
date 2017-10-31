@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
-import uk.gov.hmrc.agentepayeregistrationfrontend.models.{Address, RegistrationRequest}
+import uk.gov.hmrc.agentepayeregistrationfrontend.models.{ Address, RegistrationRequest }
 import uk.gov.hmrc.play.test.UnitSpec
 
 class RegistrationRequestFormSpec extends UnitSpec {
@@ -36,17 +36,14 @@ class RegistrationRequestFormSpec extends UnitSpec {
           addressLine2 = "",
           addressLine3 = None,
           addressLine4 = None,
-          postCode = ""
-        )
-      )
+          postCode = ""))
 
       val fieldValues = Map(
         "agentName" -> "agentName",
         "contactName" -> "",
         "address.addressLine1" -> "",
         "address.addressLine2" -> "",
-        "address.postcode" -> ""
-      )
+        "address.postcode" -> "")
 
       form.bind(fieldValues).value shouldBe Some(value)
       form.fill(value).data shouldBe fieldValues
@@ -68,9 +65,7 @@ class RegistrationRequestFormSpec extends UnitSpec {
           addressLine2 = "",
           addressLine3 = None,
           addressLine4 = None,
-          postCode = ""
-        )
-      )
+          postCode = ""))
 
       val fieldValues = Map(
         "agentName" -> "agentName",
@@ -79,8 +74,7 @@ class RegistrationRequestFormSpec extends UnitSpec {
         "emailAddress" -> "foo@bar.com",
         "address.addressLine1" -> "",
         "address.addressLine2" -> "",
-        "address.postcode" -> ""
-      )
+        "address.postcode" -> "")
 
       form.bind(fieldValues).value shouldBe Some(value)
       form.fill(value).data shouldBe fieldValues
@@ -102,9 +96,7 @@ class RegistrationRequestFormSpec extends UnitSpec {
           addressLine2 = "Sometown Somewhere",
           addressLine3 = Some("Address line 3"),
           addressLine4 = Some("Address line 4"),
-          postCode = "AA1 1AA"
-        )
-      )
+          postCode = "AA1 1AA"))
 
       val fieldValues = Map(
         "agentName" -> "agentName",
@@ -115,8 +107,7 @@ class RegistrationRequestFormSpec extends UnitSpec {
         "address.addressLine2" -> "Sometown Somewhere",
         "address.addressLine3" -> "Address line 3",
         "address.addressLine4" -> "Address line 4",
-        "address.postcode" -> "AA1 1AA"
-      )
+        "address.postcode" -> "AA1 1AA")
 
       form.bind(fieldValues).value shouldBe Some(value)
       form.fill(value).data shouldBe fieldValues
