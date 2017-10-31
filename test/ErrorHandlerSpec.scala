@@ -18,15 +18,15 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.{Configuration, Environment}
+import play.api.{ Configuration, Environment }
 import play.api.i18n.MessagesApi
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.play.http.BadGatewayException
 
 import scala.concurrent.Future
+import uk.gov.hmrc.http.BadGatewayException
 
 class ErrorHandlerSpec extends PlaySpec with MockitoSugar with GuiceOneAppPerSuite with BeforeAndAfterEach {
   val messagesApi = app.injector.instanceOf[MessagesApi]
@@ -59,7 +59,7 @@ class ErrorHandlerSpec extends PlaySpec with MockitoSugar with GuiceOneAppPerSui
   }
 
   private def checkIncludesMessages(result: Future[Result], messageKeys: String*): Unit = {
-    messageKeys.foreach{ messageKey =>
+    messageKeys.foreach { messageKey =>
       messagesApi.isDefinedAt(messageKey) mustBe true
       contentAsString(result) must include(HtmlFormat.escape(messagesApi(messageKey)).toString)
     }

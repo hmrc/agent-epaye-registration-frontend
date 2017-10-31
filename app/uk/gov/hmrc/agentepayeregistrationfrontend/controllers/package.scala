@@ -18,7 +18,7 @@ package uk.gov.hmrc.agentepayeregistrationfrontend
 
 import play.api.data.Forms._
 import play.api.data.Mapping
-import play.api.data.validation.{Constraint, Constraints, _}
+import play.api.data.validation.{ Constraint, Constraints, _ }
 
 package object controllers {
 
@@ -73,9 +73,9 @@ package object controllers {
 
     def postcode: Mapping[String] = text(maxLength = 8) verifying nonEmptyPostcode
     def telephone: Mapping[Option[String]] = optional(text(maxLength = 24) verifying telephoneNumber)
-    def name: Mapping[String] = text(maxLength = 56) verifying(validName)
+    def name: Mapping[String] = text(maxLength = 56) verifying (validName)
     def emailAddr: Mapping[Option[String]] = optional(text(maxLength = 129) verifying emailAddress)
-    def addressLine12: Mapping[String] = text(maxLength = 35) verifying(validName)
-    def addressLine34: Mapping[Option[String]] = optional(text(maxLength = 35) verifying(validName))
+    def addressLine12: Mapping[String] = text(maxLength = 35) verifying (validName)
+    def addressLine34: Mapping[Option[String]] = optional(text(maxLength = 35) verifying (validName))
   }
 }

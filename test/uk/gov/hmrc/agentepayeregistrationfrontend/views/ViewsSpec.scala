@@ -45,8 +45,7 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
       ("address.addressLine2" -> "My address line 2"),
       ("address.addressLine3" -> "My address line 3"),
       ("address.addressLine4" -> "My address line 4"),
-      ("address.postcode" -> "PO111ST")
-    ))
+      ("address.postcode" -> "PO111ST")))
 
   "error_template view" should {
     "render title, heading and message" in new App {
@@ -58,14 +57,14 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
         heading = heading,
         message = message,
         messages = Messages.Implicits.applicationMessages,
-        configuration = app.configuration )
+        configuration = app.configuration)
       val content = contentAsString(html)
-      content should include (pageTitle)
-      content should include (heading)
-      content should include (message)
+      content should include(pageTitle)
+      content should include(heading)
+      content should include(message)
 
       val html2 = new error_template().f(pageTitle, heading, message)(Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) shouldBe(content)
+      contentAsString(html2) shouldBe (content)
     }
   }
 
@@ -78,14 +77,14 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
       val content = contentAsString(html)
 
       import Messages.Implicits.applicationMessages
-      content should include (Messages("start.title"))
-      content should include (Messages("start.label"))
-      content should include (Messages("start.intro"))
-      content should include (Messages("start.helpdesklink.text1"))
-      content should include (Messages("start.helpdesklink.text2"))
+      content should include(Messages("start.title"))
+      content should include(Messages("start.label"))
+      content should include(Messages("start.intro"))
+      content should include(Messages("start.helpdesklink.text1"))
+      content should include(Messages("start.helpdesklink.text2"))
 
       val html2 = new start().f()(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) shouldBe(content)
+      contentAsString(html2) shouldBe (content)
     }
   }
 
@@ -98,10 +97,10 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
         config = app.configuration)
       val content = contentAsString(html)
 
-      filledForm.data.values.foreach(formValue => content should include (formValue))
+      filledForm.data.values.foreach(formValue => content should include(formValue))
 
       val html2 = new agentDetails().f(filledForm)(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) shouldBe(content)
+      contentAsString(html2) shouldBe (content)
     }
   }
 
@@ -114,10 +113,10 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
         config = app.configuration)
       val content = contentAsString(html)
 
-      filledForm.data.values.foreach(formValue => content should include (formValue))
+      filledForm.data.values.foreach(formValue => content should include(formValue))
 
       val html2 = new contactDetails().f(filledForm)(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) shouldBe(content)
+      contentAsString(html2) shouldBe (content)
     }
   }
 
@@ -130,10 +129,10 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
         config = app.configuration)
       val content = contentAsString(html)
 
-      filledForm.data.values.foreach(formValue => content should include (formValue))
+      filledForm.data.values.foreach(formValue => content should include(formValue))
 
       val html2 = new addressDetails().f(filledForm)(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) shouldBe(content)
+      contentAsString(html2) shouldBe (content)
     }
   }
 
@@ -146,10 +145,10 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
         config = app.configuration)
       val content = contentAsString(html)
 
-      filledForm.data.values.foreach(formValue => content should include (formValue))
+      filledForm.data.values.foreach(formValue => content should include(formValue))
 
       val html2 = new summary().f(filledForm)(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) shouldBe(content)
+      contentAsString(html2) shouldBe (content)
     }
   }
 
@@ -163,14 +162,13 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
 
       val content = contentAsString(html)
 
-      content should include ("My custom agent reference")
+      content should include("My custom agent reference")
 
       val html2 = new registration_confirmation().f(
-        "My custom agent reference"
-      )(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
+        "My custom agent reference")(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
 
       val content2 = contentAsString(html2)
-      contentAsString(html2) shouldBe(content)
+      contentAsString(html2) shouldBe (content)
     }
   }
 
@@ -187,16 +185,16 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
         mainContent = Html("My custom main content HTML"),
         messages = Messages.Implicits.applicationMessages,
         request = FakeRequest(),
-        configuration = app.configuration )
+        configuration = app.configuration)
 
       val content = contentAsString(html)
-      content should include ("My custom page title")
-      content should include ("My custom sidebar links")
-      content should include ("My custom content header")
-      content should include ("my-custom-body-class")
-      content should include ("my-custom-main-class")
-      content should include ("My custom script")
-      content should include ("My custom main content HTML")
+      content should include("My custom page title")
+      content should include("My custom sidebar links")
+      content should include("My custom content header")
+      content should include("my-custom-body-class")
+      content should include("my-custom-main-class")
+      content should include("My custom script")
+      content should include("My custom main content HTML")
 
       val html2 = view.f(
         "My custom page title",
@@ -204,9 +202,8 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
         Some(Html("My custom content header")),
         Some("my-custom-body-class"),
         Some("my-custom-main-class"),
-        Some(Html("My custom script"))
-      )(Html("My custom main content HTML"))(Messages.Implicits.applicationMessages, FakeRequest(), app.configuration)
-      contentAsString(html2) shouldBe(content)
+        Some(Html("My custom script")))(Html("My custom main content HTML"))(Messages.Implicits.applicationMessages, FakeRequest(), app.configuration)
+      contentAsString(html2) shouldBe (content)
     }
   }
 
@@ -228,17 +225,18 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
         configuration = app.configuration)
 
       val content = contentAsString(html)
-      content should include ("My custom page title")
-      content should include ("my-custom-main-class")
-      content should include ("myCustom=\"attributes\"")
-      content should include ("my-custom-body-class")
-      content should include ("My custom sidebar")
-      content should include ("My custom content header")
-      content should include ("My custom main content")
-      content should include ("My custom service info content")
-      content should include ("My custom script")
+      content should include("My custom page title")
+      content should include("my-custom-main-class")
+      content should include("myCustom=\"attributes\"")
+      content should include("my-custom-body-class")
+      content should include("My custom sidebar")
+      content should include("My custom content header")
+      content should include("My custom main content")
+      content should include("My custom service info content")
+      content should include("My custom script")
 
-      val html2 = new govuk_wrapper().f("My custom page title",
+      val html2 = new govuk_wrapper().f(
+        "My custom page title",
         Some("my-custom-main-class"),
         Some(Html("myCustom=\"attributes\"")),
         Some("my-custom-body-class"),
@@ -248,7 +246,7 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
         Html("My custom service info content"),
         Some(Html("My custom script")),
         Seq("My custom GA code"))(Messages.Implicits.applicationMessages, app.configuration)
-      contentAsString(html2) shouldBe(content)
+      contentAsString(html2) shouldBe (content)
     }
   }
 }
