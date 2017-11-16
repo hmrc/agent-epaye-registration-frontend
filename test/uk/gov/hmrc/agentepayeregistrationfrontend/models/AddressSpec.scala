@@ -16,18 +16,30 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend.models
 
-import play.api.libs.json.Json
+import uk.gov.hmrc.play.test.UnitSpec
 
-case class Address(
-  addressLine1: String,
-  addressLine2: String,
-  addressLine3: Option[String],
-  addressLine4: Option[String],
-  postCode: String) {
+class AddressSpec extends UnitSpec {
+  val testAddress: Address = new Address(
+    "addressLine1",
+    "addressLine2",
+    Some("addressLine3"),
+    Some("addressLine4"),
+    "AA1 1AA")
 
-  def withoutSpacesInPostCode: String = postCode.replaceAll(" ", "")
-}
+  val testAddress2: Address = new Address(
+    "addressLine1",
+    "addressLine2",
+    Some("addressLine3"),
+    Some("addressLine4"),
+    "AB123CD")
 
-object Address {
-  implicit val addressFormat = Json.format[Address]
+  "withoutSpacesInPostCode" should {
+    "remove all spaces in a postCode ith spaces" in {
+      testAddress.withoutSpacesInPostCode shouldBe "AA11AA"
+    }
+
+    "leave a postCode with no spaces unchanged" in {
+      testAddress2.withoutSpacesInPostCode shouldBe "AB123CD"
+    }
+  }
 }
