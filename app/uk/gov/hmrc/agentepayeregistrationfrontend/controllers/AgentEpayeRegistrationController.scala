@@ -86,7 +86,7 @@ class AgentEpayeRegistrationController @Inject() (
       },
       data => {
         Form(single("amend" -> text)).bindFromRequest().fold(
-          _ => registrationService.register(data).map(x => Ok(html.registration_confirmation(x.value))),
+          _ => registrationService.register(withNoSpacesInPostCode(data)).map(x => Ok(html.registration_confirmation(x.value))),
           amend => {
             val filledForm = registrationRequestForm.fill(data)
             amend match {
@@ -97,6 +97,9 @@ class AgentEpayeRegistrationController @Inject() (
           })
       })
   }
+
+  private def withNoSpacesInPostCode(data: RegistrationRequest): RegistrationRequest =
+    data.copy(address = data.address.copy(postCode = data.address.withoutSpacesInPostCode))
 }
 
 object AgentEpayeRegistrationController {
