@@ -164,12 +164,14 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
 
     "reject telephone numbers" when {
 
-      "more than 24 characters" in {
-        shouldRejectFieldValueAsTooLong("0123456789012345678912345")
+      "more than 35 characters" in {
+        shouldRejectFieldValueAsTooLong("012345678901234567890123456789012345")
       }
 
       "valid telephone number then invalid characters" in {
         shouldRejectFieldValueAsInvalid("0207 567 8554dbvv")
+        shouldRejectFieldValueAsInvalid("(44)1234567890")
+        shouldRejectFieldValueAsInvalid("(44) 123 45 67890")
       }
 
       "there is text in the field" in {
@@ -183,15 +185,9 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
         shouldAcceptFieldValue("123")
       }
 
-      "there are valid symbols in the input" in {
-        shouldAcceptFieldValue("441234567890")
-        shouldAcceptFieldValue(" 441234567890")
-        shouldAcceptFieldValue("(44)1234567890")
-        shouldAcceptFieldValue("(44) 123 45 67890")
-      }
-
       "there is whitespace in the field" in {
         shouldAcceptFieldValue("0123 456 7890")
+        shouldAcceptFieldValue(" 441234567890")
       }
     }
   }
@@ -232,7 +228,7 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
       }
 
       "contains invalid characters" in {
-        ("1234567891123456789212345678931234567")
+        shouldRejectFieldValueAsInvalid("*00 House 7th Street&")
       }
     }
 
