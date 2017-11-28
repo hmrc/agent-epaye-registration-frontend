@@ -24,7 +24,7 @@ package object controllers {
 
   object FieldMappings {
     private val postcodeWithoutSpacesRegex = "^[A-Z]{1,2}[0-9][0-9A-Z]?[0-9][A-Z]{2}$|BFPO[0-9]{1,5}$".r
-    private val telephoneNumberRegex = "^[0-9 ()]*$"
+    private val telephoneNumberRegex = "^[0-9 ]*$"
     private val validStringRegex = "[a-zA-Z0-9,.()\\-\\!@\\s]+"
     private val emailRegex = """^[a-zA-Z0-9-.]+?@[a-zA-Z0-9-.]+$""".r
     private val nonEmptyPostcode: Constraint[String] = Constraint[String] { fieldValue: String =>
@@ -72,7 +72,7 @@ package object controllers {
     }
 
     def postcode: Mapping[String] = text(maxLength = 8) verifying nonEmptyPostcode
-    def telephone: Mapping[Option[String]] = optional(text(maxLength = 24) verifying telephoneNumber)
+    def telephone: Mapping[Option[String]] = optional(text(maxLength = 35) verifying telephoneNumber)
     def name: Mapping[String] = text(maxLength = 56) verifying (validName)
     def emailAddr: Mapping[Option[String]] = optional(text(maxLength = 129) verifying emailAddress)
     def addressLine12: Mapping[String] = text(maxLength = 35) verifying (validName)
