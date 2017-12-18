@@ -14,8 +14,7 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.play.views.html.helpers.form
-@import uk.gov.hmrc.play.views.html.helpers.input
+@import uk.gov.hmrc.play.views.html.helpers.{form, input, errorSummary}
 @import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.routes.AgentEpayeRegistrationController
 @import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
 @import play.api.Configuration
@@ -23,42 +22,42 @@
 
 @(detailsForm: Form[RegistrationRequest])(implicit request: Request[_], messages: Messages, config: Configuration)
 
-@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("details.contact.title"), bodyClasses = None) {
+@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title =  error_prefix(detailsForm) + Messages("details.contact.title"), bodyClasses = None) {
+
+@errorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
 
 @form(
 action = AgentEpayeRegistrationController.contactDetails,
 'class -> "form js-form") {
 
-    <header class="page-header">
-        <h1>@Messages("details.contact.label")</h1>
-    </header>
+    <h1 class="heading-xlarge">@Messages("details.contact.title")</h1>
 
     <p>@Messages("details.contact.description")</p>
 
-    <div class="form-field">
+    <div class="form-group">
         @input(
             detailsForm("contactName"),
             '_label -> Messages("details.contact.contactName.label"),
             '_inputClass -> "input--medium input--cleared",
-            '_labelClass -> "bold"
+            '_labelClass -> "heading-small soft--ends"
         )
     </div>
 
-    <div class="form-field">
+    <div class="form-group">
         @input(
             detailsForm("emailAddress"),
             '_label -> Messages("details.contact.emailAddress.label"),
             '_inputClass -> "input--medium input--cleared",
-            '_labelClass -> "bold"
+            '_labelClass -> "heading-small soft--ends"
         )
     </div>
 
-    <div class="form-field">
+    <div class="form-group">
         @input(
             detailsForm("telephoneNumber"),
             '_label -> Messages("details.contact.telephoneNumber.label"),
             '_inputClass -> "input--medium input--cleared",
-            '_labelClass -> "bold"
+            '_labelClass -> "heading-small soft--ends"
         )
     </div>
 
@@ -69,8 +68,7 @@ action = AgentEpayeRegistrationController.contactDetails,
     <input type="hidden" name="address.addressLine4" id="address.addressLine4" value="@detailsForm("address.addressLine4").value">
     <input type="hidden" name="address.postcode" id="address.postcode" value="@detailsForm("address.postcode").value">
 
-
-    <div class="form-field">
+    <div class="form-group">
         <button class="button" type="submit" id="continue">@Messages("button.continue")</button>
     </div>
     }

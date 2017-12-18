@@ -18,7 +18,6 @@
 @import play.api.Configuration
 @import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
 @import uk.gov.hmrc.play.views.html.helpers.form
-@import uk.gov.hmrc.play.views.html.helpers.input
 
 @(detailsForm : Form[RegistrationRequest])(implicit request: Request[_], messages: Messages, config: Configuration)
 
@@ -36,54 +35,64 @@
         <input type="hidden" name="address.addressLine4" id="address.addressLine4" value="@detailsForm("address.addressLine4").value">
         <input type="hidden" name="address.postcode" id="address.postcode" value="@detailsForm("address.postcode").value">
 
-        <header class="page-header">
-            <h1>@Messages("summary.label")</h1>
-        </header>
 
-        <div class="tabular-data__entry divider--bottom">
-            <span class="tabular-data__heading tabular-data__heading--label">@Messages("summary.header.agentDetails")</span>
-            <div class="tabular-data__data-1">
-                @Messages("summary.details.agencyName") @detailsForm("agentName").value
+        <h1 class="heading-xlarge">@Messages("summary.title")</h1>
+
+        <dl class="govuk-check-your-answers cya-questions-short">
+            <div>
+                <dt class="cya-question">
+                    @Messages("summary.header.agentDetails")
+                </dt>
+                <dd class="cya-answer" id="registration-name">
+                    @Messages("summary.details.agencyName") @detailsForm("agentName").value
+                </dd>
+                <dd class="cya-change">
+                    <button class="button--link-style" type="submit" name="amend" value="agentDetails">
+                      @Messages("summary.link.change")
+                      <span class="visuallyhidden">your details</span>
+                    </button>
+                </dd>
             </div>
-            <button class="button--link-style tabular-data__data-2--after-details" type="submit" name="amend" value="agentDetails" style="top: inherit">
-              @Messages("summary.link.change")
-              <span class="visuallyhidden">your details</span>
-            </button>
-        </div>
-
-        <div class="tabular-data__entry divider--bottom">
-            <span class="tabular-data__heading tabular-data__heading--label">@Messages("summary.header.contactDetails")</span>
-            <div class="tabular-data__data-1">
-                @Messages("summary.details.contactName") @detailsForm("contactName").value
-                  <br>@Messages("summary.details.telephoneNumber") @detailsForm("telephoneNumber").value
-                  <br>
-                  @Messages("summary.details.emailAddress") @detailsForm("emailAddress").value
+            <div>
+                <dt class="cya-question">
+                    @Messages("summary.header.contactDetails")
+                </dt>
+                <dd class="cya-answer">
+                    @Messages("summary.details.contactName") @detailsForm("contactName").value
+                      <br>@Messages("summary.details.telephoneNumber") @detailsForm("telephoneNumber").value
+                      <br>
+                      @Messages("summary.details.emailAddress") @detailsForm("emailAddress").value
+                </dd>
+                <dd class="cya-change">
+                    <button class="button--link-style" type="submit" name="amend" value="contactDetails">
+                      @Messages("summary.link.change")
+                      <span class="visuallyhidden">contact details</span>
+                    </button>
+                </dd>
             </div>
-            <button class="button--link-style tabular-data__data-2--after-details" type="submit" name="amend" value="contactDetails" style="top: inherit">
-              @Messages("summary.link.change")
-              <span class="visuallyhidden">contact details</span>
-            </button>
-        </div>
-
-        <div class="tabular-data__entry divider--bottom">
-            <span class="tabular-data__heading tabular-data__heading--label">@Messages("summary.header.addressDetails")</span>
-            <div class="tabular-data__data-1">
-                @detailsForm("address.addressLine1").value <br>
-                @detailsForm("address.addressLine2").value <br>
-                @detailsForm("address.addressLine3").value @if(detailsForm("address.addressLine3").value){<br>}
-                @detailsForm("address.addressLine4").value @if(detailsForm("address.addressLine4").value){<br>}
-                @detailsForm("address.postcode").value
+            <div>
+                <dt class="cya-question">
+                    @Messages("summary.header.addressDetails")
+                </dt>
+                <dd class="cya-answer" id="utr">
+                    @detailsForm("address.addressLine1").value <br>
+                    @detailsForm("address.addressLine2").value <br>
+                    @detailsForm("address.addressLine3").value @if(detailsForm("address.addressLine3").value){<br>}
+                    @detailsForm("address.addressLine4").value @if(detailsForm("address.addressLine4").value){<br>}
+                    @detailsForm("address.postcode").value
+                </dd>
+                <dd class="cya-change">
+                    <button class="button--link-style" type="submit" name="amend" value="addressDetails">
+                      @Messages("summary.link.change")
+                      <span class="visuallyhidden">address details</span>
+                    </button>
+                </dd>
             </div>
-            <button class="button--link-style tabular-data__data-2--after-details" type="submit" name="amend" value="addressDetails" style="top: inherit">
-              @Messages("summary.link.change")
-              <span class="visuallyhidden">address details</span>
-            </button>
-        </div>
+        </dl>
 
-        <br>
         <h2>@Messages("summary.register.title")</h2>
 
-        <p class="text">@Messages("summary.register.description")</p>
+        <p>@Messages("summary.register.description")</p>
 
         <div class="form-group">
             <button class="button" type="submit" id="register" name="register">@Messages("button.register")</button>
