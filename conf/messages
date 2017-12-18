@@ -10,15 +10,26 @@ global.error.500.heading=Sorry, we’re experiencing technical difficulties
 global.error.500.message=Please try again in a few minutes.
 
 # Validation errors
-error.postcode.invalid=You can only enter these characters: A-Z 0-9
+error.postcode.invalid=Postcode must only include letters a to z, numbers and spaces, for example AA1 1AA
 error.telephone.invalid=You can only enter these characters: 0-9 space
-error.string.invalid=You can only enter these characters: a-z A-Z 0-9 , . ( ) - ! @ space
+error.agentName.invalid=Agent name must only include letters a to z, numbers, commas, full stops, brackets, hyphens, exclamation marks, @ signs and spaces
+error.contactName.invalid=Contact name must only include letters a to z, numbers, commas, full stops, brackets, hyphens, exclamation marks, @ signs and spaces
+error.addressLine1.invalid=Address line 1 must only include letters a to z, numbers, commas, full stops, brackets, hyphens, exclamation marks, @ signs and spaces
+error.addressLine2.invalid=Address line 2 must only include letters a to z, numbers, commas, full stops, brackets, hyphens, exclamation marks, @ signs and spaces
+error.addressLine3.invalid=Address line 3 must only include letters a to z, numbers, commas, full stops, brackets, hyphens, exclamation marks, @ signs and spaces
+error.addressLine4.invalid=Address line 4 must only include letters a to z, numbers, commas, full stops, brackets, hyphens, exclamation marks, @ signs and spaces
 error.maxLength=You can only enter up to {0} characters
 error.email=Enter a valid email address
+error.prefix=Error:
+error.summary.heading=There is a problem
+error.agentName.empty=You must enter an agent name
+error.contactName.empty=You must enter a contact name
+error.addressLine1.empty=You must enter address line 1
+error.addressLine2.empty=You must enter address line 2
+error.postcode.empty=You must enter a postcode
 
 # start page
-start.title=Agent EPAYE Registration
-start.label=Get an Agent Reference for PAYE for Agents
+start.title=Get an Agent Reference for PAYE for Agents
 start.intro=We have designed this service for PAYE agents and payroll bureaux registering for the PAYE for Agents online service.
 start.helpdesklink.text1=Contact the online services helpdesk
 start.helpdesklink.text2=if you need help.
@@ -28,18 +39,17 @@ details.agent.title=Agent EPAYE Registration
 details.agent.label=Enter your agent name
 details.agent.description=This could be your agency name or payroll bureau name, or your own name if you''re acting as an individual.
 details.agent.agentName.label=Agent name
+error.agent.required=You must enter an agent name
 
 # Contact Details page
-details.contact.title=Agent EPAYE Registration
-details.contact.label=Enter your contact details
+details.contact.title=Enter your contact details
 details.contact.description=HMRC will treat this as your main contact for PAYE for Agents registration.
 details.contact.contactName.label=Contact name
 details.contact.emailAddress.label=Email address
 details.contact.telephoneNumber.label=Telephone number
 
 # Address Details page
-details.address.title=Agent EPAYE Registration
-details.address.label=Enter your business address
+details.address.title=Enter your business address
 details.address.addressline1.label=Address line 1
 details.address.addressline2.label=Address line 2
 details.address.addressline3.label=Address line 3
@@ -47,8 +57,7 @@ details.address.addressline4.label=Address line 4
 details.address.postcode.label=Postcode
 
 # Summary page
-summary.title=Agent EPAYE Registration
-summary.label=Check your answers
+summary.title=Check your answers
 summary.header.agentDetails=Agent details
 summary.header.contactDetails=Contact details
 summary.header.addressDetails=Address

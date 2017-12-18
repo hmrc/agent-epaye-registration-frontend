@@ -28,7 +28,7 @@ package object controllers {
     private val validStringRegex = "[a-zA-Z0-9,.()\\-\\!@\\s]+"
     private val emailRegex = """^[a-zA-Z0-9-.]+?@[a-zA-Z0-9-.]+$""".r
     private val nonEmptyPostcode: Constraint[String] = Constraint[String] { fieldValue: String =>
-      Constraints.nonEmpty(fieldValue) match {
+      nonEmptyWithMessage("error.postcode.empty")(fieldValue) match {
         case i: Invalid =>
           i
         case Valid =>
@@ -38,6 +38,11 @@ package object controllers {
             .map(_ => Valid)
             .getOrElse(Invalid(ValidationError(error)))
       }
+    }
+
+    // Same as play.api.data.validation.Constraints.nonEmpty but with a custom message instead of error.required
+    private def nonEmptyWithMessage(messageKey: String): Constraint[String] = Constraint[String] { (o: String) =>
+      if (o == null) Invalid(ValidationError(messageKey)) else if (o.trim.isEmpty) Invalid(ValidationError(messageKey)) else Valid
     }
 
     private val telephoneNumber: Constraint[String] = Constraint[String] { fieldValue: String =>
@@ -59,23 +64,26 @@ package object controllers {
         .getOrElse(Invalid("error.email"))
     }
 
-    private val validName: Constraint[String] = Constraint[String] { fieldValue: String =>
-      Constraints.nonEmpty(fieldValue) match {
+    private def validName(messageKey: String): Constraint[String] = Constraint[String] { fieldValue: String =>
+      nonEmptyWithMessage(s"error.$messageKey.empty")(fieldValue) match {
         case i @ Invalid(_) =>
           i
         case Valid =>
           if (fieldValue.matches(validStringRegex))
             Valid
           else
-            Invalid(ValidationError("error.string.invalid"))
+            Invalid(ValidationError(s"error.$messageKey.invalid"))
       }
     }
 
     def postcode: Mapping[String] = text(maxLength = 8) verifying nonEmptyPostcode
     def telephone: Mapping[Option[String]] = optional(text(maxLength = 35) verifying telephoneNumber)
-    def name: Mapping[String] = text(maxLength = 56) verifying (validName)
+    def name: Mapping[String] = text(maxLength = 56) verifying (validName("agentName"))
+    def contactName: Mapping[String] = text(maxLength = 56) verifying (validName("contactName"))
     def emailAddr: Mapping[Option[String]] = optional(text(maxLength = 129) verifying emailAddress)
-    def addressLine12: Mapping[String] = text(maxLength = 35) verifying (validName)
-    def addressLine34: Mapping[Option[String]] = optional(text(maxLength = 35) verifying (validName))
+    def addressLine1: Mapping[String] = text(maxLength = 35) verifying (validName("addressLine1"))
+    def addressLine2: Mapping[String] = text(maxLength = 35) verifying (validName("addressLine2"))
+    def addressLine3: Mapping[Option[String]] = optional(text(maxLength = 35) verifying (validName("addressLine3")))
+    def addressLine4: Mapping[Option[String]] = optional(text(maxLength = 35) verifying (validName("addressLine4")))
   }
 }

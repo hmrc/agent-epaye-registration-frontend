@@ -120,7 +120,7 @@ object AgentEpayeRegistrationController {
   val contactDetailsForm = Form[RegistrationRequest](
     mapping(
       "agentName" -> name,
-      "contactName" -> name,
+      "contactName" -> contactName,
       "telephoneNumber" -> telephone,
       "emailAddress" -> emailAddr,
       "address" -> mapping(
@@ -133,13 +133,13 @@ object AgentEpayeRegistrationController {
   val registrationRequestForm = Form[RegistrationRequest](
     mapping(
       "agentName" -> name,
-      "contactName" -> name,
+      "contactName" -> contactName,
       "telephoneNumber" -> telephone,
       "emailAddress" -> emailAddr,
       "address" -> mapping(
-        "addressLine1" -> addressLine12,
-        "addressLine2" -> addressLine12,
-        "addressLine3" -> addressLine34,
-        "addressLine4" -> addressLine34,
+        "addressLine1" -> addressLine1,
+        "addressLine2" -> addressLine2,
+        "addressLine3" -> addressLine3,
+        "addressLine4" -> addressLine4,
         "postcode" -> postcode)(Address.apply)(Address.unapply))(RegistrationRequest.apply)(RegistrationRequest.unapply))
 }

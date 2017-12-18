@@ -30,7 +30,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
   "showAgentDetailsForm displays the agent details form page" in {
     val result = await(controller.showAgentDetailsForm(FakeRequest()))
 
-    checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.agent.title"))
+    checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.agent.label"))
   }
 
   "agentDetails page" should {
@@ -44,8 +44,8 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
 
         val result = await(controller.agentDetails(request))
 
-        checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.agent.title"))
-        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.required"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.agent.label"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.agentName.empty"))
       }
     }
     "show the contactDetails page if validation passes" in {
@@ -74,7 +74,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
         val result = await(controller.contactDetails(request))
 
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
-        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.required"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.contactName.empty"))
       }
 
       "the contact name is invalid and the telephone number is invalid" in {
@@ -88,7 +88,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
         val result = await(controller.contactDetails(request))
 
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
-        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.string.invalid"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.contactName.invalid"))
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.telephone.invalid"))
       }
     }
@@ -120,7 +120,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
         val result = await(controller.addressDetails(request))
 
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.address.title"))
-        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.required"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.addressLine1.empty"))
       }
     }
 
@@ -152,7 +152,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
       val request = FakeRequest().withFormUrlEncodedBody(validFormRegestrationDetails: _*)
       val result = await(controller.summary(request))
 
-      checkHtmlResultWithBodyText(result, htmlEscapedMessage("registrationConfirmation.title"))
+      checkHtmlResultWithBodyText(result, htmlEscapedMessage("registrationConfirmation.label"))
 
       checkHtmlResultWithBodyText(result, htmlEscapedMessage(agentRef))
     }
@@ -174,7 +174,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
 
         val result = await(controller.summary(request))
 
-        checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.agent.title"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
         checkAllFormValuesArePresent(result, validFormRegestrationDetails)
       }
       "amending the contact details" in {

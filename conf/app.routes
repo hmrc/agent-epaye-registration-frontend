@@ -7,3 +7,5 @@ POST        /details                uk.gov.hmrc.agentepayeregistrationfrontend.c
 POST        /contact-details        uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.contactDetails
 POST        /address-details        uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.addressDetails
 POST        /summary                uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.summary
+
+GET         /assets/*file           controllers.Assets.at(path="/public", file)
