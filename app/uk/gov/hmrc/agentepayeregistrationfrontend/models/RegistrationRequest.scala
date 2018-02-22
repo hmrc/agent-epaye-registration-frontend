@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 HM Revenue & Customs
+ * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,12 @@ case class RegistrationRequest(
   emailAddress: Option[String],
   address: Address)
 
+case class PageID(pageId: String)
+
 object RegistrationRequest {
   implicit val registrationRequestFormat = Json.format[RegistrationRequest]
+}
+
+object PageID {
+  implicit val pageIdFormat = Json.format[PageID]
 }
