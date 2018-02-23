@@ -1,5 +1,5 @@
 @*
- * Copyright 2017 HM Revenue & Customs
+ * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
 @errorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
 
 @form(
-action = AgentEpayeRegistrationController.addressDetails,
+action = AgentEpayeRegistrationController.details,
 'class -> "form js-form") {
 
 
@@ -82,6 +82,7 @@ action = AgentEpayeRegistrationController.addressDetails,
     <input type="hidden" name="contactName" id="contactName" value="@detailsForm("contactName").value">
     <input type="hidden" name="telephoneNumber" id="telephoneNumber" value="@detailsForm("telephoneNumber").value">
     <input type="hidden" name="emailAddress" id="emailAddress" value="@detailsForm("emailAddress").value">
+    <input type="hidden" name="pageId" id="pageId" value="addressDetails">
 
     <div class="form-group">
         <button class="button" type="submit" id="subscribe">@Messages("button.continue")</button>
