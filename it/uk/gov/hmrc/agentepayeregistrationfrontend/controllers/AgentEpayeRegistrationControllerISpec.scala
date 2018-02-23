@@ -168,7 +168,8 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
 
         status(result) shouldBe 303
 
-        result.header.headers("Location") should include("/agent-epaye-registration/confirmation/HX2000")
+        result.header.headers("Location") should include("/agent-epaye-registration/confirmation")
+        result.session(request)(AgentEpayeRegistrationController.sessionKeyAgentRef) shouldBe "HX2000"
 
         verify(1, postRequestedFor(urlPathEqualTo("/agent-epaye-registration/registrations"))
           .withRequestBody(
@@ -229,7 +230,8 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
     }
 
     "GET /confirmation" in {
-      val result = await(controller.confirmation("XY2345")(FakeRequest()))
+      val request = FakeRequest().withSession(AgentEpayeRegistrationController.sessionKeyAgentRef -> "XY2345")
+      val result = await(controller.confirmation()(request))
 
       checkHtmlResultWithBodyText(result, htmlEscapedMessage("registrationConfirmation.label"))
       checkHtmlResultWithBodyText(result, htmlEscapedMessage("XY2345"))

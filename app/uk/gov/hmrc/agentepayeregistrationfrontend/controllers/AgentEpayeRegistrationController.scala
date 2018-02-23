@@ -81,7 +81,14 @@ class AgentEpayeRegistrationController @Inject() (
             },
             data => {
               Form(single("amend" -> text)).bindFromRequest().fold(
-                _ => registrationService.register(withNoSpacesInPostCode(data)).map(agentRef => Redirect(routes.AgentEpayeRegistrationController.confirmation(agentRef.value).url)),
+                _ => {
+                  registrationService
+                    .register(withNoSpacesInPostCode(data))
+                    .map(agentRef => {
+                      Redirect(routes.AgentEpayeRegistrationController.confirmation.url)
+                        .addingToSession(sessionKeyAgentRef -> agentRef.value)
+                    })
+                },
                 amend => {
                   val filledForm = registrationRequestForm.fill(data)
                   amend match {
@@ -96,7 +103,8 @@ class AgentEpayeRegistrationController @Inject() (
       })
   }
 
-  def confirmation(agentRef: String) = Action { implicit request =>
+  val confirmation = Action { implicit request =>
+    val agentRef = request.session(sessionKeyAgentRef)
     Ok(html.registration_confirmation(agentRef))
   }
 
@@ -105,6 +113,7 @@ class AgentEpayeRegistrationController @Inject() (
 }
 
 object AgentEpayeRegistrationController {
+  private[controllers] val sessionKeyAgentRef = "agentRef"
 
   val agentDetailsForm = Form[RegistrationRequest](
     mapping(

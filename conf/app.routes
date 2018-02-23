@@ -4,6 +4,6 @@ GET         /                       uk.gov.hmrc.agentepayeregistrationfrontend.c
 GET         /start                  uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.start
 GET         /details                uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.showAgentDetailsForm
 POST        /details                uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.details
-GET         /confirmation/:agentRef uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.confirmation(agentRef:String)
+GET         /confirmation           uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.confirmation
 
 GET         /assets/*file           controllers.Assets.at(path="/public", file)
