@@ -229,12 +229,17 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
 
     }
 
-    "GET /confirmation" in {
-      val request = FakeRequest().withSession(AgentEpayeRegistrationController.sessionKeyAgentRef -> "XY2345")
-      val result = await(controller.confirmation()(request))
+    "GET /confirmation" should {
+      "show confirmation page with the newly generated agent reference" in {
+        val request = FakeRequest().withSession(AgentEpayeRegistrationController.sessionKeyAgentRef -> "XY2345")
+        val result = await(controller.confirmation(request))
 
-      checkHtmlResultWithBodyText(result, htmlEscapedMessage("registrationConfirmation.label"))
-      checkHtmlResultWithBodyText(result, htmlEscapedMessage("XY2345"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("registrationConfirmation.label"))
+        checkHtmlResultWithBodyText(result, htmlEscapedMessage("XY2345"))
+      }
+      "return BAD_REQUEST if new generated agent reference is not in session" in {
+        status(controller.confirmation(FakeRequest())) shouldBe 400
+      }
     }
   }
 

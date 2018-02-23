@@ -104,8 +104,9 @@ class AgentEpayeRegistrationController @Inject() (
   }
 
   val confirmation = Action { implicit request =>
-    val agentRef = request.session(sessionKeyAgentRef)
-    Ok(html.registration_confirmation(agentRef))
+    request.session.get(sessionKeyAgentRef).map { agentRef =>
+      Ok(html.registration_confirmation(agentRef))
+    }.getOrElse(BadRequest)
   }
 
   private def withNoSpacesInPostCode(data: RegistrationRequest): RegistrationRequest =
