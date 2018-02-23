@@ -51,11 +51,9 @@ class AgentEpayeRegistrationController @Inject() (
 
   val details = Action.async { implicit request =>
     pageIdForm.bindFromRequest().fold(
-      formWithErrors => {
-        Future.successful(Ok(html.start()))
-      },
-      data => {
-        data.pageId match {
+      formWithErrors => Future.successful(BadRequest),
+      pageIdData => {
+        pageIdData.pageId match {
           case "agentDetails" => agentDetailsForm.bindFromRequest().fold(
             formWithErrors => {
               Future.successful(Ok(html.agentDetails(formWithErrors)))
@@ -93,6 +91,7 @@ class AgentEpayeRegistrationController @Inject() (
                   }
                 })
             })
+          case _ => Future.successful(BadRequest)
         }
       })
   }
