@@ -48,7 +48,7 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
       ("address.postcode" -> "PO111ST")))
 
   "error_template view" should {
-    "render title, heading and message" in new App {
+    "render title, heading and message" in {
       val pageTitle = "My custom page title"
       val heading = "My custom heading"
       val message = "My custom message"
@@ -69,7 +69,7 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
   }
 
   "start view" should {
-    "render title and messages" in new App {
+    "render title and messages" in {
       val html = new start().render(
         request = FakeRequest(),
         messages = Messages.Implicits.applicationMessages,
@@ -78,7 +78,6 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
 
       import Messages.Implicits.applicationMessages
       content should include(Messages("start.title"))
-      content should include(Messages("start.label"))
       content should include(Messages("start.intro"))
       content should include(Messages("start.helpdesklink.text1"))
       content should include(Messages("start.helpdesklink.text2"))
@@ -89,7 +88,7 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
   }
 
   "agent details view" should {
-    "render all of the form field values" in new App {
+    "render all of the form field values" in {
       val html = new agentDetails().render(
         detailsForm = filledForm,
         request = FakeRequest(),
@@ -105,7 +104,7 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
   }
 
   "contact details view" should {
-    "render all of the form field values" in new App {
+    "render all of the form field values" in {
       val html = new contactDetails().render(
         detailsForm = filledForm,
         request = FakeRequest(),
@@ -121,7 +120,7 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
   }
 
   "address details view" should {
-    "render all of the form field values" in new App {
+    "render all of the form field values" in {
       val html = new addressDetails().render(
         detailsForm = filledForm,
         request = FakeRequest(),
@@ -137,7 +136,7 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
   }
 
   "summary view" should {
-    "render all of the form field values" in new App {
+    "render all of the form field values" in {
       val html = new summary().render(
         detailsForm = filledForm,
         request = FakeRequest(),
@@ -153,7 +152,7 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
   }
 
   "registration_confirmation view" should {
-    "render the agent reference code" in new App {
+    "render the agent reference code" in {
       val html = new registration_confirmation().render(
         payeAgentReference = "My custom agent reference",
         request = FakeRequest(),
@@ -163,6 +162,7 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
       val content = contentAsString(html)
 
       content should include("My custom agent reference")
+      content should include("Print this page")
 
       val html2 = new registration_confirmation().f(
         "My custom agent reference")(FakeRequest(), Messages.Implicits.applicationMessages, app.configuration)
@@ -173,7 +173,7 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
   }
 
   "main_template view" should {
-    "render all supplied arguments" in new App {
+    "render all supplied arguments" in {
       val view = new main_template()
       val html = view.render(
         title = "My custom page title",
@@ -193,7 +193,6 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
       content should include("My custom content header")
       content should include("my-custom-body-class")
       content should include("my-custom-main-class")
-      content should include("My custom script")
       content should include("My custom main content HTML")
 
       val html2 = view.f(
@@ -208,7 +207,7 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
   }
 
   "govuk wrapper view" should {
-    "render all of the supplied arguments" in new App {
+    "render all of the supplied arguments" in {
 
       val html = new govuk_wrapper().render(
         title = "My custom page title",
@@ -233,7 +232,6 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
       content should include("My custom content header")
       content should include("My custom main content")
       content should include("My custom service info content")
-      content should include("My custom script")
 
       val html2 = new govuk_wrapper().f(
         "My custom page title",
