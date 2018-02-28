@@ -21,7 +21,7 @@
 
 @(detailsForm : Form[RegistrationRequest])(implicit request: Request[_], messages: Messages, config: Configuration)
 
-@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = error_prefix(detailsForm) + Messages("details.contact.title"), bodyClasses = None) {
+@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = error_prefix(detailsForm) + Messages("details.agent.title"), bodyClasses = None) {
 
   @errorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
 
