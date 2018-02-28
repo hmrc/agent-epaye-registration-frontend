@@ -204,7 +204,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
 
           val result = await(controller.details(request))
 
-          checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
+          checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.agent.title"))
           checkAllFormValuesArePresent(result, validFormRegistrationDetails())
         }
         "amending the contact details" in {
