@@ -18,19 +18,30 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.{ Configuration, Environment }
 import play.api.i18n.MessagesApi
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import play.api.{ Application, Configuration, Environment }
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.http.BadGatewayException
+import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
 import scala.concurrent.Future
-import uk.gov.hmrc.http.BadGatewayException
 
 class ErrorHandlerSpec extends PlaySpec with MockitoSugar with GuiceOneAppPerSuite with BeforeAndAfterEach {
+
   val messagesApi = app.injector.instanceOf[MessagesApi]
-  val handler = new ErrorHandler()(app.injector.instanceOf[Configuration], app.injector.instanceOf[Environment], messagesApi)
+  val handler = new ErrorHandler(app.injector.instanceOf[Environment], messagesApi, app.injector.instanceOf[AuditConnector], "")(app.injector.instanceOf[Configuration], scala.concurrent.ExecutionContext.Implicits.global)
+
+  override implicit lazy val app: Application = appBuilder.build()
+
+  protected def appBuilder: GuiceApplicationBuilder = {
+    new GuiceApplicationBuilder()
+      .configure(
+        "auditing.enabled" -> false)
+  }
 
   "ErrorHandler should show the error page" when {
     "a server error occurs" in {
