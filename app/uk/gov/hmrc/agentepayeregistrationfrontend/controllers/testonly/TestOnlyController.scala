@@ -26,11 +26,11 @@ import play.api.mvc._
 import play.api.{ Configuration, Environment, Logger, Mode }
 import uk.gov.hmrc.auth.core.AuthProvider.PrivilegedApplication
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.play.frontend.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.frontend.config.AuthRedirects
+import uk.gov.hmrc.play.bootstrap.config.AuthRedirects
 
 @Singleton
 class TestOnlyController @Inject() (
