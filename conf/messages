@@ -47,15 +47,15 @@ error.agent.required=You must enter an agent name
 details.contact.title=Enter your contact details
 details.contact.description=HMRC will treat this as your main contact for PAYE for Agents registration.
 details.contact.contactName.label=Contact name
-details.contact.emailAddress.label=Email address
-details.contact.telephoneNumber.label=Telephone number
+details.contact.emailAddress.label=Email address (optional)
+details.contact.telephoneNumber.label=Telephone number (optional)
 
 # Address Details page
 details.address.title=Enter your business address
 details.address.addressline1.label=Address line 1
 details.address.addressline2.label=Address line 2
-details.address.addressline3.label=Address line 3
-details.address.addressline4.label=Address line 4
+details.address.addressline3.label=Address line 3 (optional)
+details.address.addressline4.label=Address line 4 (optional)
 details.address.postcode.label=Postcode
 
 # Summary page
