@@ -75,7 +75,7 @@ class AgentEpayeRegistrationController @Inject() (
             data => {
               Future.successful(Ok(html.summary(registrationRequestForm.fill(data))))
             })
-          case "summary" => registrationRequestForm.bindFromRequest().fold(
+          case "confirmationPage" => registrationRequestForm.bindFromRequest().fold(
             formWithErrors => {
               Future.successful(Ok(html.summary(formWithErrors)))
             },

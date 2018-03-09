@@ -23,7 +23,9 @@
 
 @uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = error_prefix(detailsForm) + Messages("details.address.title"), bodyClasses = None) {
 
-@errorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
+@if(detailsForm.hasErrors){
+    @errorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
+}
 
 @form(
 action = AgentEpayeRegistrationController.details,
