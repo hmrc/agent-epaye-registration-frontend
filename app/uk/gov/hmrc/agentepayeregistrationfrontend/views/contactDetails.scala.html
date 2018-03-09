@@ -24,7 +24,9 @@
 
 @uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title =  error_prefix(detailsForm) + Messages("details.contact.title"), bodyClasses = None) {
 
-@errorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
+@if(detailsForm.hasErrors){
+    @errorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
+}
 
 @form(
 action = AgentEpayeRegistrationController.details,
@@ -38,7 +40,7 @@ action = AgentEpayeRegistrationController.details,
         @input(
             detailsForm("contactName"),
             '_label -> Messages("details.contact.contactName.label"),
-            '_inputClass -> "input--medium input--cleared",
+            '_inputClass -> "form-control input--cleared",
             '_labelClass -> "heading-small soft--ends"
         )
     </div>
@@ -47,7 +49,7 @@ action = AgentEpayeRegistrationController.details,
         @input(
             detailsForm("emailAddress"),
             '_label -> Messages("details.contact.emailAddress.label"),
-            '_inputClass -> "input--medium input--cleared",
+            '_inputClass -> "form-control input--cleared",
             '_labelClass -> "heading-small soft--ends"
         )
     </div>
@@ -56,7 +58,7 @@ action = AgentEpayeRegistrationController.details,
         @input(
             detailsForm("telephoneNumber"),
             '_label -> Messages("details.contact.telephoneNumber.label"),
-            '_inputClass -> "input--medium input--cleared",
+            '_inputClass -> "form-control input--cleared",
             '_labelClass -> "heading-small soft--ends"
         )
     </div>

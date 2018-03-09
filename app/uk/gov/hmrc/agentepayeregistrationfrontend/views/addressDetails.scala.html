@@ -23,7 +23,9 @@
 
 @uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = error_prefix(detailsForm) + Messages("details.address.title"), bodyClasses = None) {
 
-@errorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
+@if(detailsForm.hasErrors){
+    @errorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
+}
 
 @form(
 action = AgentEpayeRegistrationController.details,
@@ -37,7 +39,7 @@ action = AgentEpayeRegistrationController.details,
         @input(
             detailsForm("address.addressLine1"),
             '_label -> Messages("details.address.addressline1.label"),
-            '_inputClass -> "input--medium input--cleared",
+            '_inputClass -> "form-control input--cleared",
             '_labelClass -> "heading-small soft--ends"
         )
     </div>
@@ -46,7 +48,7 @@ action = AgentEpayeRegistrationController.details,
         @input(
             detailsForm("address.addressLine2"),
             '_label -> Messages("details.address.addressline2.label"),
-            '_inputClass -> "input--medium input--cleared",
+            '_inputClass -> "form-control input--cleared",
             '_labelClass -> "heading-small soft--ends"
         )
     </div>
@@ -55,7 +57,7 @@ action = AgentEpayeRegistrationController.details,
         @input(
             detailsForm("address.addressLine3"),
             '_label -> Messages("details.address.addressline3.label"),
-            '_inputClass -> "input--medium input--cleared",
+            '_inputClass -> "form-control input--cleared",
             '_labelClass -> "heading-small soft--ends"
         )
     </div>
@@ -64,7 +66,7 @@ action = AgentEpayeRegistrationController.details,
         @input(
             detailsForm("address.addressLine4"),
             '_label -> Messages("details.address.addressline4.label"),
-            '_inputClass -> "input--medium input--cleared",
+            '_inputClass -> "form-control input--cleared",
             '_labelClass -> "heading-small soft--ends"
         )
     </div>
@@ -73,7 +75,7 @@ action = AgentEpayeRegistrationController.details,
         @input(
             detailsForm("address.postcode"),
             '_label -> Messages("details.address.postcode.label"),
-            '_inputClass -> "input--small input--cleared postcode",
+            '_inputClass -> "form-control input--cleared postcode input--small",
             '_labelClass -> "heading-small soft--ends"
         )
     </div>

@@ -23,7 +23,10 @@
 
 @uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = error_prefix(detailsForm) + Messages("details.agent.title"), bodyClasses = None) {
 
-  @errorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
+    @if(detailsForm.hasErrors){
+        @errorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
+    }
+
 
   @form(
     action = AgentEpayeRegistrationController.details,
@@ -37,7 +40,7 @@
       @input(
         detailsForm("agentName"),
         '_label -> Messages("details.agent.agentName.label"),
-        '_inputClass -> "input--medium input--cleared",
+        '_inputClass -> "form-control input--cleared",
         '_labelClass -> "heading-small soft--ends"
       )
     </div>

@@ -1,3 +1,5 @@
+servicename.titleSuffix=- PAYE for Agents - GOV.UK
+
 # Error messages for digital services
 global.error.400.title=Bad request - 400
 global.error.400.heading=Bad request
@@ -45,15 +47,15 @@ error.agent.required=You must enter an agent name
 details.contact.title=Enter your contact details
 details.contact.description=HMRC will treat this as your main contact for PAYE for Agents registration.
 details.contact.contactName.label=Contact name
-details.contact.emailAddress.label=Email address
-details.contact.telephoneNumber.label=Telephone number
+details.contact.emailAddress.label=Email address (optional)
+details.contact.telephoneNumber.label=Telephone number (optional)
 
 # Address Details page
 details.address.title=Enter your business address
 details.address.addressline1.label=Address line 1
 details.address.addressline2.label=Address line 2
-details.address.addressline3.label=Address line 3
-details.address.addressline4.label=Address line 4
+details.address.addressline3.label=Address line 3 (optional)
+details.address.addressline4.label=Address line 4 (optional)
 details.address.postcode.label=Postcode
 
 # Summary page
@@ -63,10 +65,7 @@ summary.header.contactDetails=Contact details
 summary.header.addressDetails=Address
 summary.register.title=Now send your application
 summary.register.description=By sending this application you are confirming that, to the best of your knowledge, the details you are providing are correct.
-summary.details.agencyName=Agency name:
-summary.details.contactName=Contact name:
-summary.details.telephoneNumber=Telephone number:
-summary.details.emailAddress=Email address:
+summary.details.agencyName=Agency name
 summary.link.change=Change
 
 # Registration confirmation
