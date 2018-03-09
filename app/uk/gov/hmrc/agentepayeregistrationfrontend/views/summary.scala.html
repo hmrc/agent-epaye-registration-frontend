@@ -42,10 +42,10 @@
         <dl class="govuk-check-your-answers cya-questions-short">
             <div>
                 <dt class="cya-question">
-                    @Messages("summary.header.agentDetails")
+                    @Messages("summary.details.agencyName")
                 </dt>
                 <dd class="cya-answer" id="registration-name">
-                    @Messages("summary.details.agencyName") @detailsForm("agentName").value
+                    @detailsForm("agentName").value
                 </dd>
                 <dd class="cya-change">
                     <button class="button--link-style" type="submit" name="amend" value="agentDetails">
@@ -59,10 +59,9 @@
                     @Messages("summary.header.contactDetails")
                 </dt>
                 <dd class="cya-answer">
-                    @Messages("summary.details.contactName") @detailsForm("contactName").value
-                      <br>@Messages("summary.details.telephoneNumber") @detailsForm("telephoneNumber").value
-                      <br>
-                      @Messages("summary.details.emailAddress") @detailsForm("emailAddress").value
+                    <span class="display-block">@detailsForm("contactName").value</span>
+                    <span class="display-block">@detailsForm("emailAddress").value</span>
+                    <span class="display-block">@detailsForm("telephoneNumber").value</span>
                 </dd>
                 <dd class="cya-change">
                     <button class="button--link-style" type="submit" name="amend" value="contactDetails">
@@ -76,11 +75,11 @@
                     @Messages("summary.header.addressDetails")
                 </dt>
                 <dd class="cya-answer" id="utr">
-                    @detailsForm("address.addressLine1").value <br>
-                    @detailsForm("address.addressLine2").value <br>
-                    @detailsForm("address.addressLine3").value @if(detailsForm("address.addressLine3").value){<br>}
-                    @detailsForm("address.addressLine4").value @if(detailsForm("address.addressLine4").value){<br>}
-                    @detailsForm("address.postcode").value
+                    <span class="display-block">@detailsForm("address.addressLine1").value</span>
+                    <span class="display-block">@detailsForm("address.addressLine2").value</span>
+                    @if(detailsForm("address.addressLine3").value){<span class="display-block">}@detailsForm("address.addressLine3").value @if(detailsForm("address.addressLine3").value){</span>}
+                    @if(detailsForm("address.addressLine3").value){<span class="display-block">}@detailsForm("address.addressLine4").value @if(detailsForm("address.addressLine4").value){</span>}
+                    <span class="display-block">@detailsForm("address.postcode").value</span>
                 </dd>
                 <dd class="cya-change">
                     <button class="button--link-style" type="submit" name="amend" value="addressDetails">

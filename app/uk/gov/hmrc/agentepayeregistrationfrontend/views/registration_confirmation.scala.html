@@ -22,17 +22,16 @@
 
 @uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("registrationConfirmation.title"), bodyClasses = None) {
 
-<div class="transaction-banner--complete">
-    <h1 class="transaction-banner__heading">@Messages("registrationConfirmation.label")</h1>
-    <p><strong class="heading-medium">@payeAgentReference</strong></p>
-</div>
+    <div class="transaction-banner--complete">
+        <h1 class="transaction-banner__heading">@Messages("registrationConfirmation.label")<span class="heading-medium display-block">@payeAgentReference</span></h1>
+    </div>
 
-<p>
-    <strong>@Messages("registrationConfirmation.boldSaveReminder")</strong>
-    @Messages("registrationConfirmation.normalSaveReminder")
-</p>
+    <p>
+        <strong>@Messages("registrationConfirmation.boldSaveReminder")</strong>
+        @Messages("registrationConfirmation.normalSaveReminder")
+    </p>
 
-<p>@Messages("registrationConfirmation.noteAboutDelay")</p>
+    <p>@Messages("registrationConfirmation.noteAboutDelay")</p>
 
     <strong><a class="print-link print-hidden js-visible" onClick="window.print()" href="" target="_blank">@Messages("button.print")</a></strong>
 

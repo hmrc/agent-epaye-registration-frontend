@@ -139,7 +139,6 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
           validFormRegistrationDetails("pageId" -> "addressDetails"): _*)
 
         val result = await(controller.details(request))
-
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("summary.title"))
       }
 

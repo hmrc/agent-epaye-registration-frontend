@@ -1,3 +1,5 @@
+servicename.titleSuffix=- PAYE for Agents - GOV.UK
+
 # Error messages for digital services
 global.error.400.title=Bad request - 400
 global.error.400.heading=Bad request
@@ -63,10 +65,7 @@ summary.header.contactDetails=Contact details
 summary.header.addressDetails=Address
 summary.register.title=Now send your application
 summary.register.description=By sending this application you are confirming that, to the best of your knowledge, the details you are providing are correct.
-summary.details.agencyName=Agency name:
-summary.details.contactName=Contact name:
-summary.details.telephoneNumber=Telephone number:
-summary.details.emailAddress=Email address:
+summary.details.agencyName=Agency name
 summary.link.change=Change
 
 # Registration confirmation
