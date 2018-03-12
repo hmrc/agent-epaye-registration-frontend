@@ -36,7 +36,7 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
     }
 
     def shouldRejectFieldValueAsTooLong(fieldValue: String): Unit = {
-      bind(fieldValue) should matchPattern { case Left(List(FormError("testKey", List("error.maxLength"), _))) => }
+      bind(fieldValue) should matchPattern { case Left(List(FormError("testKey", List("error.postcode.maxLength"), _))) => }
     }
 
     "accept valid postcodes" in {
@@ -155,7 +155,7 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
     }
 
     def shouldRejectFieldValueAsTooLong(fieldValue: String): Unit = {
-      bind(fieldValue) should matchPattern { case Left(List(FormError("testKey", List("error.maxLength"), _))) => }
+      bind(fieldValue) should matchPattern { case Left(List(FormError("testKey", List("error.telephone.maxLength"), _))) => }
     }
 
     def shouldAcceptFieldValue(fieldValue: String): Unit = {
@@ -202,7 +202,7 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
     }
 
     def shouldRejectFieldValueAsTooLong(fieldValue: String): Unit = {
-      bind(fieldValue) should matchPattern { case Left(List(FormError("testKey", List("error.maxLength"), _))) => }
+      bind(fieldValue) should matchPattern { case Left(List(FormError("testKey", List("error.addressLine1.maxLength"), _))) => }
     }
 
     def shouldAcceptFieldValue(fieldValue: String): Unit = {
@@ -254,7 +254,7 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
     def bind(fieldValue: String) = addressLine34Mapping.bind(Map("testKey" -> fieldValue))
 
     def shouldRejectFieldValueAsTooLong(fieldValue: String): Unit = {
-      bind(fieldValue) should matchPattern { case Left(List(FormError("testKey", List("error.maxLength"), _))) => }
+      bind(fieldValue) should matchPattern { case Left(List(FormError("testKey", List("error.addressLine3.maxLength"), _))) => }
     }
 
     def shouldAcceptFieldValue(fieldValue: String): Unit = {
@@ -304,7 +304,7 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
     }
 
     def shouldRejectFieldValueAsTooLong(fieldValue: String): Unit = {
-      bind(fieldValue) should matchPattern { case Left(List(FormError("testKey", List("error.maxLength"), _))) => }
+      bind(fieldValue) should matchPattern { case Left(List(FormError("testKey", List("error.agentName.maxLength"), _))) => }
     }
 
     def shouldAcceptFieldValue(fieldValue: String): Unit = {

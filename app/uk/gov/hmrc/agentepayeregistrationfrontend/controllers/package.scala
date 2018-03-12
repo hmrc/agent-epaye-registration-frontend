@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend
 
-import play.api.data.Forms.{text, _}
+import play.api.data.Forms.{ text, _ }
 import play.api.data.Mapping
-import play.api.data.validation.{Constraint, Constraints, _}
+import play.api.data.validation.{ Constraint, Constraints, _ }
 
 package object controllers {
 
