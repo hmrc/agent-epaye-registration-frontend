@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend
 
-import play.api.data.Forms._
+import play.api.data.Forms.{ text, _ }
 import play.api.data.Mapping
 import play.api.data.validation.{ Constraint, Constraints, _ }
 
@@ -76,14 +76,23 @@ package object controllers {
       }
     }
 
-    def postcode: Mapping[String] = text(maxLength = 8) verifying nonEmptyPostcode
-    def telephone: Mapping[Option[String]] = optional(text(maxLength = 35) verifying telephoneNumber)
-    def name: Mapping[String] = text(maxLength = 56) verifying (validName("agentName"))
-    def contactName: Mapping[String] = text(maxLength = 56) verifying (validName("contactName"))
-    def emailAddr: Mapping[Option[String]] = optional(text(maxLength = 129) verifying emailAddress)
-    def addressLine1: Mapping[String] = text(maxLength = 35) verifying (validName("addressLine1"))
-    def addressLine2: Mapping[String] = text(maxLength = 35) verifying (validName("addressLine2"))
-    def addressLine3: Mapping[Option[String]] = optional(text(maxLength = 35) verifying (validName("addressLine3")))
-    def addressLine4: Mapping[Option[String]] = optional(text(maxLength = 35) verifying (validName("addressLine4")))
+    def textWithMaxLen(maxLength: Int, messageKey: String = "error.maxLength"): Mapping[String] = {
+      text verifying maxLenWithMsg(maxLength, messageKey)
+    }
+
+    def maxLenWithMsg(maxLength: Int, messageKey: String = "error.maxLength"): Constraint[String] = Constraint[String]("constraint.maxLength", maxLength) { o =>
+      require(maxLength >= 0, "string maxLength must not be negative")
+      if (o == null) Invalid(ValidationError(messageKey, maxLength)) else if (o.size <= maxLength) Valid else Invalid(ValidationError(messageKey, maxLength))
+    }
+
+    def postcode: Mapping[String] = textWithMaxLen(maxLength = 8, messageKey = "error.postcode.maxLength") verifying nonEmptyPostcode
+    def telephone: Mapping[Option[String]] = optional(textWithMaxLen(maxLength = 35, messageKey = "error.telephone.maxLength") verifying telephoneNumber)
+    def name: Mapping[String] = textWithMaxLen(maxLength = 56, messageKey = "error.agentName.maxLength") verifying (validName("agentName"))
+    def contactName: Mapping[String] = textWithMaxLen(maxLength = 56, messageKey = "error.contactName.maxLength") verifying (validName("contactName"))
+    def emailAddr: Mapping[Option[String]] = optional(textWithMaxLen(maxLength = 129, messageKey = "error.emailAddress.maxLength") verifying emailAddress)
+    def addressLine1: Mapping[String] = textWithMaxLen(maxLength = 35, messageKey = "error.addressLine1.maxLength") verifying (validName("addressLine1"))
+    def addressLine2: Mapping[String] = textWithMaxLen(maxLength = 35, messageKey = "error.addressLine2.maxLength") verifying (validName("addressLine2"))
+    def addressLine3: Mapping[Option[String]] = optional(textWithMaxLen(maxLength = 35, messageKey = "error.addressLine3.maxLength") verifying (validName("addressLine3")))
+    def addressLine4: Mapping[Option[String]] = optional(textWithMaxLen(maxLength = 35, messageKey = "error.addressLine4.maxLength") verifying (validName("addressLine4")))
   }
 }
