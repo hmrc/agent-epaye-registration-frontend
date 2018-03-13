@@ -42,14 +42,14 @@ error.postcode.maxLength=Postcode must be {0} characters or less
 
 # start page
 start.title=Get an Agent Reference for PAYE for Agents
-start.intro=We have designed this service for PAYE agents and payroll bureaux registering for the PAYE for Agents online service.
+start.intro=If you are a PAYE agent or payroll bureau, use this service to get a reference so you can register for PAYE for Agents.
 start.helpdesklink.text1=Contact the online services helpdesk
-start.helpdesklink.text2=if you need help.
+start.helpdesklink.text2=if you need help with a technical problem when using this service.
 
 # Agent Details page
 details.agent.title=Enter your agent name
 details.agent.label=Enter your agent name
-details.agent.description=This could be your agency name or payroll bureau name, or your own name if you''re acting as an individual.
+details.agent.description=This could be your agency name, payroll bureau name, or your own name if you are acting as an individual.
 details.agent.agentName.label=Agent name
 error.agent.required=Enter your agent name
 
@@ -80,10 +80,11 @@ summary.link.change=Change
 
 # Registration confirmation
 registrationConfirmation.title=Agent EPAYE Registration
-registrationConfirmation.label=Save your Agent Reference:
-registrationConfirmation.boldSaveReminder=You must save this number for your agency''s records.
-registrationConfirmation.normalSaveReminder=You''ll need it to register for PAYE online.
-registrationConfirmation.noteAboutDelay=Please note, there can be a delay of up to four working days before you can complete your registration. This allows for the uploading of your reference details onto the Government Gateway.
+registrationConfirmation.h2=Save this reference and use it to register for PAYE for Agents
+registrationConfirmation.h3=What happens next
+registrationConfirmation.label=Your Agent Reference is: {0}
+registrationConfirmation.normalSaveReminder=We need to add your Agent Reference to your Government Gateway account. This can take up to 4 days. Once added, you will be able to register for PAYE for Agents.
+
 
 button.continue=Continue
 button.register=Accept and send application
