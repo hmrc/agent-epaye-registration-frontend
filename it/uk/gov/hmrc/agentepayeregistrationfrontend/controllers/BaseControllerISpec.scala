@@ -36,6 +36,8 @@ class BaseControllerISpec extends UnitSpec with OneAppPerSuite with WireMockSupp
 
   protected def htmlEscapedMessage(key: String): String = HtmlFormat.escape(Messages(key)).toString
 
+  protected def htmlEscapedMessage(key: String, param: String): String = HtmlFormat.escape(Messages(key, param)).toString
+
   implicit def hc(implicit request: FakeRequest[_]): HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
 }
