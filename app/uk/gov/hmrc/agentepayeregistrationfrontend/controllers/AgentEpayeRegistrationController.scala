@@ -120,8 +120,8 @@ object AgentEpayeRegistrationController {
     mapping(
       "agentName" -> name,
       "contactName" -> text,
-      "telephoneNumber" -> optional(text),
       "emailAddress" -> optional(text),
+      "telephoneNumber" -> optional(text),
       "address" -> mapping(
         "addressLine1" -> text,
         "addressLine2" -> text,
@@ -133,8 +133,8 @@ object AgentEpayeRegistrationController {
     mapping(
       "agentName" -> name,
       "contactName" -> contactName,
-      "telephoneNumber" -> telephone,
       "emailAddress" -> emailAddr,
+      "telephoneNumber" -> telephone,
       "address" -> mapping(
         "addressLine1" -> text,
         "addressLine2" -> text,
@@ -146,8 +146,8 @@ object AgentEpayeRegistrationController {
     mapping(
       "agentName" -> name,
       "contactName" -> contactName,
-      "telephoneNumber" -> telephone,
       "emailAddress" -> emailAddr,
+      "telephoneNumber" -> telephone,
       "address" -> mapping(
         "addressLine1" -> addressLine1,
         "addressLine2" -> addressLine2,

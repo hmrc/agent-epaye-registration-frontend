@@ -45,16 +45,16 @@ package object controllers {
       if (o == null) Invalid(ValidationError(messageKey)) else if (o.trim.isEmpty) Invalid(ValidationError(messageKey)) else Valid
     }
 
-    def oneAtATime[T](first: Constraint[T], second: Constraint[T]) =
-      new Constraint[T](None, Seq()) { t: T =>
-        first(t) match {
-          case Valid => second(t)
-          case other => other
-        }
-      }
-
     def textWithMaxLen(maxLength: Int, messageKey: String = "error.maxLength"): Mapping[String] = {
       text verifying maxLenWithMsg(maxLength, messageKey)
+    }
+
+    private def emailAddress: Constraint[String] = Constraint[String]("constraint.email") { e =>
+      if (e == null) Invalid(ValidationError("error.email"))
+      else if (e.trim.isEmpty) Invalid(ValidationError("error.email"))
+      else emailRegex.findFirstMatchIn(e.trim)
+        .map(_ => Valid)
+        .getOrElse(Invalid("error.email"))
     }
 
     private val telephoneNumber: Constraint[String] = Constraint[String] { fieldValue: String =>
@@ -66,14 +66,6 @@ package object controllers {
           case _ => Valid
         }
       }
-    }
-
-    private def emailAddress: Constraint[String] = Constraint[String]("constraint.email") { e =>
-      if (e == null) Invalid(ValidationError("error.email"))
-      else if (e.trim.isEmpty) Invalid(ValidationError("error.email"))
-      else emailRegex.findFirstMatchIn(e.trim)
-        .map(_ => Valid)
-        .getOrElse(Invalid("error.email"))
     }
 
     private def validName(messageKey: String): Constraint[String] = Constraint[String] { fieldValue: String =>
@@ -93,14 +85,21 @@ package object controllers {
       if (o == null) Invalid(ValidationError(messageKey, maxLength)) else if (o.size <= maxLength) Valid else Invalid(ValidationError(messageKey, maxLength))
     }
 
-    def postcode: Mapping[String] = text.verifying(oneAtATime(maxLenWithMsg(8, "error.postcode.maxLength"), nonEmptyPostcode))
-    def telephone: Mapping[Option[String]] = optional(text.verifying(oneAtATime(maxLenWithMsg(35, "error.telephone.maxLength"), telephoneNumber)))
-    def name: Mapping[String] = text.verifying(oneAtATime(maxLenWithMsg(56, "error.agentName.maxLength"), validName("agentName")))
-    def contactName: Mapping[String] = text.verifying(oneAtATime(maxLenWithMsg(56, "error.contactName.maxLength"), validName("contactName")))
-    def emailAddr: Mapping[Option[String]] = optional(text.verifying(oneAtATime(maxLenWithMsg(129, "error.emailAddress.maxLength"), emailAddress)))
-    def addressLine1: Mapping[String] = text.verifying(oneAtATime(maxLenWithMsg(35, "error.addressLine1.maxLength"), validName("addressLine1")))
-    def addressLine2: Mapping[String] = text.verifying(oneAtATime(maxLenWithMsg(35, "error.addressLine2.maxLength"), validName("addressLine2")))
-    def addressLine3: Mapping[Option[String]] = optional(text.verifying(oneAtATime(maxLenWithMsg(35, "error.addressLine3.maxLength"), validName("addressLine3"))))
-    def addressLine4: Mapping[Option[String]] = optional(text.verifying(oneAtATime(maxLenWithMsg(35, "error.addressLine4.maxLength"), validName("addressLine4"))))
+    def checkOneAtATime[T](firstConstraint: Constraint[T], secondConstraint: Constraint[T]) = Constraint[T] { fieldValue: T =>
+      firstConstraint(fieldValue) match {
+        case i @ Invalid(_) => i
+        case Valid => secondConstraint(fieldValue)
+      }
+    }
+
+    def name: Mapping[String] = text verifying checkOneAtATime(maxLenWithMsg(maxLength = 56, messageKey = "error.agentName.maxLength"), validName("agentName"))
+    def contactName: Mapping[String] = text verifying checkOneAtATime(maxLenWithMsg(56, "error.contactName.maxLength"), validName("contactName"))
+    def emailAddr: Mapping[Option[String]] = optional(text verifying checkOneAtATime(maxLenWithMsg(129, "error.emailAddress.maxLength"), emailAddress))
+    def telephone: Mapping[Option[String]] = optional(text verifying checkOneAtATime(maxLenWithMsg(maxLength = 35, messageKey = "error.telephone.maxLength"), telephoneNumber))
+    def addressLine1: Mapping[String] = text verifying checkOneAtATime(maxLenWithMsg(35, "error.addressLine1.maxLength"), validName("addressLine1"))
+    def addressLine2: Mapping[String] = text verifying checkOneAtATime(maxLenWithMsg(35, "error.addressLine2.maxLength"), validName("addressLine2"))
+    def addressLine3: Mapping[Option[String]] = optional(text verifying checkOneAtATime(maxLenWithMsg(35, "error.addressLine3.maxLength"), validName("addressLine3")))
+    def addressLine4: Mapping[Option[String]] = optional(text verifying checkOneAtATime(maxLenWithMsg(35, "error.addressLine4.maxLength"), validName("addressLine4")))
+    def postcode: Mapping[String] = text verifying checkOneAtATime(maxLenWithMsg(8, "error.postcode.maxLength"), nonEmptyPostcode)
   }
 }

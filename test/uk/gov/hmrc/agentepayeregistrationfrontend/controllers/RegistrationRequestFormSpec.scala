@@ -29,8 +29,8 @@ class RegistrationRequestFormSpec extends UnitSpec {
       val value = RegistrationRequest(
         agentName = "agentName",
         contactName = "",
-        telephoneNumber = None,
         emailAddress = None,
+        telephoneNumber = None,
         address = Address(
           addressLine1 = "",
           addressLine2 = "",
@@ -58,8 +58,8 @@ class RegistrationRequestFormSpec extends UnitSpec {
       val value = RegistrationRequest(
         agentName = "agentName",
         contactName = "contactName",
-        telephoneNumber = Some("098765321"),
         emailAddress = Some("foo@bar.com"),
+        telephoneNumber = Some("098765321"),
         address = Address(
           addressLine1 = "",
           addressLine2 = "",
@@ -70,8 +70,8 @@ class RegistrationRequestFormSpec extends UnitSpec {
       val fieldValues = Map(
         "agentName" -> "agentName",
         "contactName" -> "contactName",
-        "telephoneNumber" -> "098765321",
         "emailAddress" -> "foo@bar.com",
+        "telephoneNumber" -> "098765321",
         "address.addressLine1" -> "",
         "address.addressLine2" -> "",
         "address.postcode" -> "")
@@ -89,8 +89,8 @@ class RegistrationRequestFormSpec extends UnitSpec {
       val value = RegistrationRequest(
         agentName = "agentName",
         contactName = "contactName",
-        telephoneNumber = Some("098765321"),
         emailAddress = Some("foo@bar.com"),
+        telephoneNumber = Some("098765321"),
         address = Address(
           addressLine1 = "Address line 1",
           addressLine2 = "Sometown Somewhere",
@@ -101,8 +101,8 @@ class RegistrationRequestFormSpec extends UnitSpec {
       val fieldValues = Map(
         "agentName" -> "agentName",
         "contactName" -> "contactName",
-        "telephoneNumber" -> "098765321",
         "emailAddress" -> "foo@bar.com",
+        "telephoneNumber" -> "098765321",
         "address.addressLine1" -> "Address line 1",
         "address.addressLine2" -> "Sometown Somewhere",
         "address.addressLine3" -> "Address line 3",
