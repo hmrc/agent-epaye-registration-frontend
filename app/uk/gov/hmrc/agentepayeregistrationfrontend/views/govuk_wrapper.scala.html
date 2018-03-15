@@ -30,9 +30,9 @@
 
 @betaBanner = {
     @uiLayouts.betaBanner(userLoggedIn = false,
-        betaFeedbackUrl = "",
-        betaFeedbackUnauthenticatedUrl = "",
-        showFeedbackLinkInBetaBanner = false)
+        betaFeedbackUrl = configuration.getString("contact-frontend-host").get+"/contact/beta-feedback-unauthenticated",
+        betaFeedbackUnauthenticatedUrl = configuration.getString("contact-frontend-host").get+"/contact/beta-feedback-unauthenticated",
+        showFeedbackLinkInBetaBanner = true)
 }
 
 @headScripts = {
