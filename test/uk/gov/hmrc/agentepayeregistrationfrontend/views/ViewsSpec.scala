@@ -39,8 +39,8 @@ class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
     .copy(data = Map(
       ("contactName" -> "My contact name"),
       ("agentName" -> "My agent name"),
-      ("telephoneNumber" -> "9876543210"),
       ("emailAddress" -> "my@email.com"),
+      ("telephoneNumber" -> "9876543210"),
       ("address.addressLine1" -> "My address line 1"),
       ("address.addressLine2" -> "My address line 2"),
       ("address.addressLine3" -> "My address line 3"),

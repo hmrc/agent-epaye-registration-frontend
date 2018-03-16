@@ -21,8 +21,8 @@ import play.api.libs.json.Json
 case class RegistrationRequest(
   agentName: String,
   contactName: String,
-  telephoneNumber: Option[String],
   emailAddress: Option[String],
+  telephoneNumber: Option[String],
   address: Address)
 
 case class PageID(pageId: String)
