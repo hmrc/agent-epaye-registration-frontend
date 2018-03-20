@@ -50,7 +50,7 @@
                 <dd class="cya-change">
                     <button class="button--link-style" type="submit" name="amend" value="agentDetails">
                       @Messages("summary.link.change")
-                      <span class="visuallyhidden">your details</span>
+                      <span class="visuallyhidden"> @Messages("summary.yourDetails")</span>
                     </button>
                 </dd>
             </div>
@@ -66,7 +66,7 @@
                 <dd class="cya-change">
                     <button class="button--link-style" type="submit" name="amend" value="contactDetails">
                       @Messages("summary.link.change")
-                      <span class="visuallyhidden">contact details</span>
+                      <span class="visuallyhidden"> @Messages("summary.contactDetails")</span>
                     </button>
                 </dd>
             </div>
@@ -84,7 +84,7 @@
                 <dd class="cya-change">
                     <button class="button--link-style" type="submit" name="amend" value="addressDetails">
                       @Messages("summary.link.change")
-                      <span class="visuallyhidden">address details</span>
+                      <span class="visuallyhidden"> @Messages("summary.address")</span>
                     </button>
                 </dd>
             </div>
@@ -92,11 +92,17 @@
 
         <h2>@Messages("summary.register.title")</h2>
 
-        <p>@Messages("summary.register.description")</p>
-
-        <div class="form-group">
-            <button class="button" type="submit" id="register" name="register">@Messages("button.register")</button>
+        <div class="notice">
+            <i class="icon icon-important">
+                <span class="visually-hidden">@Messages("warning.label")</span>
+            </i>
+            <strong class="bold-small">
+                @Messages("summary.register.description")
+            </strong>
         </div>
+
+        <button class="button form-field--submit" type="submit" id="register" name="register">@Messages("button.register")</button>
+
 
     }
 }
