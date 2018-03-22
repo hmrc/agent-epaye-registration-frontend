@@ -77,6 +77,9 @@ summary.register.title=Now send your application
 summary.register.description=By sending this application you are confirming that, to the best of your knowledge, the details you are providing are correct.
 summary.details.agencyName=Agency name
 summary.link.change=Change
+summary.yourDetails=your details
+summary.contactDetails=contact details
+summary.address=address
 
 # Registration confirmation
 registrationConfirmation.title=Agent EPAYE Registration
@@ -89,3 +92,4 @@ registrationConfirmation.normalSaveReminder=We need to add your Agent Reference 
 button.continue=Continue
 button.register=Accept and send application
 button.print=Print this page
+warning.label=Warning
