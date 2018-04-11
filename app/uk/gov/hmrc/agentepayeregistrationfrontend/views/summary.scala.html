@@ -21,10 +21,8 @@
 
 @(detailsForm : Form[RegistrationRequest])(implicit request: Request[_], messages: Messages, config: Configuration)
 
-@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("summary.title"), bodyClasses = None) {
-
-  @form(action = AgentEpayeRegistrationController.details, 'class -> "form js-form") {
-
+@summaryForm(name: String, value: String)(body: => Html) = {
+    @form(action = AgentEpayeRegistrationController.details, 'class -> "form js-form") {
         <input type="hidden" name="agentName" id="agentName" value="@detailsForm("agentName").value">
         <input type="hidden" name="contactName" id="contactName" value="@detailsForm("contactName").value">
         <input type="hidden" name="telephoneNumber" id="telephoneNumber" value="@detailsForm("telephoneNumber").value">
@@ -35,7 +33,13 @@
         <input type="hidden" name="address.addressLine4" id="address.addressLine4" value="@detailsForm("address.addressLine4").value">
         <input type="hidden" name="address.postcode" id="address.postcode" value="@detailsForm("address.postcode").value">
         <input type="hidden" name="pageId" id="pageId" value="confirmationPage">
+        <input type="hidden" name="@name" id="@name" value="@value">
 
+        @body
+    }
+}
+
+@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("summary.title"), bodyClasses = None) {
 
         <h1 class="heading-xlarge">@Messages("summary.title")</h1>
 
@@ -48,10 +52,12 @@
                     @detailsForm("agentName").value
                 </dd>
                 <dd class="cya-change">
-                    <button class="button--link-style" type="submit" name="amend" value="agentDetails">
+                @summaryForm("amend", "agentDetails") {
+                    <button class="button--link-style" type="submit">
                       @Messages("summary.link.change")
                       <span class="visuallyhidden"> @Messages("summary.yourDetails")</span>
                     </button>
+                }
                 </dd>
             </div>
             <div>
@@ -64,10 +70,12 @@
                     <span class="display-block">@detailsForm("telephoneNumber").value</span>
                 </dd>
                 <dd class="cya-change">
-                    <button class="button--link-style" type="submit" name="amend" value="contactDetails">
+                @summaryForm("amend", "contactDetails") {
+                    <button class="button--link-style" type="submit">
                       @Messages("summary.link.change")
                       <span class="visuallyhidden"> @Messages("summary.contactDetails")</span>
                     </button>
+                }
                 </dd>
             </div>
             <div>
@@ -82,10 +90,12 @@
                     <span class="display-block">@detailsForm("address.postcode").value</span>
                 </dd>
                 <dd class="cya-change">
-                    <button class="button--link-style" type="submit" name="amend" value="addressDetails">
+                @summaryForm("amend", "addressDetails") {
+                    <button class="button--link-style" type="submit">
                       @Messages("summary.link.change")
                       <span class="visuallyhidden"> @Messages("summary.address")</span>
                     </button>
+                }
                 </dd>
             </div>
         </dl>
@@ -101,8 +111,8 @@
             </strong>
         </div>
 
+    @summaryForm("register", "register") {
         <button class="button form-field--submit" type="submit" id="register" name="register">@Messages("button.register")</button>
-
-
     }
+
 }
