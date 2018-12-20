@@ -18,6 +18,7 @@ package uk.gov.hmrc.agentepayeregistrationfrontend.connectors
 
 import java.net.URL
 
+import akka.actor.ActorSystem
 import com.typesafe.config.Config
 import javax.inject.{ Inject, Named, Singleton }
 import play.api.Play
@@ -35,5 +36,7 @@ class FrontendAuthConnector @Inject() (@Named("auth-baseUrl") baseUrl: URL)
     override val hooks = NoneRequired
 
     override protected def configuration: Option[Config] = Some(Play.current.configuration.underlying)
+
+    override protected def actorSystem: ActorSystem = ActorSystem()
   }
 }
