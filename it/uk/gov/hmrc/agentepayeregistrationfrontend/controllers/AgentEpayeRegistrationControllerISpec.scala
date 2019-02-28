@@ -155,7 +155,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
       "show the registration confirmation page if validation passes" in {
         val agentRef = "HX2000"
 
-        stubFor(post(urlEqualTo("/agent-epaye-registration/registrations"))
+        stubFor(post(urlPathEqualTo("/agent-epaye-registration/registrations"))
           .willReturn(
             aResponse()
               .withStatus(Status.OK)

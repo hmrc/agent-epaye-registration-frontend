@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.agentepayeregistrationfrontend.connectors
+package uk.gov.hmrc.agentepayeregistrationfrontend.config
 
-import javax.inject.{ Inject, Singleton }
-import uk.gov.hmrc.agentepayeregistrationfrontend.config.AppConfig
-import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.play.bootstrap.http.DefaultHttpClient
+import javax.inject.Inject
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
-@Singleton
-class FrontendAuthConnector @Inject() (
-  config: AppConfig,
-  val http: DefaultHttpClient) extends PlayAuthConnector {
+class AppConfig @Inject() (val config: ServicesConfig) {
 
-  override val serviceUrl: String = config.auth
+  lazy val opraUrl: String = config.baseUrl("agent-epaye-registration")
+  lazy val auth: String = config.baseUrl("auth")
+  lazy val enrolment: String = config.getString("extract.auth.stride.enrolment")
+
 }

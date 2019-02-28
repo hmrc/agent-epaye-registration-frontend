@@ -18,7 +18,8 @@ package uk.gov.hmrc.agentepayeregistrationfrontend
 
 import play.api.data.Forms.{ text, _ }
 import play.api.data.Mapping
-import play.api.data.validation.{ Constraint, Constraints, _ }
+import play.api.data.validation.Constraints.nonEmpty
+import play.api.data.validation.{ Constraint, _ }
 
 package object controllers {
 
@@ -28,7 +29,7 @@ package object controllers {
     private val validStringRegex = "[a-zA-Z0-9,.()\\-\\!@\\s]+"
     private val emailRegex = """^[a-zA-Z0-9-.]+?@[a-zA-Z0-9-.]+$""".r
     private val nonEmptyPostcode: Constraint[String] = Constraint[String] { fieldValue: String =>
-      nonEmptyWithMessage("error.postcode.empty")(fieldValue) match {
+      nonEmpty(errorMessage = "error.postcode.empty")(fieldValue) match {
         case i: Invalid =>
           i
         case Valid =>
@@ -41,7 +42,7 @@ package object controllers {
     }
 
     // Same as play.api.data.validation.Constraints.nonEmpty but with a custom message instead of error.required
-    private def nonEmptyWithMessage(messageKey: String): Constraint[String] = Constraint[String] { (o: String) =>
+    private def nonEmptyWithMessage(messageKey: String): Constraint[String] = Constraint[String] { o: String =>
       if (o == null) Invalid(ValidationError(messageKey)) else if (o.trim.isEmpty) Invalid(ValidationError(messageKey)) else Valid
     }
 
@@ -57,15 +58,9 @@ package object controllers {
         .getOrElse(Invalid("error.email"))
     }
 
-    private val telephoneNumber: Constraint[String] = Constraint[String] { fieldValue: String =>
-      Constraints.nonEmpty(fieldValue) match {
-        case i: Invalid => i
-        case Valid => fieldValue match {
-          case value if !value.matches(telephoneNumberRegex) =>
-            Invalid(ValidationError("error.telephone.invalid"))
-          case _ => Valid
-        }
-      }
+    private val telephoneNumber: Constraint[String] = Constraint[String]("constraint.required") {
+      case num => if (num.matches(telephoneNumberRegex)) Valid else Invalid(ValidationError("error.telephone.invalid"))
+      case other => Invalid(ValidationError(other))
     }
 
     private def validName(messageKey: String): Constraint[String] = Constraint[String] { fieldValue: String =>
@@ -82,7 +77,7 @@ package object controllers {
 
     def maxLenWithMsg(maxLength: Int, messageKey: String = "error.maxLength"): Constraint[String] = Constraint[String]("constraint.maxLength", maxLength) { o =>
       require(maxLength >= 0, "string maxLength must not be negative")
-      if (o == null) Invalid(ValidationError(messageKey, maxLength)) else if (o.size <= maxLength) Valid else Invalid(ValidationError(messageKey, maxLength))
+      if (o == null) Invalid(ValidationError(messageKey, maxLength)) else if (o.length <= maxLength) Valid else Invalid(ValidationError(messageKey, maxLength))
     }
 
     def checkOneAtATime[T](firstConstraint: Constraint[T], secondConstraint: Constraint[T]) = Constraint[T] { fieldValue: T =>

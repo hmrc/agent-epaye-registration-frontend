@@ -1,6 +1,6 @@
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
-import org.scalatestplus.play.OneAppPerSuite
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
 import play.api.i18n.{ Lang, Messages, MessagesApi }
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -13,7 +13,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
 import uk.gov.hmrc.play.test.UnitSpec
 
-class BaseControllerISpec extends UnitSpec with OneAppPerSuite with WireMockSupport {
+class BaseControllerISpec extends UnitSpec with GuiceOneAppPerSuite with WireMockSupport {
 
   override implicit lazy val app: Application = appBuilder.build()
 

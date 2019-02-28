@@ -17,24 +17,24 @@
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
 import javax.inject.{ Inject, Singleton }
-
 import play.api.Configuration
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.i18n.{ I18nSupport, MessagesApi }
-import play.api.mvc.{ Action, AnyContent }
+import play.api.i18n.I18nSupport
+import play.api.mvc.{ Action, AnyContent, MessagesControllerComponents }
 import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.FieldMappings._
 import uk.gov.hmrc.agentepayeregistrationfrontend.models.{ Address, PageID, RegistrationRequest }
 import uk.gov.hmrc.agentepayeregistrationfrontend.service.AgentEpayeRegistrationService
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton
 class AgentEpayeRegistrationController @Inject() (
-  override val messagesApi: MessagesApi,
-  registrationService: AgentEpayeRegistrationService)(implicit config: Configuration) extends FrontendController with I18nSupport {
+  registrationService: AgentEpayeRegistrationService,
+  mcc: MessagesControllerComponents)(implicit config: Configuration) extends FrontendController(mcc) with I18nSupport {
   import AgentEpayeRegistrationController._
 
   val root: Action[AnyContent] = Action { implicit request =>
@@ -45,11 +45,11 @@ class AgentEpayeRegistrationController @Inject() (
     Ok(html.start())
   }
 
-  def showAgentDetailsForm = Action { implicit request =>
+  def showAgentDetailsForm: Action[AnyContent] = Action { implicit request =>
     Ok(html.agentDetails(agentDetailsForm))
   }
 
-  val details = Action.async { implicit request =>
+  val details: Action[AnyContent] = Action.async { implicit request =>
     pageIdForm.bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest),
       pageIdData => {
@@ -85,7 +85,7 @@ class AgentEpayeRegistrationController @Inject() (
                   registrationService
                     .register(withNoSpacesInPostCode(data))
                     .map(agentRef => {
-                      Redirect(routes.AgentEpayeRegistrationController.confirmation.url)
+                      Redirect(routes.AgentEpayeRegistrationController.confirmation().url)
                         .addingToSession(sessionKeyAgentRef -> agentRef.value)
                     })
                 },
@@ -103,7 +103,7 @@ class AgentEpayeRegistrationController @Inject() (
       })
   }
 
-  val confirmation = Action { implicit request =>
+  val confirmation: Action[AnyContent] = Action { implicit request =>
     request.session.get(sessionKeyAgentRef).map { agentRef =>
       Ok(html.registration_confirmation(agentRef))
     }.getOrElse(BadRequest)
@@ -116,7 +116,7 @@ class AgentEpayeRegistrationController @Inject() (
 object AgentEpayeRegistrationController {
   private[controllers] val sessionKeyAgentRef = "agentRef"
 
-  val agentDetailsForm = Form[RegistrationRequest](
+  val agentDetailsForm: Form[RegistrationRequest] = Form(
     mapping(
       "agentName" -> name,
       "contactName" -> text,
@@ -129,7 +129,7 @@ object AgentEpayeRegistrationController {
         "addressLine4" -> optional(text),
         "postcode" -> text)(Address.apply)(Address.unapply))(RegistrationRequest.apply)(RegistrationRequest.unapply))
 
-  val contactDetailsForm = Form[RegistrationRequest](
+  val contactDetailsForm: Form[RegistrationRequest] = Form(
     mapping(
       "agentName" -> name,
       "contactName" -> contactName,
@@ -142,7 +142,7 @@ object AgentEpayeRegistrationController {
         "addressLine4" -> optional(text),
         "postcode" -> text)(Address.apply)(Address.unapply))(RegistrationRequest.apply)(RegistrationRequest.unapply))
 
-  val registrationRequestForm = Form[RegistrationRequest](
+  val registrationRequestForm: Form[RegistrationRequest] = Form(
     mapping(
       "agentName" -> name,
       "contactName" -> contactName,
@@ -155,6 +155,6 @@ object AgentEpayeRegistrationController {
         "addressLine4" -> addressLine4,
         "postcode" -> postcode)(Address.apply)(Address.unapply))(RegistrationRequest.apply)(RegistrationRequest.unapply))
 
-  val pageIdForm = Form[PageID](
+  val pageIdForm: Form[PageID] = Form(
     mapping("pageId" -> text)(PageID.apply)(PageID.unapply))
 }
