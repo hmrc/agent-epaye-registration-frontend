@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import javax.inject.{ Inject, Singleton }
-
 import com.google.inject.name.Named
-import play.api.i18n.{ Messages, MessagesApi }
+import javax.inject.{ Inject, Singleton }
+import play.api.i18n._
 import play.api.mvc.Results._
 import play.api.mvc.{ Request, RequestHeader, Result }
 import play.api.{ Configuration, Environment, Mode }
@@ -34,14 +33,13 @@ import scala.concurrent.{ ExecutionContext, Future }
 @Singleton
 class ErrorHandler @Inject() (
   val env: Environment,
-  val messagesApi: MessagesApi,
+  implicit val messagesApi: MessagesApi,
   val auditConnector: AuditConnector,
   @Named("appName") val appName: String)(implicit val config: Configuration, ec: ExecutionContext)
   extends FrontendErrorHandler with AuthRedirects with ErrorAuditing {
 
-  private val isDevEnv = if (env.mode.equals(Mode.Test)) false else config.getString("run.mode").forall(Mode.Dev.toString.equals)
-
   override def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] = {
+    implicit val messagesProvider: MessagesProvider = MessagesImpl(request.lang, messagesApi)
     auditClientError(request, statusCode, message)
     Future successful
       Status(statusCode)(error_template(
@@ -53,13 +51,14 @@ class ErrorHandler @Inject() (
   override def resolveError(request: RequestHeader, exception: Throwable) = {
     auditServerError(request, exception)
     exception match {
-      case _: NoActiveSession => toStrideLogin(if (isDevEnv) s"http://${request.host}${request.uri}" else s"${request.uri}")
+      case _: NoActiveSession => toStrideLogin(s"${request.uri}")
       case _: InsufficientEnrolments => Forbidden
       case _ => super.resolveError(request, exception)
     }
   }
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: Request[_]) = {
+    implicit val messagesProvider: MessagesProvider = MessagesImpl(request.lang, messagesApi)
     error_template(
       Messages("global.error.500.title"),
       Messages("global.error.500.heading"),

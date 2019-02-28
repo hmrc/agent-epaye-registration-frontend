@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.i18n.MessagesApi
+import play.api.i18n.{ Lang, MessagesApi }
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.Result
 import play.api.test.FakeRequest
@@ -32,6 +32,7 @@ import scala.concurrent.Future
 
 class ErrorHandlerSpec extends PlaySpec with MockitoSugar with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
+  implicit val lang: Lang = Lang("en")
   val messagesApi = app.injector.instanceOf[MessagesApi]
   val handler = new ErrorHandler(app.injector.instanceOf[Environment], messagesApi, app.injector.instanceOf[AuditConnector], "")(app.injector.instanceOf[Configuration], scala.concurrent.ExecutionContext.Implicits.global)
 

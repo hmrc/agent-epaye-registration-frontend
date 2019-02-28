@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +12,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@(form: Form[_])(implicit messages: Messages)
-@if(form.hasErrors){
-    @Messages("error.prefix")
+package uk.gov.hmrc.agentepayeregistrationfrontend.config
+
+import javax.inject.Inject
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+
+class AppConfig @Inject() (val config: ServicesConfig) {
+
+  lazy val opraUrl: String = config.baseUrl("agent-epaye-registration")
+  lazy val auth: String = config.baseUrl("auth")
+  lazy val enrolment: String = config.getString("extract.auth.stride.enrolment")
+
 }

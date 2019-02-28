@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,38 +16,37 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers.testonly
 
-import java.net.URL
-import javax.inject.{ Inject, Named, Singleton }
-
-import akka.util.ByteString
-import play.api.http.{ HttpEntity, Writeable }
-import play.api.libs.ws.{ StreamedResponse, WSClient }
+import javax.inject.{ Inject, Singleton }
+import play.api.http.HttpEntity
+import play.api.libs.ws.{ WSClient, WSRequest }
 import play.api.mvc._
 import play.api.{ Configuration, Environment, Logger, Mode }
+import uk.gov.hmrc.agentepayeregistrationfrontend.config.AppConfig
 import uk.gov.hmrc.auth.core.AuthProvider.PrivilegedApplication
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-
-import scala.concurrent.Future
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.config.AuthRedirects
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 @Singleton
 class TestOnlyController @Inject() (
-  @Named("extract.auth.stride.enrolment") strideEnrolment: String,
+  appConfig: AppConfig,
   val authConnector: AuthConnector,
   val env: Environment,
   ws: WSClient,
-  @Named("agent-epaye-registration-baseUrl") registrationBaseUrl: URL)(implicit val config: Configuration)
-  extends FrontendController with AuthorisedFunctions with AuthRedirects {
+  mcc: MessagesControllerComponents)(implicit val config: Configuration)
+  extends FrontendController(mcc) with AuthorisedFunctions with AuthRedirects {
 
   // This implementation is only for test/demo purpose.
   // The actual implementation will be done in EMAC Helpdesk Tool
   val extract: Action[AnyContent] = Action.async {
     implicit request =>
       {
-        authorised(Enrolment(strideEnrolment) and AuthProviders(PrivilegedApplication)) {
-          proxyPassTo(s"$registrationBaseUrl/agent-epaye-registration/registrations")
+        authorised(Enrolment(appConfig.enrolment) and AuthProviders(PrivilegedApplication)) {
+          proxyPassTo(s"${appConfig.opraUrl}/agent-epaye-registration/registrations")
         }.recoverWith {
           case _: NoActiveSession =>
             Future.successful(toStrideLogin(if (env.mode.equals(Mode.Dev)) s"http://${request.host}${request.uri}" else s"${request.uri}"))
@@ -62,19 +61,18 @@ class TestOnlyController @Inject() (
    */
   def proxyPassTo[A](url: String)(implicit request: Request[A], hc: HeaderCarrier): Future[Result] = {
     val requestContentType: Seq[(String, String)] = request.headers.get("Content-Type").map(("Content-Type", _)).toSeq
-    val upstreamRequest = ws.url(url)
+    val upstreamRequest: WSRequest = ws.url(url)
       .withMethod(request.method)
-      .withQueryString(request.queryString.toSeq.flatMap({ case (k, sv) => sv.map(v => (k, v)) }): _*)
-      .withHeaders(hc.withExtraHeaders(requestContentType: _*).headers: _*)
+      .withQueryStringParameters(request.queryString.toSeq.flatMap({ case (k, sv) => sv.map(v => (k, v)) }): _*)
+      .withHttpHeaders(hc.withExtraHeaders(requestContentType: _*).headers: _*)
     Logger("TestOnlyController").warn("Sending upstream proxy request: " + upstreamRequest.toString)
     upstreamRequest.stream()
-      .map {
-        case StreamedResponse(response, body) =>
-          val responseContentType = response.headers.get("Content-Type").flatMap(_.headOption)
-          val length = response.headers.get("Content-Length").flatMap(_.headOption).map(_.toLong)
+      .map { response =>
+        val responseContentType = response.headers.get("Content-Type").flatMap(_.headOption)
+        val length = response.headers.get("Content-Length").flatMap(_.headOption).map(_.toLong)
 
-          Results.Status(response.status).sendEntity(HttpEntity.Streamed(body, length, responseContentType))
-            .withHeaders(response.headers.toSeq.flatMap({ case (k, sv) => sv.map(v => (k, v)) }): _*)
+        Results.Status(response.status).sendEntity(HttpEntity.Streamed(response.bodyAsSource, length, responseContentType))
+          .withHeaders(response.headers.toSeq.flatMap({ case (k, sv) => sv.map(v => (k, v)) }): _*)
       }
   }
 

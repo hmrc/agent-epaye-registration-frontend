@@ -2,7 +2,7 @@ package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.mvc.{ AnyContentAsEmpty, Headers, RawBuffer }
+import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.{ Application, Mode }
 import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.testonly.TestOnlyController
@@ -21,14 +21,13 @@ class TestOnlyControllerISpec extends BaseControllerISpec with AuthStub with Reg
       .configure(
         "microservice.services.auth.port" -> wireMockPort,
         "microservice.services.agent-epaye-registration.port" -> wireMockPort,
-        "play.http.router" -> "testOnlyDoNotUseInAppConf.Routes",
-        "extract.auth.stride.enrolment" -> "ValidStrideEnrolment").in(Mode.Test)
+        "play.http.router" -> "testOnlyDoNotUseInAppConf.Routes").in(Mode.Test)
 
   private lazy val controller = app.injector.instanceOf[TestOnlyController]
 
   "TestOnlyController" should {
     "return 200 OK after successful authorisation" in {
-      givenAuthorisedFor("ValidStrideEnrolment", "PrivilegedApplication")
+      givenAuthorisedFor("T2 Technical", "PrivilegedApplication")
       givenRegistrationDetails
       val result = await(controller.extract(authenticatedRequest("GET", "/agent-epaye-registration/test-only/extract")))
 
@@ -56,7 +55,7 @@ class TestOnlyControllerISpec extends BaseControllerISpec with AuthStub with Reg
         stubFor(get(urlPathMatching("/test"))
           .willReturn(aResponse()
             .withStatus(202)))
-        val result = await(controller.proxyPassTo(s"$wireMockBaseUrlAsString/test")(FakeRequest("GET", "", Headers(), RawBuffer(0)), HeaderCarrier()))
+        val result = await(controller.proxyPassTo(s"$wireMockBaseUrlAsString/test")(FakeRequest("GET", ""), HeaderCarrier()))
         status(result) shouldBe 202
         result.body.contentType shouldBe None
         result.body.contentLength shouldBe None
@@ -71,7 +70,7 @@ class TestOnlyControllerISpec extends BaseControllerISpec with AuthStub with Reg
             .withHeader("Foo", "Bar")
             .withHeader("Content-Type", "foo/bar")
             .withHeader("Content-Length", "6000")))
-        val result = await(controller.proxyPassTo(s"$wireMockBaseUrlAsString/test")(FakeRequest("GET", "", Headers(), RawBuffer(0)), HeaderCarrier()))
+        val result = await(controller.proxyPassTo(s"$wireMockBaseUrlAsString/test")(FakeRequest("GET", ""), HeaderCarrier()))
         status(result) shouldBe 203
         result.body.contentType shouldBe Some("foo/bar")
         result.body.contentLength shouldBe Some(6000)
@@ -95,8 +94,7 @@ class TestOnlyControllerDevModeISpec extends BaseControllerISpec with AuthStub w
       .configure(
         "microservice.services.auth.port" -> wireMockPort,
         "microservice.services.agent-epaye-registration.port" -> wireMockPort,
-        "play.http.router" -> "testOnlyDoNotUseInAppConf.Routes",
-        "extract.auth.stride.enrolment" -> "ValidStrideEnrolment").in(Mode.Dev)
+        "play.http.router" -> "testOnlyDoNotUseInAppConf.Routes").in(Mode.Dev)
 
   private lazy val controller = app.injector.instanceOf[TestOnlyController]
 

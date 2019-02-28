@@ -1,25 +1,33 @@
 package uk.gov.hmrc.agentepayeregistrationfrontend.connectors
 
-import java.net.URL
-
-import org.scalatestplus.play.OneAppPerSuite
+import com.github.tomakehurst.wiremock.client.WireMock._
+import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Application
 import play.api.http.Status
+import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.Json
+import uk.gov.hmrc.agentepayeregistrationfrontend.config.AppConfig
 import uk.gov.hmrc.agentepayeregistrationfrontend.models.{ Address, RegistrationRequest }
 import uk.gov.hmrc.agentepayeregistrationfrontend.support.WireMockSupport
-import com.github.tomakehurst.wiremock.client.WireMock._
-import com.kenshoo.play.metrics.Metrics
-import play.api.libs.json.Json
 import uk.gov.hmrc.domain.PayeAgentReference
-import uk.gov.hmrc.http.BadRequestException
+import uk.gov.hmrc.http.{ BadGatewayException, BadRequestException, HeaderCarrier }
+import uk.gov.hmrc.play.bootstrap.http.DefaultHttpClient
 import uk.gov.hmrc.play.test.UnitSpec
-import org.scalatest.mockito.MockitoSugar
-import uk.gov.hmrc.http.{ BadGatewayException, HeaderCarrier, HttpGet, HttpPost }
 
-class AgentEpayeRegistrationConnectorISpec extends UnitSpec with OneAppPerSuite with WireMockSupport with MockitoSugar {
+class AgentEpayeRegistrationConnectorISpec extends UnitSpec with GuiceOneAppPerSuite with WireMockSupport with MockitoSugar {
+
+  override implicit lazy val app: Application = appBuilder.build()
+
+  protected def appBuilder: GuiceApplicationBuilder = {
+    new GuiceApplicationBuilder()
+      .configure("microservice.services.agent-epaye-registration.port" -> wireMockPort)
+  }
+
   private implicit val hc = HeaderCarrier()
 
   private lazy val connector: AgentEpayeRegistrationConnector =
-    new AgentEpayeRegistrationConnector(new URL(s"http://localhost:$wireMockPort"), app.injector.instanceOf[HttpGet with HttpPost], mock[Metrics])
+    new AgentEpayeRegistrationConnector(app.injector.instanceOf[AppConfig], app.injector.instanceOf[DefaultHttpClient])
 
   private val address = Address("29 Acacia Road", "Nuttytown", Some("Bannastate"), Some("Country"), "AA11AA")
   private val regRequest = RegistrationRequest(
@@ -33,7 +41,7 @@ class AgentEpayeRegistrationConnectorISpec extends UnitSpec with OneAppPerSuite 
     "return an agent reference" in {
       val agentRef = PayeAgentReference("HX1234")
 
-      stubFor(post(urlEqualTo(s"/agent-epaye-registration/registrations"))
+      stubFor(post(urlEqualTo("/agent-epaye-registration/registrations"))
         .willReturn(
           aResponse()
             .withStatus(Status.OK)
@@ -51,7 +59,7 @@ class AgentEpayeRegistrationConnectorISpec extends UnitSpec with OneAppPerSuite 
     }
 
     "throw an exception if the response is 400" in {
-      stubFor(post(urlEqualTo(s"/agent-epaye-registration/registrations"))
+      stubFor(post(urlEqualTo("/agent-epaye-registration/registrations"))
         .willReturn(
           aResponse()
             .withStatus(Status.BAD_REQUEST)))

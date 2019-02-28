@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,12 @@
 package uk.gov.hmrc.agentepayeregistrationfrontend.service
 
 import javax.inject.{ Inject, Singleton }
-
 import uk.gov.hmrc.agentepayeregistrationfrontend.connectors.AgentEpayeRegistrationConnector
 import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
 import uk.gov.hmrc.domain.PayeAgentReference
+import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.Future
-import uk.gov.hmrc.http.HeaderCarrier
 
 @Singleton
 class AgentEpayeRegistrationService @Inject() (registrationConnector: AgentEpayeRegistrationConnector) {

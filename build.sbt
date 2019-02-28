@@ -1,7 +1,6 @@
 import sbt.Tests.{Group, SubProcess}
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
 import uk.gov.hmrc.SbtAutoBuildPlugin
-import scalariform.formatter.preferences._
 
 lazy val scoverageSettings = {
   import scoverage.ScoverageKeys
@@ -17,28 +16,30 @@ lazy val scoverageSettings = {
 
 lazy val compileDeps = Seq(
   ws,
-  "uk.gov.hmrc" %% "bootstrap-play-25" % "4.6.0",
-  "uk.gov.hmrc" %% "govuk-template" % "5.26.0-play-25",
-  "uk.gov.hmrc" %% "play-ui" % "7.27.0-play-25",
-  "uk.gov.hmrc" %% "auth-client" % "2.17.0-play-25",
+  "uk.gov.hmrc" %% "bootstrap-play-26" % "0.36.0",
+  "uk.gov.hmrc" %% "govuk-template" % "5.26.0-play-26",
+  "uk.gov.hmrc" %% "play-ui" % "7.27.0-play-26",
+  "uk.gov.hmrc" %% "auth-client" % "2.17.0-play-26",
   "uk.gov.hmrc" %% "play-partials" % "6.3.0",
   "uk.gov.hmrc" %% "agent-kenshoo-monitoring" % "3.3.0",
   "uk.gov.hmrc" %% "agent-mtd-identifiers" % "0.12.0"
 )
 
 def testDeps(scope: String) = Seq(
-  "uk.gov.hmrc" %% "hmrctest" % "3.3.0" % scope,
+  "uk.gov.hmrc" %% "hmrctest" % "3.5.0-play-26" % scope,
   "org.scalatest" %% "scalatest" % "3.0.5" % scope,
-  "org.mockito" % "mockito-core" % "2.19.0" % scope,
-  "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.1" % scope,
+  "org.mockito" % "mockito-core" % "2.24.5" % scope,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % scope,
   "com.github.tomakehurst" % "wiremock" % "2.17.0" % scope
 )
+
+val jettyVersion = "9.2.24.v20180105"
 
 lazy val root = (project in file("."))
   .settings(
     name := "agent-epaye-registration-frontend",
     organization := "uk.gov.hmrc",
-    scalaVersion := "2.11.11",
+    scalaVersion := "2.11.12",
     PlayKeys.playDefaultPort := 9446,
     resolvers := Seq(
       Resolver.bintrayRepo("hmrc", "releases"),
@@ -47,6 +48,22 @@ lazy val root = (project in file("."))
       Resolver.jcenterRepo
     ),
     libraryDependencies ++= compileDeps ++ testDeps("test") ++ testDeps("it"),
+    dependencyOverrides ++= Set(
+      "org.eclipse.jetty" % "jetty-server" % jettyVersion % "it",
+      "org.eclipse.jetty" % "jetty-servlet" % jettyVersion % "it",
+      "org.eclipse.jetty" % "jetty-security" % jettyVersion % "it",
+      "org.eclipse.jetty" % "jetty-servlets" % jettyVersion % "it",
+      "org.eclipse.jetty" % "jetty-continuation" % jettyVersion % "it",
+      "org.eclipse.jetty" % "jetty-webapp" % jettyVersion % "it",
+      "org.eclipse.jetty" % "jetty-xml" % jettyVersion % "it",
+      "org.eclipse.jetty" % "jetty-client" % jettyVersion % "it",
+      "org.eclipse.jetty" % "jetty-http" % jettyVersion % "it",
+      "org.eclipse.jetty" % "jetty-io" % jettyVersion % "it",
+      "org.eclipse.jetty" % "jetty-util" % jettyVersion % "it",
+      "org.eclipse.jetty.websocket" % "websocket-api" % jettyVersion % "it",
+      "org.eclipse.jetty.websocket" % "websocket-common" % jettyVersion % "it",
+      "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion % "it"
+    ),
     publishingSettings,
     scoverageSettings,
     unmanagedResourceDirectories in Compile += baseDirectory.value / "resources"
