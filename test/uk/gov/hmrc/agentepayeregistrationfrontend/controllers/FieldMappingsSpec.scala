@@ -131,6 +131,9 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
       shouldAcceptFieldValue("foo-bar@example.org")
       shouldAcceptFieldValue("fooBar@example.org")
       shouldAcceptFieldValue("1@example.org")
+      shouldAcceptFieldValue("foo!bar@example.org")
+      shouldAcceptFieldValue("foo+bar@example.org")
+      shouldAcceptFieldValue("foo_bar@example.org")
     }
 
     "reject email containing invalid characters" in {
@@ -139,9 +142,6 @@ class FieldMappingsSpec extends UnitSpec with EitherValues {
       shouldRejectFieldValueAsInvalid("foo@")
       shouldRejectFieldValueAsInvalid("@example.org")
       shouldRejectFieldValueAsInvalid("foo,bar@example.org")
-      shouldRejectFieldValueAsInvalid("foo!bar@example.org")
-      shouldRejectFieldValueAsInvalid("foo+bar@example.org")
-      shouldRejectFieldValueAsInvalid("foo_bar@example.org")
     }
   }
 
