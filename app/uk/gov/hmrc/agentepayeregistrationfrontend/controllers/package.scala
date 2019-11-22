@@ -20,6 +20,7 @@ import play.api.data.Forms.{ text, _ }
 import play.api.data.Mapping
 import play.api.data.validation.Constraints.nonEmpty
 import play.api.data.validation.{ Constraint, _ }
+import uk.gov.hmrc.emailaddress.EmailAddress.isValid
 
 package object controllers {
 
@@ -27,7 +28,6 @@ package object controllers {
     private val postcodeWithoutSpacesRegex = "^[A-Z]{1,2}[0-9][0-9A-Z]?[0-9][A-Z]{2}$|BFPO[0-9]{1,5}$".r
     private val telephoneNumberRegex = "^[0-9 ]*$"
     private val validStringRegex = "[a-zA-Z0-9,.()\\-\\!@\\s]+"
-    private val emailRegex = """^[a-zA-Z0-9-.]+?@[a-zA-Z0-9-.]+$""".r
     private val nonEmptyPostcode: Constraint[String] = Constraint[String] { fieldValue: String =>
       nonEmpty(errorMessage = "error.postcode.empty")(fieldValue) match {
         case i: Invalid =>
@@ -50,12 +50,8 @@ package object controllers {
       text verifying maxLenWithMsg(maxLength, messageKey)
     }
 
-    private def emailAddress: Constraint[String] = Constraint[String]("constraint.email") { e =>
-      if (e == null) Invalid(ValidationError("error.email"))
-      else if (e.trim.isEmpty) Invalid(ValidationError("error.email"))
-      else emailRegex.findFirstMatchIn(e.trim)
-        .map(_ => Valid)
-        .getOrElse(Invalid("error.email"))
+    private def emailAddress: Constraint[String] = Constraint[String]("constraint.email") { email =>
+      if (isValid(email)) Valid else Invalid("error.email")
     }
 
     private val telephoneNumber: Constraint[String] = Constraint[String]("constraint.required") {
