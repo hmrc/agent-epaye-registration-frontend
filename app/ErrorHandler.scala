@@ -19,7 +19,7 @@ import javax.inject.{ Inject, Singleton }
 import play.api.i18n._
 import play.api.mvc.Results._
 import play.api.mvc.{ Request, RequestHeader, Result }
-import play.api.{ Configuration, Environment, Mode }
+import play.api.{ Configuration, Environment }
 import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.error_template
 import uk.gov.hmrc.auth.core.{ InsufficientEnrolments, NoActiveSession }
 import uk.gov.hmrc.http.{ JsValidationException, NotFoundException }
@@ -58,7 +58,6 @@ class ErrorHandler @Inject() (
   }
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: Request[_]) = {
-    implicit val messagesProvider: MessagesProvider = MessagesImpl(request.lang, messagesApi)
     error_template(
       Messages("global.error.500.title"),
       Messages("global.error.500.heading"),
