@@ -55,8 +55,7 @@ package object controllers {
     }
 
     private val telephoneNumber: Constraint[String] = Constraint[String]("constraint.required") {
-      case num => if (num.matches(telephoneNumberRegex)) Valid else Invalid(ValidationError("error.telephone.invalid"))
-      case other => Invalid(ValidationError(other))
+      num => if (num.matches(telephoneNumberRegex)) Valid else Invalid(ValidationError("error.telephone.invalid"))
     }
 
     private def validName(messageKey: String): Constraint[String] = Constraint[String] { fieldValue: String =>

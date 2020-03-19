@@ -37,7 +37,7 @@ class AgentEpayeRegistrationController @Inject() (
   mcc: MessagesControllerComponents)(implicit config: Configuration) extends FrontendController(mcc) with I18nSupport {
   import AgentEpayeRegistrationController._
 
-  val root: Action[AnyContent] = Action { implicit request =>
+  val root: Action[AnyContent] = Action {
     Redirect(routes.AgentEpayeRegistrationController.start().url)
   }
 

@@ -1,7 +1,7 @@
 package uk.gov.hmrc.agentepayeregistrationfrontend.connectors
 
 import com.github.tomakehurst.wiremock.client.WireMock._
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
 import play.api.http.Status
@@ -15,6 +15,8 @@ import uk.gov.hmrc.http.{ BadGatewayException, BadRequestException, HeaderCarrie
 import uk.gov.hmrc.play.bootstrap.http.DefaultHttpClient
 import uk.gov.hmrc.play.test.UnitSpec
 
+import scala.concurrent.ExecutionContext
+
 class AgentEpayeRegistrationConnectorISpec extends UnitSpec with GuiceOneAppPerSuite with WireMockSupport with MockitoSugar {
 
   override implicit lazy val app: Application = appBuilder.build()
@@ -27,7 +29,8 @@ class AgentEpayeRegistrationConnectorISpec extends UnitSpec with GuiceOneAppPerS
   private implicit val hc = HeaderCarrier()
 
   private lazy val connector: AgentEpayeRegistrationConnector =
-    new AgentEpayeRegistrationConnector(app.injector.instanceOf[AppConfig], app.injector.instanceOf[DefaultHttpClient])
+    new AgentEpayeRegistrationConnector(app.injector.instanceOf[AppConfig], app.injector.instanceOf[DefaultHttpClient],
+      app.injector.instanceOf[ExecutionContext])
 
   private val address = Address("29 Acacia Road", "Nuttytown", Some("Bannastate"), Some("Country"), "AA11AA")
   private val regRequest = RegistrationRequest(

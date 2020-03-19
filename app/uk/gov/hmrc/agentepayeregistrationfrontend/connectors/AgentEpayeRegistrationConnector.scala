@@ -16,24 +16,21 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend.connectors
 
-import com.codahale.metrics.MetricRegistry
-import com.kenshoo.play.metrics.Metrics
 import javax.inject.{ Inject, Singleton }
 import play.api.libs.json.JsValue
-import uk.gov.hmrc.agent.kenshoo.monitoring.HttpAPIMonitor
 import uk.gov.hmrc.agentepayeregistrationfrontend.config.AppConfig
 import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
 import uk.gov.hmrc.domain.PayeAgentReference
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.DefaultHttpClient
-import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
 
-import scala.concurrent.Future
+import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
 class AgentEpayeRegistrationConnector @Inject() (
   config: AppConfig,
-  http: DefaultHttpClient) {
+  http: DefaultHttpClient,
+  implicit val ec: ExecutionContext) {
 
   private val registrationUrl = config.opraUrl + "/agent-epaye-registration/registrations"
 
