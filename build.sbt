@@ -16,11 +16,11 @@ lazy val scoverageSettings = {
 
 lazy val compileDeps = Seq(
   ws,
-  "uk.gov.hmrc" %% "bootstrap-play-26" % "1.5.0",
-  "uk.gov.hmrc" %% "govuk-template" % "5.52.0-play-26",
-  "uk.gov.hmrc" %% "play-ui" % "8.8.0-play-26",
-  "uk.gov.hmrc" %% "auth-client" % "2.35.0-play-26",
-  "uk.gov.hmrc" %% "play-partials" % "6.9.0-play-26",
+  "uk.gov.hmrc" %% "bootstrap-play-26" % "1.8.0",
+  "uk.gov.hmrc" %% "govuk-template" % "5.55.0-play-26",
+  "uk.gov.hmrc" %% "play-ui" % "8.10.0-play-26",
+  "uk.gov.hmrc" %% "auth-client" % "3.0.0-play-26",
+  "uk.gov.hmrc" %% "play-partials" % "6.11.0-play-26",
   "uk.gov.hmrc" %% "agent-kenshoo-monitoring" % "4.0.0",
   "uk.gov.hmrc" %% "agent-mtd-identifiers" % "0.17.0-play-26",
   "uk.gov.hmrc" %% "emailaddress" % "3.4.0"
@@ -70,8 +70,8 @@ lazy val root = (project in file("."))
     unmanagedResourceDirectories in Compile += baseDirectory.value / "resources",
     scalacOptions += "-P:silencer:pathFilters=views;routes",
     libraryDependencies ++= Seq(
-      compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.6.0" cross CrossVersion.full),
-      "com.github.ghik" % "silencer-lib" % "1.6.0" % Provided cross CrossVersion.full
+      compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.7.0" cross CrossVersion.full),
+      "com.github.ghik" % "silencer-lib" % "1.7.0" % Provided cross CrossVersion.full
     ),
   )
   .configs(IntegrationTest)
