@@ -20,7 +20,7 @@ The OPRA system provides a way for PAYE agents (not otherwise known to PAYE syst
 
 or
 
-    sm --start AGENT_EPAYE_REG -f
+    sm --start AGENT_EPAYE_REG_ALL -r
     sm --stop AGENT_EPAYE_REGISTRATION_FRONTEND
     sbt -Dplay.http.router=testOnlyDoNotUseInAppConf.Routes run
 
