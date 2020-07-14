@@ -16,22 +16,22 @@ lazy val scoverageSettings = {
 
 lazy val compileDeps = Seq(
   ws,
-  "uk.gov.hmrc" %% "bootstrap-play-26" % "1.8.0",
-  "uk.gov.hmrc" %% "govuk-template" % "5.55.0-play-26",
-  "uk.gov.hmrc" %% "play-ui" % "8.10.0-play-26",
-  "uk.gov.hmrc" %% "auth-client" % "3.0.0-play-26",
-  "uk.gov.hmrc" %% "play-partials" % "6.11.0-play-26",
-  "uk.gov.hmrc" %% "agent-kenshoo-monitoring" % "4.0.0",
-  "uk.gov.hmrc" %% "agent-mtd-identifiers" % "0.17.0-play-26",
-  "uk.gov.hmrc" %% "emailaddress" % "3.4.0"
+  "uk.gov.hmrc"             %% "bootstrap-play-26"          % "1.13.0",
+  "uk.gov.hmrc"             %% "govuk-template"             % "5.55.0-play-26",
+  "uk.gov.hmrc"             %% "play-ui"                    % "8.11.0-play-26",
+  "uk.gov.hmrc"             %% "auth-client"                % "3.0.0-play-26",
+  "uk.gov.hmrc"             %% "play-partials"              % "6.11.0-play-26",
+  "uk.gov.hmrc"             %% "agent-kenshoo-monitoring"   % "4.4.0",
+  "uk.gov.hmrc"             %% "agent-mtd-identifiers"      % "0.17.0-play-26",
+  "uk.gov.hmrc"             %% "emailaddress"               % "3.4.0"
 )
 
 def testDeps(scope: String) = Seq(
-  "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-26" % scope,
-  "org.scalatest" %% "scalatest" % "3.0.8" % scope,
-  "org.mockito" % "mockito-core" % "3.3.3" % scope,
-  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.3" % scope,
-  "com.github.tomakehurst" % "wiremock" % "2.26.3" % scope
+  "uk.gov.hmrc"             %% "hmrctest"                   % "3.9.0-play-26" % scope,
+  "org.scalatest"           %% "scalatest"                  % "3.0.8"         % scope,
+  "org.mockito"             % "mockito-core"                % "3.3.3"         % scope,
+  "org.scalatestplus.play"  %% "scalatestplus-play"         % "3.1.3"         % scope,
+  "com.github.tomakehurst"  % "wiremock"                    % "2.26.3"        % scope
 )
 
 val jettyVersion = "9.2.24.v20180105"
@@ -68,11 +68,11 @@ lazy val root = (project in file("."))
     publishingSettings,
     scoverageSettings,
     unmanagedResourceDirectories in Compile += baseDirectory.value / "resources",
-    scalacOptions += "-P:silencer:pathFilters=views;routes",
+    scalacOptions += "-P:silencer:lineContentFilters=^\\w",
     libraryDependencies ++= Seq(
       compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.7.0" cross CrossVersion.full),
       "com.github.ghik" % "silencer-lib" % "1.7.0" % Provided cross CrossVersion.full
-    ),
+    )
   )
   .configs(IntegrationTest)
   .settings(
