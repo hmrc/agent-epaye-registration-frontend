@@ -38,8 +38,9 @@ class ErrorHandler @Inject() (
   @Named("appName") val appName: String)(implicit val config: Configuration, ec: ExecutionContext)
   extends FrontendErrorHandler with AuthRedirects with ErrorAuditing {
 
-  override def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] = {
-    implicit val messagesProvider: MessagesProvider = MessagesImpl(request.lang, messagesApi)
+  override def onClientError(rh: RequestHeader, statusCode: Int, message: String): Future[Result] = {
+    implicit val messagesProvider: MessagesImpl = MessagesImpl(rh.lang, messagesApi)
+    implicit val request: Request[_] = Request(rh, "")
     auditClientError(request, statusCode, message)
     Future successful
       Status(statusCode)(error_template(
