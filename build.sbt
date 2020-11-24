@@ -16,7 +16,7 @@ lazy val scoverageSettings = {
 
 lazy val compileDeps = Seq(
   ws,
-  "uk.gov.hmrc"             %% "bootstrap-play-26"          % "1.13.0",
+  "uk.gov.hmrc"             %% "bootstrap-play-26"          % "2.1.0",
   "uk.gov.hmrc"             %% "govuk-template"             % "5.55.0-play-26",
   "uk.gov.hmrc"             %% "play-ui"                    % "8.12.0-play-26",
   "uk.gov.hmrc"             %% "auth-client"                % "3.0.0-play-26",
@@ -28,7 +28,7 @@ lazy val compileDeps = Seq(
 
 def testDeps(scope: String) = Seq(
   "uk.gov.hmrc"             %% "hmrctest"                   % "3.9.0-play-26" % scope,
-  "org.scalatest"           %% "scalatest"                  % "3.0.8"         % scope,
+  "org.scalatest"           %% "scalatest"                  % "3.0.9"         % scope,
   "org.mockito"             % "mockito-core"                % "3.3.3"         % scope,
   "org.scalatestplus.play"  %% "scalatestplus-play"         % "3.1.3"         % scope,
   "com.github.tomakehurst"  % "wiremock"                    % "2.26.3"        % scope
@@ -40,7 +40,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "agent-epaye-registration-frontend",
     organization := "uk.gov.hmrc",
-    scalaVersion := "2.12.11",
+    scalaVersion := "2.12.12",
     PlayKeys.playDefaultPort := 9446,
     resolvers := Seq(
       Resolver.bintrayRepo("hmrc", "releases"),
@@ -70,8 +70,8 @@ lazy val root = (project in file("."))
     unmanagedResourceDirectories in Compile += baseDirectory.value / "resources",
     scalacOptions += "-P:silencer:lineContentFilters=^\\w",
     libraryDependencies ++= Seq(
-      compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.7.0" cross CrossVersion.full),
-      "com.github.ghik" % "silencer-lib" % "1.7.0" % Provided cross CrossVersion.full
+      compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.7.1" cross CrossVersion.full),
+      "com.github.ghik" % "silencer-lib" % "1.7.1" % Provided cross CrossVersion.full
     )
   )
   .configs(IntegrationTest)
