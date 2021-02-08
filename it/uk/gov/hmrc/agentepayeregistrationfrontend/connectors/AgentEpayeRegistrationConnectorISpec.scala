@@ -2,22 +2,22 @@ package uk.gov.hmrc.agentepayeregistrationfrontend.connectors
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
 import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
+import play.api.test.Helpers.{ await, defaultAwaitTimeout }
 import uk.gov.hmrc.agentepayeregistrationfrontend.config.AppConfig
 import uk.gov.hmrc.agentepayeregistrationfrontend.models.{ Address, RegistrationRequest }
 import uk.gov.hmrc.agentepayeregistrationfrontend.support.WireMockSupport
 import uk.gov.hmrc.domain.PayeAgentReference
-import uk.gov.hmrc.http.{ BadGatewayException, BadRequestException, HeaderCarrier }
-import uk.gov.hmrc.play.bootstrap.http.DefaultHttpClient
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.http.{ BadGatewayException, HeaderCarrier, HttpClient, UpstreamErrorResponse }
 
 import scala.concurrent.ExecutionContext
 
-class AgentEpayeRegistrationConnectorISpec extends UnitSpec with GuiceOneAppPerSuite with WireMockSupport with MockitoSugar {
+class AgentEpayeRegistrationConnectorISpec extends PlaySpec with GuiceOneAppPerSuite with WireMockSupport with MockitoSugar {
 
   override implicit lazy val app: Application = appBuilder.build()
 
@@ -29,7 +29,7 @@ class AgentEpayeRegistrationConnectorISpec extends UnitSpec with GuiceOneAppPerS
   private implicit val hc = HeaderCarrier()
 
   private lazy val connector: AgentEpayeRegistrationConnector =
-    new AgentEpayeRegistrationConnector(app.injector.instanceOf[AppConfig], app.injector.instanceOf[DefaultHttpClient],
+    new AgentEpayeRegistrationConnector(app.injector.instanceOf[AppConfig], app.injector.instanceOf[HttpClient],
       app.injector.instanceOf[ExecutionContext])
 
   private val address = Address("29 Acacia Road", "Nuttytown", Some("Bannastate"), Some("Country"), "AA11AA")
@@ -50,7 +50,7 @@ class AgentEpayeRegistrationConnectorISpec extends UnitSpec with GuiceOneAppPerS
             .withStatus(Status.OK)
             .withBody(Json.obj("payeAgentReference" -> agentRef.value).toString())))
 
-      await(connector.register(regRequest)) shouldBe agentRef
+      await(connector.register(regRequest)) mustBe agentRef
     }
 
     "throw an exception if no connection was possible" in {
@@ -67,9 +67,10 @@ class AgentEpayeRegistrationConnectorISpec extends UnitSpec with GuiceOneAppPerS
           aResponse()
             .withStatus(Status.BAD_REQUEST)))
 
-      intercept[BadRequestException] {
+      val exception = intercept[UpstreamErrorResponse] {
         await(connector.register(regRequest))
       }
+      exception.statusCode mustBe 400
     }
 
   }

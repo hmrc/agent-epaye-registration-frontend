@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,14 @@ import javax.inject.{ Inject, Singleton }
 import play.api.http.HttpEntity
 import play.api.libs.ws.{ WSClient, WSRequest }
 import play.api.mvc._
-import play.api.{ Configuration, Environment, Logger, Mode }
+import play.api.{ Configuration, Environment, Mode }
+import play.api.Logging
 import uk.gov.hmrc.agentepayeregistrationfrontend.config.AppConfig
 import uk.gov.hmrc.auth.core.AuthProvider.PrivilegedApplication
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{ HeaderCarrier, HeaderNames }
 import uk.gov.hmrc.play.bootstrap.config.AuthRedirects
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -38,7 +39,7 @@ class TestOnlyController @Inject() (
   val env: Environment,
   ws: WSClient,
   mcc: MessagesControllerComponents)(implicit val config: Configuration)
-  extends FrontendController(mcc) with AuthorisedFunctions with AuthRedirects {
+  extends FrontendController(mcc) with AuthorisedFunctions with AuthRedirects with Logging {
 
   // This implementation is only for test/demo purpose.
   // The actual implementation will be done in EMAC Helpdesk Tool
@@ -65,7 +66,8 @@ class TestOnlyController @Inject() (
       .withMethod(request.method)
       .withQueryStringParameters(request.queryString.toSeq.flatMap({ case (k, sv) => sv.map(v => (k, v)) }): _*)
       .withHttpHeaders(hc.withExtraHeaders(requestContentType: _*).headers: _*)
-    Logger("TestOnlyController").warn("Sending upstream proxy request: " + upstreamRequest.toString)
+
+    logger.warn("Sending upstream proxy request: " + upstreamRequest.toString)
     upstreamRequest.stream()
       .map { response =>
         val responseContentType = response.headers.get("Content-Type").flatMap(_.headOption)

@@ -1,5 +1,5 @@
 @*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,18 +17,24 @@
 @import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.routes.AgentEpayeRegistrationController
 @import play.api.Configuration
 @import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
-@import uk.gov.hmrc.play.views.html.helpers.{form, input, errorSummary}
 
+@this(
+    uiMainTemplate: main_template,
+    uiForm: FormWithCSRF,
+    uiInput: Input,
+    uiErrorSummary: ErrorSummary,
+    errorPrefix: error_prefix
+)
 @(detailsForm : Form[RegistrationRequest])(implicit request: Request[_], messages: Messages, config: Configuration)
 
-@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = error_prefix(detailsForm) + Messages("details.agent.title"), bodyClasses = None) {
+@uiMainTemplate(title = errorPrefix(detailsForm) + Messages("details.agent.title"), bodyClasses = None) {
 
     @if(detailsForm.hasErrors){
-        @errorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
+        @uiErrorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
     }
 
 
-  @form(
+  @uiForm(
     action = AgentEpayeRegistrationController.details,
     'class -> "form js-form") {
 
@@ -37,7 +43,7 @@
     <p>@Messages("details.agent.description")</p>
 
     <div class="form-group">
-      @input(
+      @uiInput(
         detailsForm("agentName"),
         '_label -> Messages("details.agent.agentName.label"),
         '_inputClass -> "form-control input--cleared",

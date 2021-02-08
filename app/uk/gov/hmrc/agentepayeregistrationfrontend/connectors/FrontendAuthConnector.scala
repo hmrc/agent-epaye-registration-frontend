@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ package uk.gov.hmrc.agentepayeregistrationfrontend.connectors
 import javax.inject.{ Inject, Singleton }
 import uk.gov.hmrc.agentepayeregistrationfrontend.config.AppConfig
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.play.bootstrap.http.DefaultHttpClient
+import uk.gov.hmrc.http.HttpClient
 
 @Singleton
 class FrontendAuthConnector @Inject() (
   config: AppConfig,
-  val http: DefaultHttpClient) extends PlayAuthConnector {
+  val http: HttpClient) extends PlayAuthConnector {
 
   override val serviceUrl: String = config.auth
 }

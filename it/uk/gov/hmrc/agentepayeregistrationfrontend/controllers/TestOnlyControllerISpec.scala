@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
+import play.api.test.Helpers.{ await, defaultAwaitTimeout, status }
 import play.api.{ Application, Mode }
 import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.testonly.TestOnlyController
 import uk.gov.hmrc.agentepayeregistrationfrontend.stubs.{ AuthStub, RegistrationStub }
@@ -29,25 +30,25 @@ class TestOnlyControllerISpec extends BaseControllerISpec with AuthStub with Reg
     "return 200 OK after successful authorisation" in {
       givenAuthorisedFor("T2 Technical", "PrivilegedApplication")
       givenRegistrationDetails
-      val result = await(controller.extract(authenticatedRequest("GET", "/agent-epaye-registration/test-only/extract")))
+      val result = controller.extract(authenticatedRequest("GET", "/agent-epaye-registration/test-only/extract"))
 
-      status(result) shouldBe 200
+      status(result) mustBe 200
     }
 
     "return 403 FORBIDDEN for an invalid stride enrolment" in {
       givenAuthorisedFor("InValidStrideEnrolment", "PrivilegedApplication")
       givenRegistrationDetails
-      val result = await(controller.extract(authenticatedRequest("GET", "/agent-epaye-registration/test-only/extract")))
+      val result = controller.extract(authenticatedRequest("GET", "/agent-epaye-registration/test-only/extract"))
 
-      status(result) shouldBe 403
+      status(result) mustBe 403
     }
 
     "redirect to stride login if the request is not authorised " in {
       givenRequestIsNotAuthorised("MissingBearerToken")
       givenRegistrationDetails
-      val result = await(controller.extract(FakeRequest()))
+      val result = controller.extract(FakeRequest())
 
-      status(result) shouldBe 303
+      status(result) mustBe 303
     }
 
     "proxy pass request to upstream service and return response" when {
@@ -55,11 +56,12 @@ class TestOnlyControllerISpec extends BaseControllerISpec with AuthStub with Reg
         stubFor(get(urlPathMatching("/test"))
           .willReturn(aResponse()
             .withStatus(202)))
-        val result = await(controller.proxyPassTo(s"$wireMockBaseUrlAsString/test")(FakeRequest("GET", ""), HeaderCarrier()))
-        status(result) shouldBe 202
-        result.body.contentType shouldBe None
-        result.body.contentLength shouldBe None
-        await(result.body.consumeData).isEmpty shouldBe true
+        val result = controller.proxyPassTo(s"$wireMockBaseUrlAsString/test")(FakeRequest("GET", ""), HeaderCarrier())
+        status(result) mustBe 202
+        val resultCompleted = await(result)
+        resultCompleted.body.contentType mustBe None
+        resultCompleted.body.contentLength mustBe None
+        await(resultCompleted.body.consumeData).isEmpty mustBe true
 
       }
       "non-empty content and some headers" in {
@@ -70,11 +72,12 @@ class TestOnlyControllerISpec extends BaseControllerISpec with AuthStub with Reg
             .withHeader("Foo", "Bar")
             .withHeader("Content-Type", "foo/bar")
             .withHeader("Content-Length", "6000")))
-        val result = await(controller.proxyPassTo(s"$wireMockBaseUrlAsString/test")(FakeRequest("GET", ""), HeaderCarrier()))
-        status(result) shouldBe 203
-        result.body.contentType shouldBe Some("foo/bar")
-        result.body.contentLength shouldBe Some(6000)
-        await(result.body.consumeData.map(_.utf8String)) shouldBe ("foobar" * 1000)
+        val result = controller.proxyPassTo(s"$wireMockBaseUrlAsString/test")(FakeRequest("GET", ""), HeaderCarrier())
+        status(result) mustBe 203
+        val resultCompleted = await(result)
+        resultCompleted.body.contentType mustBe Some("foo/bar")
+        resultCompleted.body.contentLength mustBe Some(6000)
+        await(resultCompleted.body.consumeData.map(_.utf8String)) mustBe ("foobar" * 1000)
       }
     }
   }
@@ -102,9 +105,9 @@ class TestOnlyControllerDevModeISpec extends BaseControllerISpec with AuthStub w
     "redirect to stride login if the request is not authorised " in {
       givenRequestIsNotAuthorised("MissingBearerToken")
       givenRegistrationDetails
-      val result = await(controller.extract(FakeRequest()))
+      val result = controller.extract(FakeRequest())
 
-      status(result) shouldBe 303
+      status(result) mustBe 303
     }
   }
 }

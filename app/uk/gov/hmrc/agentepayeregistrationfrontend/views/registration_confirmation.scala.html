@@ -1,5 +1,5 @@
 @*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,15 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.routes.AgentEpayeRegistrationController
-@import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
 @import play.api.Configuration
+
+@this(
+    uiMainTemplate: main_template
+)
 
 @(payeAgentReference: String)(implicit request: Request[_], messages: Messages, config: Configuration)
 
-@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("registrationConfirmation.title"), bodyClasses = None) {
+@uiMainTemplate(title = Messages("registrationConfirmation.title"), bodyClasses = None) {
 
     <div class="transaction-banner--complete">
         <h1 class="transaction-banner__heading">@Messages("registrationConfirmation.label", payeAgentReference)</h1>

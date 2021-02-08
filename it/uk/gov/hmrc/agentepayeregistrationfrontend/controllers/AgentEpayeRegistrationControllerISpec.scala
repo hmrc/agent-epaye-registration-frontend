@@ -5,8 +5,10 @@ import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.mvc.Result
 import play.api.test.FakeRequest
-import play.api.test.Helpers.redirectLocation
+import play.api.test.Helpers.{ await, defaultAwaitTimeout, redirectLocation, status }
 import uk.gov.hmrc.http.BadGatewayException
+
+import scala.concurrent.Future
 import scala.concurrent.duration._
 
 class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
@@ -15,10 +17,10 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
   "root context redirects to start page" in {
     val result = controller.root(FakeRequest())
 
-    status(result) shouldBe 303
+    status(result) mustBe 303
 
     val timeout = 2.seconds
-    redirectLocation(result)(timeout).get should include("/start")
+    redirectLocation(result)(timeout).get must include("/start")
   }
 
   "start displays start page" in {
@@ -28,7 +30,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
   }
 
   "showAgentDetailsForm displays the agent details form page" in {
-    val result = await(controller.showAgentDetailsForm(FakeRequest()))
+    val result = controller.showAgentDetailsForm(FakeRequest())
 
     checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.agent.label"))
   }
@@ -37,7 +39,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
 
     "pageId is missing" should {
       "return BAD_REQUEST" in {
-        status(controller.details(FakeRequest())) shouldBe 400
+        status(controller.details(FakeRequest())) mustBe 400
       }
     }
 
@@ -45,7 +47,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
       "return BAD_REQUEST" in {
         val request = FakeRequest().withFormUrlEncodedBody(validFormRegistrationDetails("pageId" -> "fnords"): _*)
 
-        status(controller.details(request)) shouldBe 400
+        status(controller.details(request)) mustBe 400
       }
     }
 
@@ -55,7 +57,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
         val request = FakeRequest().withFormUrlEncodedBody(
           validFormRegistrationDetails("pageId" -> "agentDetails", "agentName" -> ""): _*)
 
-        val result = await(controller.details(request))
+        val result = controller.details(request)
 
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.agent.label"))
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.agentName.empty"))
@@ -64,7 +66,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
       "show the contactDetails page if validation passes" in {
         val request = FakeRequest().withFormUrlEncodedBody(
           validFormRegistrationDetails("pageId" -> "agentDetails"): _*)
-        val result = await(controller.details(request))
+        val result = controller.details(request)
 
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
       }
@@ -73,7 +75,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
         val request = FakeRequest().withFormUrlEncodedBody(
           validFormRegistrationDetails("pageId" -> "agentDetails"): _*)
 
-        val result = await(controller.details(request))
+        val result = controller.details(request)
         checkAllFormValuesArePresent(result, validFormRegistrationDetails("pageId" -> "contactDetails"))
       }
     }
@@ -84,7 +86,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
           val request = FakeRequest().withFormUrlEncodedBody(
             validFormRegistrationDetails("pageId" -> "contactDetails", "contactName" -> ""): _*)
 
-          val result = await(controller.details(request))
+          val result = controller.details(request)
 
           checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
           checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.contactName.empty"))
@@ -97,7 +99,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
               "contactName" -> "7^$£",
               "telephoneNumber" -> "7^$£"): _*)
 
-          val result = await(controller.details(request))
+          val result = controller.details(request)
 
           checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
           checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.contactName.invalid"))
@@ -109,7 +111,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
         val request = FakeRequest().withFormUrlEncodedBody(
           validFormRegistrationDetails("pageId" -> "contactDetails"): _*)
 
-        val result = await(controller.details(request))
+        val result = controller.details(request)
 
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.address.title"))
       }
@@ -118,7 +120,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
         val request = FakeRequest().withFormUrlEncodedBody(
           validFormRegistrationDetails("pageId" -> "contactDetails"): _*)
 
-        val result = await(controller.details(request))
+        val result = controller.details(request)
         checkAllFormValuesArePresent(result, validFormRegistrationDetails("pageId" -> "addressDetails"))
       }
     }
@@ -128,7 +130,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
         val request = FakeRequest().withFormUrlEncodedBody(
           validFormRegistrationDetails("pageId" -> "addressDetails", "address.addressLine1" -> ""): _*)
 
-        val result = await(controller.details(request))
+        val result = controller.details(request)
 
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.address.title"))
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("error.addressLine1.empty"))
@@ -138,7 +140,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
         val request = FakeRequest().withFormUrlEncodedBody(
           validFormRegistrationDetails("pageId" -> "addressDetails"): _*)
 
-        val result = await(controller.details(request))
+        val result = controller.details(request)
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("summary.title"))
       }
 
@@ -146,7 +148,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
         val request = FakeRequest().withFormUrlEncodedBody(
           validFormRegistrationDetails("pageId" -> "addressDetails"): _*)
 
-        val result = await(controller.details(request))
+        val result = controller.details(request)
         checkAllFormValuesArePresent(result, validFormRegistrationDetails("pageId" -> "confirmationPage"))
       }
     }
@@ -163,12 +165,14 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
 
         val request = FakeRequest().withFormUrlEncodedBody(validFormRegistrationDetails("pageId" -> "confirmationPage"): _*)
 
-        val result = await(controller.details(request))
+        val result = controller.details(request)
 
-        status(result) shouldBe 303
+        status(result) mustBe 303
 
-        result.header.headers("Location") should include("/agent-epaye-registration/confirmation")
-        result.session(request)(AgentEpayeRegistrationController.sessionKeyAgentRef) shouldBe "HX2000"
+        val completedResult = await(result)
+
+        completedResult.header.headers("Location") must include("/agent-epaye-registration/confirmation")
+        completedResult.session(request)(AgentEpayeRegistrationController.sessionKeyAgentRef) mustBe "HX2000"
 
         verify(1, postRequestedFor(urlPathEqualTo("/agent-epaye-registration/registrations"))
           .withRequestBody(
@@ -201,7 +205,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
           val request = FakeRequest().withFormUrlEncodedBody(
             validFormRegistrationDetails() ++ Seq(("amend", "agentDetails")): _*)
 
-          val result = await(controller.details(request))
+          val result = controller.details(request)
 
           checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.agent.title"))
           checkAllFormValuesArePresent(result, validFormRegistrationDetails("pageId" -> "agentDetails"))
@@ -210,7 +214,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
           val request = FakeRequest().withFormUrlEncodedBody(
             validFormRegistrationDetails() ++ Seq(("amend", "contactDetails")): _*)
 
-          val result = await(controller.details(request))
+          val result = controller.details(request)
 
           checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.contact.title"))
           checkAllFormValuesArePresent(result, validFormRegistrationDetails("pageId" -> "contactDetails"))
@@ -219,7 +223,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
           val request = FakeRequest().withFormUrlEncodedBody(
             validFormRegistrationDetails() ++ Seq(("amend", "addressDetails")): _*)
 
-          val result = await(controller.details(request))
+          val result = controller.details(request)
 
           checkHtmlResultWithBodyText(result, htmlEscapedMessage("details.address.title"))
           checkAllFormValuesArePresent(result, validFormRegistrationDetails("pageId" -> "addressDetails"))
@@ -231,12 +235,12 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
     "GET /confirmation" should {
       "show confirmation page with the newly generated agent reference" in {
         val request = FakeRequest().withSession(AgentEpayeRegistrationController.sessionKeyAgentRef -> "XY2345")
-        val result = await(controller.confirmation(request))
+        val result = controller.confirmation(request)
 
         checkHtmlResultWithBodyText(result, htmlEscapedMessage("registrationConfirmation.label", "XY2345"))
       }
       "return BAD_REQUEST if new generated agent reference is not in session" in {
-        status(controller.confirmation(FakeRequest())) shouldBe 400
+        status(controller.confirmation(FakeRequest())) mustBe 400
       }
     }
   }
@@ -258,7 +262,7 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
       }
   }
 
-  private def checkAllFormValuesArePresent(result: Result, formKeyValues: Seq[(String, String)]) = {
+  private def checkAllFormValuesArePresent(result: Future[Result], formKeyValues: Seq[(String, String)]) = {
     formKeyValues.map(t => htmlEscapedMessage(t._2)).foreach(checkHtmlResultWithBodyText(result, _))
   }
 }

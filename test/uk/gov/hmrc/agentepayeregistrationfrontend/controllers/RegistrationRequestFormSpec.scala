@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
 import uk.gov.hmrc.agentepayeregistrationfrontend.models.{ Address, RegistrationRequest }
-import uk.gov.hmrc.play.test.UnitSpec
+import org.scalatestplus.play.PlaySpec
 
-class RegistrationRequestFormSpec extends UnitSpec {
+class RegistrationRequestFormSpec extends PlaySpec {
 
   "agentDetailsForm" should {
 
@@ -45,8 +45,8 @@ class RegistrationRequestFormSpec extends UnitSpec {
         "address.addressLine2" -> "",
         "address.postcode" -> "")
 
-      form.bind(fieldValues).value shouldBe Some(value)
-      form.fill(value).data shouldBe fieldValues
+      form.bind(fieldValues).value mustBe Some(value)
+      form.fill(value).data mustBe fieldValues
     }
   }
 
@@ -76,8 +76,8 @@ class RegistrationRequestFormSpec extends UnitSpec {
         "address.addressLine2" -> "",
         "address.postcode" -> "")
 
-      form.bind(fieldValues).value shouldBe Some(value)
-      form.fill(value).data shouldBe fieldValues
+      form.bind(fieldValues).value mustBe Some(value)
+      form.fill(value).data mustBe fieldValues
     }
   }
 
@@ -109,8 +109,8 @@ class RegistrationRequestFormSpec extends UnitSpec {
         "address.addressLine4" -> "Address line 4",
         "address.postcode" -> "AA1 1AA")
 
-      form.bind(fieldValues).value shouldBe Some(value)
-      form.fill(value).data shouldBe fieldValues
+      form.bind(fieldValues).value mustBe Some(value)
+      form.fill(value).data mustBe fieldValues
     }
   }
 }

@@ -1,5 +1,5 @@
 @*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,26 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.play.views.html.helpers.{form, input, errorSummary}
 @import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.routes.AgentEpayeRegistrationController
 @import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
 @import play.api.Configuration
 
-
+@this(
+    uiMainTemplate: main_template,
+    uiForm: FormWithCSRF,
+    uiInput: Input,
+    uiErrorSummary: ErrorSummary,
+    errorPrefix: error_prefix
+)
 @(detailsForm: Form[RegistrationRequest])(implicit request: Request[_], messages: Messages, config: Configuration)
 
-@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title =  error_prefix(detailsForm) + Messages("details.contact.title"), bodyClasses = None) {
+@uiMainTemplate(title =  errorPrefix(detailsForm) + Messages("details.contact.title"), bodyClasses = None) {
 
 @if(detailsForm.hasErrors){
-    @errorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
+    @uiErrorSummary(Messages("error.summary.heading"), detailsForm, Seq.empty, Some("detailsForm"))
 }
 
-@form(
+@uiForm(
 action = AgentEpayeRegistrationController.details,
 'class -> "form js-form") {
 
@@ -37,7 +42,7 @@ action = AgentEpayeRegistrationController.details,
     <p>@Messages("details.contact.description")</p>
 
     <div class="form-group">
-        @input(
+        @uiInput(
             detailsForm("contactName"),
             '_label -> Messages("details.contact.contactName.label"),
             '_inputClass -> "form-control input--cleared",
@@ -46,7 +51,7 @@ action = AgentEpayeRegistrationController.details,
     </div>
 
     <div class="form-group">
-        @input(
+        @uiInput(
             detailsForm("emailAddress"),
             '_label -> Messages("details.contact.emailAddress.label"),
             '_inputClass -> "form-control input--cleared",
@@ -55,7 +60,7 @@ action = AgentEpayeRegistrationController.details,
     </div>
 
     <div class="form-group">
-        @input(
+        @uiInput(
             detailsForm("telephoneNumber"),
             '_label -> Messages("details.contact.telephoneNumber.label"),
             '_inputClass -> "form-control input--cleared",

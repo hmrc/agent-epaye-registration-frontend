@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
 import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController
-import uk.gov.hmrc.play.test.UnitSpec
+import org.scalatestplus.play.PlaySpec
 
-class ViewsSpec extends UnitSpec with GuiceOneAppPerTest {
+class ViewsSpec extends PlaySpec with GuiceOneAppPerTest {
 
   private val filledForm = AgentEpayeRegistrationController.registrationRequestForm
     .copy(data = Map(

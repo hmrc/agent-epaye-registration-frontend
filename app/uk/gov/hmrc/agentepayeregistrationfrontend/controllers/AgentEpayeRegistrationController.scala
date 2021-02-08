@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ import play.api.mvc.{ Action, AnyContent, MessagesControllerComponents }
 import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.FieldMappings._
 import uk.gov.hmrc.agentepayeregistrationfrontend.models.{ Address, PageID, RegistrationRequest }
 import uk.gov.hmrc.agentepayeregistrationfrontend.service.AgentEpayeRegistrationService
-import uk.gov.hmrc.agentepayeregistrationfrontend.views.html
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.{ start, agentDetails, contactDetails, addressDetails, summary, registration_confirmation }
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -34,6 +34,12 @@ import scala.concurrent.Future
 @Singleton
 class AgentEpayeRegistrationController @Inject() (
   registrationService: AgentEpayeRegistrationService,
+  startView: start,
+  agentDetailsView: agentDetails,
+  contactDetailsView: contactDetails,
+  addressDetailsView: addressDetails,
+  summaryView: summary,
+  registrationConfirmationView: registration_confirmation,
   mcc: MessagesControllerComponents)(implicit config: Configuration) extends FrontendController(mcc) with I18nSupport {
   import AgentEpayeRegistrationController._
 
@@ -42,11 +48,11 @@ class AgentEpayeRegistrationController @Inject() (
   }
 
   val start: Action[AnyContent] = Action { implicit request =>
-    Ok(html.start())
+    Ok(startView())
   }
 
   def showAgentDetailsForm: Action[AnyContent] = Action { implicit request =>
-    Ok(html.agentDetails(agentDetailsForm))
+    Ok(agentDetailsView(agentDetailsForm))
   }
 
   val details: Action[AnyContent] = Action.async { implicit request =>
@@ -56,28 +62,28 @@ class AgentEpayeRegistrationController @Inject() (
         pageIdData.pageId match {
           case "agentDetails" => agentDetailsForm.bindFromRequest().fold(
             formWithErrors => {
-              Future.successful(Ok(html.agentDetails(formWithErrors)))
+              Future.successful(Ok(agentDetailsView(formWithErrors)))
             },
             data => {
-              Future.successful(Ok(html.contactDetails(agentDetailsForm.fill(data))))
+              Future.successful(Ok(contactDetailsView(agentDetailsForm.fill(data))))
             })
           case "contactDetails" => contactDetailsForm.bindFromRequest().fold(
             formWithErrors => {
-              Future.successful(Ok(html.contactDetails(formWithErrors)))
+              Future.successful(Ok(contactDetailsView(formWithErrors)))
             },
             data => {
-              Future.successful(Ok(html.addressDetails(contactDetailsForm.fill(data))))
+              Future.successful(Ok(addressDetailsView(contactDetailsForm.fill(data))))
             })
           case "addressDetails" => registrationRequestForm.bindFromRequest().fold(
             formWithErrors => {
-              Future.successful(Ok(html.addressDetails(formWithErrors)))
+              Future.successful(Ok(addressDetailsView(formWithErrors)))
             },
             data => {
-              Future.successful(Ok(html.summary(registrationRequestForm.fill(data))))
+              Future.successful(Ok(summaryView(registrationRequestForm.fill(data))))
             })
           case "confirmationPage" => registrationRequestForm.bindFromRequest().fold(
             formWithErrors => {
-              Future.successful(Ok(html.summary(formWithErrors)))
+              Future.successful(Ok(summaryView(formWithErrors)))
             },
             data => {
               Form(single("amend" -> text)).bindFromRequest().fold(
@@ -92,9 +98,9 @@ class AgentEpayeRegistrationController @Inject() (
                 amend => {
                   val filledForm = registrationRequestForm.fill(data)
                   amend match {
-                    case "agentDetails" => Future.successful(Ok(html.agentDetails(filledForm)))
-                    case "contactDetails" => Future.successful(Ok(html.contactDetails(filledForm)))
-                    case "addressDetails" => Future.successful(Ok(html.addressDetails(filledForm)))
+                    case "agentDetails" => Future.successful(Ok(agentDetailsView(filledForm)))
+                    case "contactDetails" => Future.successful(Ok(contactDetailsView(filledForm)))
+                    case "addressDetails" => Future.successful(Ok(addressDetailsView(filledForm)))
                   }
                 })
             })
@@ -105,7 +111,7 @@ class AgentEpayeRegistrationController @Inject() (
 
   val confirmation: Action[AnyContent] = Action { implicit request =>
     request.session.get(sessionKeyAgentRef).map { agentRef =>
-      Ok(html.registration_confirmation(agentRef))
+      Ok(registrationConfirmationView(agentRef))
     }.getOrElse(BadRequest)
   }
 

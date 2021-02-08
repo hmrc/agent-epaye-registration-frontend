@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import uk.gov.hmrc.http.{ JsValidationException, NotFoundException }
 import uk.gov.hmrc.play.HeaderCarrierConverter
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.bootstrap.config.{ AuthRedirects, HttpAuditEvent }
-import uk.gov.hmrc.play.bootstrap.http.FrontendErrorHandler
+import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
 
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -35,6 +35,7 @@ class ErrorHandler @Inject() (
   val env: Environment,
   implicit val messagesApi: MessagesApi,
   val auditConnector: AuditConnector,
+  errorTemplate: error_template,
   @Named("appName") val appName: String)(implicit val config: Configuration, ec: ExecutionContext)
   extends FrontendErrorHandler with AuthRedirects with ErrorAuditing {
 
@@ -43,7 +44,7 @@ class ErrorHandler @Inject() (
     implicit val request: Request[_] = Request(rh, "")
     auditClientError(request, statusCode, message)
     Future successful
-      Status(statusCode)(error_template(
+      Status(statusCode)(errorTemplate(
         Messages(s"global.error.$statusCode.title"),
         Messages(s"global.error.$statusCode.heading"),
         Messages(s"global.error.$statusCode.message")))
@@ -59,7 +60,7 @@ class ErrorHandler @Inject() (
   }
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: Request[_]) = {
-    error_template(
+    errorTemplate(
       Messages("global.error.500.title"),
       Messages("global.error.500.heading"),
       Messages("global.error.500.message"))

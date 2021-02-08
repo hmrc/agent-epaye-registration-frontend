@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.agentepayeregistrationfrontend.models
 
-import uk.gov.hmrc.play.test.UnitSpec
+import org.scalatestplus.play.PlaySpec
 
-class AddressSpec extends UnitSpec {
+class AddressSpec extends PlaySpec {
   val testAddress: Address = new Address(
     "addressLine1",
     "addressLine2",
@@ -35,11 +35,11 @@ class AddressSpec extends UnitSpec {
 
   "withoutSpacesInPostCode" should {
     "remove all spaces in a postCode ith spaces" in {
-      testAddress.withoutSpacesInPostCode shouldBe "AA11AA"
+      testAddress.withoutSpacesInPostCode mustBe "AA11AA"
     }
 
     "leave a postCode with no spaces unchanged" in {
-      testAddress2.withoutSpacesInPostCode shouldBe "AB123CD"
+      testAddress2.withoutSpacesInPostCode mustBe "AB123CD"
     }
   }
 }

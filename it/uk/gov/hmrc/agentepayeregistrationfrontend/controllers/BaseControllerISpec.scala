@@ -11,9 +11,11 @@ import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.agentepayeregistrationfrontend.support.WireMockSupport
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
-import uk.gov.hmrc.play.test.UnitSpec
+import org.scalatestplus.play.PlaySpec
 
-class BaseControllerISpec extends UnitSpec with GuiceOneAppPerSuite with WireMockSupport {
+import scala.concurrent.Future
+
+class BaseControllerISpec extends PlaySpec with GuiceOneAppPerSuite with WireMockSupport {
 
   override implicit lazy val app: Application = appBuilder.build()
 
@@ -24,11 +26,11 @@ class BaseControllerISpec extends UnitSpec with GuiceOneAppPerSuite with WireMoc
 
   protected implicit val materializer = app.materializer
 
-  protected def checkHtmlResultWithBodyText(result: Result, expectedSubstring: String): Unit = {
-    status(result) shouldBe 200
-    contentType(result) shouldBe Some("text/html")
-    charset(result) shouldBe Some("utf-8")
-    bodyOf(result) should include(expectedSubstring)
+  protected def checkHtmlResultWithBodyText(result: Future[Result], expectedSubstring: String): Unit = {
+    status(result) mustBe 200
+    contentType(result) mustBe Some("text/html")
+    charset(result) mustBe Some("utf-8")
+    contentAsString(result) must include(expectedSubstring)
   }
 
   private val messagesApi = app.injector.instanceOf[MessagesApi]

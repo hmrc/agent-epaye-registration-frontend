@@ -1,5 +1,5 @@
 @*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,16 @@
 @import uk.gov.hmrc.agentepayeregistrationfrontend.controllers.routes.AgentEpayeRegistrationController
 @import play.api.Configuration
 @import uk.gov.hmrc.agentepayeregistrationfrontend.models.RegistrationRequest
-@import uk.gov.hmrc.play.views.html.helpers.form
+
+@this(
+    uiForm: FormWithCSRF,
+    uiMainTemplate: main_template
+)
 
 @(detailsForm : Form[RegistrationRequest])(implicit request: Request[_], messages: Messages, config: Configuration)
 
 @summaryForm(name: String, value: String)(body: => Html) = {
-    @form(action = AgentEpayeRegistrationController.details, 'class -> "form js-form") {
+    @uiForm(action = AgentEpayeRegistrationController.details, 'class -> "form js-form") {
         <input type="hidden" name="agentName" id="agentName" value="@detailsForm("agentName").value">
         <input type="hidden" name="contactName" id="contactName" value="@detailsForm("contactName").value">
         <input type="hidden" name="telephoneNumber" id="telephoneNumber" value="@detailsForm("telephoneNumber").value">
@@ -39,7 +43,7 @@
     }
 }
 
-@uk.gov.hmrc.agentepayeregistrationfrontend.views.html.main_template(title = Messages("summary.title"), bodyClasses = None) {
+@uiMainTemplate(title = Messages("summary.title"), bodyClasses = None) {
 
         <h1 class="heading-xlarge">@Messages("summary.title")</h1>
 
