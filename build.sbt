@@ -16,22 +16,22 @@ lazy val scoverageSettings = {
 
 lazy val compileDeps = Seq(
   ws,
-  "uk.gov.hmrc"             %% "bootstrap-play-26"          % "2.1.0",
-  "uk.gov.hmrc"             %% "govuk-template"             % "5.55.0-play-26",
-  "uk.gov.hmrc"             %% "play-ui"                    % "8.12.0-play-26",
-  "uk.gov.hmrc"             %% "auth-client"                % "3.0.0-play-26",
-  "uk.gov.hmrc"             %% "play-partials"              % "6.11.0-play-26",
+  "uk.gov.hmrc"             %% "bootstrap-frontend-play-27" % "3.4.0",
+  "uk.gov.hmrc"             %% "govuk-template"             % "5.61.0-play-27",
+  "uk.gov.hmrc"             %% "play-ui"                    % "8.21.0-play-27",
+  "uk.gov.hmrc"             %% "auth-client"                % "3.3.0-play-27",
+  "uk.gov.hmrc"             %% "play-partials"              % "6.11.0-play-27",
   "uk.gov.hmrc"             %% "agent-kenshoo-monitoring"   % "4.4.0",
-  "uk.gov.hmrc"             %% "agent-mtd-identifiers"      % "0.17.0-play-26",
-  "uk.gov.hmrc"             %% "emailaddress"               % "3.4.0"
+  "uk.gov.hmrc"             %% "agent-mtd-identifiers"      % "0.20.0-play-27",
+  "uk.gov.hmrc"             %% "emailaddress"               % "3.5.0"
 )
 
 def testDeps(scope: String) = Seq(
-  "uk.gov.hmrc"             %% "hmrctest"                   % "3.9.0-play-26" % scope,
   "org.scalatest"           %% "scalatest"                  % "3.0.9"         % scope,
   "org.mockito"             % "mockito-core"                % "3.3.3"         % scope,
-  "org.scalatestplus.play"  %% "scalatestplus-play"         % "3.1.3"         % scope,
-  "com.github.tomakehurst"  % "wiremock"                    % "2.26.3"        % scope
+  "org.scalatestplus.play"  %% "scalatestplus-play"         % "4.0.3"         % scope,
+  "com.github.tomakehurst"  % "wiremock"                    % "2.26.3"        % scope,
+   "org.pegdown"            % "pegdown"                     % "1.6.0"         % scope
 )
 
 val jettyVersion = "9.2.24.v20180105"
@@ -83,7 +83,11 @@ lazy val root = (project in file("."))
     testGrouping in IntegrationTest := oneForkedJvmPerTest((definedTests in IntegrationTest).value)
   )
   .settings(scalariformItSettings, majorVersion := 0)
-  .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory)
+  .settings(TwirlKeys.templateImports ++= Seq(
+    "uk.gov.hmrc.play.views.html.helpers._",
+    "uk.gov.hmrc.play.views.html.layouts._"
+  ))
+  .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin)
 
 def oneForkedJvmPerTest(tests: Seq[TestDefinition]): Seq[Group] = ForkedJvmPerTestSettings.oneForkedJvmPerTest(tests)

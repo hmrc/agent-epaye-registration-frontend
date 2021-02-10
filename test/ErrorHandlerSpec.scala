@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import play.api.{ Application, Configuration, Environment }
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.BadGatewayException
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
+import uk.gov.hmrc.agentepayeregistrationfrontend.views.html.error_template
 
 import scala.concurrent.Future
 
@@ -34,7 +35,8 @@ class ErrorHandlerSpec extends PlaySpec with MockitoSugar with GuiceOneAppPerSui
 
   implicit val lang: Lang = Lang("en")
   val messagesApi = app.injector.instanceOf[MessagesApi]
-  val handler = new ErrorHandler(app.injector.instanceOf[Environment], messagesApi, app.injector.instanceOf[AuditConnector], "")(app.injector.instanceOf[Configuration], scala.concurrent.ExecutionContext.Implicits.global)
+  val errorTemplate = app.injector.instanceOf[error_template]
+  val handler = new ErrorHandler(app.injector.instanceOf[Environment], messagesApi, app.injector.instanceOf[AuditConnector], errorTemplate, "")(app.injector.instanceOf[Configuration], scala.concurrent.ExecutionContext.Implicits.global)
 
   override implicit lazy val app: Application = appBuilder.build()
 

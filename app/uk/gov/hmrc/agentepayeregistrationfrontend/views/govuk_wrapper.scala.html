@@ -1,5 +1,5 @@
 @*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,33 @@
  * limitations under the License.
  *@
 
-@import play.twirl.api.HtmlFormat
-@import layouts.{govuk_template => hmrcGovUkTemplate}
-@import uk.gov.hmrc.play.views.html.{helpers => uiHelpers, layouts => uiLayouts}
+@import layouts.GovUkTemplate
 @import play.api.Configuration
-
+@this(
+    uiBetaBanner: BetaBanner,
+    uiHead: Head,
+    uiHeaderNav: HeaderNav,
+    uiFooter: Footer,
+    uiMainContentHeader: MainContentHeader,
+    uiReportAProblemLink: ReportAProblemLink,
+    uiMainContent: MainContent,
+    uiFooterLinks: FooterLinks,
+    uiServiceInfo: ServiceInfo,
+    govukTemplate: GovUkTemplate
+)
 @(title: String,
         mainClass: Option[String] = None,
         mainDataAttributes: Option[Html] = None,
         bodyClasses: Option[String] = None,
-        sidebar: Html = HtmlFormat.empty,
+        sidebar: Html = Html(""),
         contentHeader: Option[Html] = None,
-        mainContent: Html = HtmlFormat.empty,
-        serviceInfoContent: Html = HtmlFormat.empty,
+        mainContent: Html = Html(""),
+        serviceInfoContent: Html = Html(""),
         scriptElem: Option[Html] = None,
         gaCode: Seq[String] = Seq.empty)(implicit request: Request[_], messages: Messages, configuration: Configuration)
 
 @betaBanner = {
-    @uiLayouts.betaBanner(userLoggedIn = false,
+    @uiBetaBanner(userLoggedIn = false,
         betaFeedbackUrl = "/contact/beta-feedback-unauthenticated",
         betaFeedbackUnauthenticatedUrl = "/contact/beta-feedback-unauthenticated",
         showFeedbackLinkInBetaBanner = true)
@@ -42,7 +51,7 @@
 }
 
 @head = {
-@uiLayouts.head(
+@uiHead(
     linkElem = None,
     headScripts = Some(headScripts))
     <meta name="format-detection" content="telephone=no"/>
@@ -54,7 +63,7 @@
 @headerNavLinks = {}
 
 @insideHeader = {
-@uiLayouts.header_nav(
+@uiHeaderNav(
     navTitle = None,
     navTitleLink = None,
     showBetaLink = false,
@@ -68,8 +77,8 @@
 }
 
 @bodyEnd = {
-@uiLayouts.footer(analyticsToken = configuration.getString("google-analytics.token"),
-    analyticsHost = configuration.getString("google-analytics.host").get,
+@uiFooter(analyticsToken = configuration.getOptional[String]("google-analytics.token"),
+    analyticsHost = configuration.get[String]("google-analytics.host"),
     ssoUrl = None,
     scriptElem = Some(scriptElement),
     gaCalls = None,
@@ -80,7 +89,7 @@
 @footerLinks = {}
 
 @serviceInfo = {
-@uiLayouts.serviceInfo(
+@uiServiceInfo(
     betaBanner = betaBanner,
     includeGridWrapper = false,
     Some(serviceInfoContent))
@@ -88,18 +97,18 @@
 
 @mainContentHeader = {
 @if(contentHeader.isDefined) {
-    @uiLayouts.main_content_header(contentHeader.get)
+    @uiMainContentHeader(contentHeader.get)
 }
 }
 
 @getHelpForm = @{
-    uiHelpers.reportAProblemLink(configuration.getString("reportAProblemPartialUrl").get, configuration.getString("reportAProblemNonJSUrl").get)
+    uiReportAProblemLink(configuration.get[String]("reportAProblemPartialUrl"), configuration.get[String]("reportAProblemNonJSUrl"))
 }
 
 @titleSuffix = @{ Messages("servicename.titleSuffix") }
 
 @content = {
-@uiLayouts.main_content(article = mainContent,
+@uiMainContent(article = mainContent,
     mainClass = mainClass,
     mainDataAttributes = mainDataAttributes,
     mainContentHeader = mainContentHeader,
@@ -108,4 +117,4 @@
     sidebar = sidebar)
 }
 
-@hmrcGovUkTemplate(Some(title + " " + titleSuffix), bodyClasses)(head, bodyEnd, insideHeader, afterHeader, footerTop, Some(uiLayouts.footer_links()), nav = true)(content)
+@govukTemplate(Some(title + " " + titleSuffix), bodyClasses)(head, bodyEnd, insideHeader, afterHeader, footerTop, Some(uiFooterLinks()), nav = true)(content)
