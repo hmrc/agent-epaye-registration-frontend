@@ -18,11 +18,19 @@ package uk.gov.hmrc.agentepayeregistrationfrontend.config
 
 import javax.inject.Inject
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+import play.api.Configuration
 
-class AppConfig @Inject() (val config: ServicesConfig) {
+class AppConfig @Inject() (
+  val runModeConfiguration: Configuration,
+  config: ServicesConfig) {
+
+  private def loadConfig(key: String) = runModeConfiguration.getOptional[String](key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
   lazy val opraUrl: String = config.baseUrl("agent-epaye-registration")
   lazy val auth: String = config.baseUrl("auth")
   lazy val enrolment: String = config.getString("extract.auth.stride.enrolment")
+  lazy val analyticsToken: String = loadConfig(s"google-analytics.token")
+  lazy val analyticsHost: String = loadConfig(s"google-analytics.host")
+  lazy val googleTagManagerId = loadConfig(s"google-tag-manager.id")
 
 }
