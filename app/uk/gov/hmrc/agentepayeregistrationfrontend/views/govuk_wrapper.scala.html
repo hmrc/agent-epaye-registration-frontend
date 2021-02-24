@@ -17,6 +17,7 @@
 @import layouts.GovUkTemplate
 @import play.api.Configuration
 @this(
+    appConfig: uk.gov.hmrc.agentepayeregistrationfrontend.config.AppConfig,
     uiBetaBanner: BetaBanner,
     uiHead: Head,
     uiHeaderNav: HeaderNav,
@@ -51,6 +52,14 @@
 }
 
 @head = {
+@if(appConfig.googleTagManagerId != "N/A") {
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','@appConfig.googleTagManagerId');
+    </script>
+}
 @uiHead(
     linkElem = None,
     headScripts = Some(headScripts))
@@ -63,6 +72,11 @@
 @headerNavLinks = {}
 
 @insideHeader = {
+@if(appConfig.googleTagManagerId != "N/A") {
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=@appConfig.googleTagManagerId" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+}
 @uiHeaderNav(
     navTitle = None,
     navTitleLink = None,
@@ -77,8 +91,9 @@
 }
 
 @bodyEnd = {
-@uiFooter(analyticsToken = configuration.getOptional[String]("google-analytics.token"),
-    analyticsHost = configuration.get[String]("google-analytics.host"),
+@uiFooter(
+    analyticsToken = Some(appConfig.analyticsToken),
+    analyticsHost = appConfig.analyticsHost,
     ssoUrl = None,
     scriptElem = Some(scriptElement),
     gaCalls = None,
