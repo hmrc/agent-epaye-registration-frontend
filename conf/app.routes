@@ -1,9 +1,41 @@
 # microservice specific routes
 
-GET         /                       uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.root
-GET         /start                  uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.start
-GET         /details                uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.showAgentDetailsForm
-POST        /details                uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.details
-GET         /confirmation           uk.gov.hmrc.agentepayeregistrationfrontend.controllers.AgentEpayeRegistrationController.confirmation
+->          /govuk-frontend                              govuk.Routes
+->          /hmrc-frontend                               hmrcfrontend.Routes
 
-GET         /assets/*file           controllers.Assets.at(path="/public", file)
+GET         /assets/*file                                controllers.Assets.versioned(path="/public", file: Asset)
+
+GET        /                                        controllers.IndexController.onPageLoad
+GET        /start                                   controllers.StartController.onPageLoad
+GET        /start-registration                      controllers.StartController.onRegistrationStart
+
+GET        /your-agent-name                         controllers.YourAgentNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /your-agent-name                         controllers.YourAgentNameController.onSubmit(mode: Mode = NormalMode)
+GET        /change-your-agent-name                  controllers.YourAgentNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-your-agent-name                  controllers.YourAgentNameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /your-contact-details                    controllers.YourContactDetailsController.onPageLoad(mode: Mode = NormalMode)
+POST       /your-contact-details                    controllers.YourContactDetailsController.onSubmit(mode: Mode = NormalMode)
+GET        /change-your-contact-details             controllers.YourContactDetailsController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-your-contact-details             controllers.YourContactDetailsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /your-business-address                   controllers.YourBusinessAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /your-business-address                   controllers.YourBusinessAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /change-your-business-address            controllers.YourBusinessAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-your-business-address            controllers.YourBusinessAddressController.onSubmit(mode: Mode = CheckMode)
+
+GET        /check-your-answers                      controllers.CheckYourAnswersController.onPageLoad
+
+GET        /submit                                  controllers.CheckYourAnswersController.submit()
+
+GET        /confirmation                            controllers.ConfirmationController.onPageLoad()
+
+
+GET        /this-service-has-been-reset             controllers.SessionExpiredController.onPageLoad
+
+
+GET        /language/:lang                          controllers.LanguageSwitchController.switchToLanguage(lang: String)
+
+GET        /refresh-session                         controllers.KeepAliveController.keepAlive
+
+
