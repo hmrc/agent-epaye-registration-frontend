@@ -1,0 +1,125 @@
+service.name = Get an Agent Reference for PAYE
+
+site.back = Back
+site.remove = Remove
+site.change = Change
+site.no = No
+site.yes = Yes
+site.continue = Continue
+site.start = Start now
+site.startAgain = Start again
+site.signIn = Sign in
+site.govuk = GOV.UK
+
+date.day = Day
+date.month = Month
+date.year = Year
+
+timeout.title = You’re about to lose the details you have entered so far
+timeout.message = For security reasons, you will lose the details you have entered in
+timeout.keepAlive = Continue registration
+timeout.signOut = Abort registration
+
+error.browser.title.prefix = Error:
+error.boolean = Please give an answer
+error.invalid_date = Give a correct date
+error.date.day_blank = Enter a day
+error.date.day_invalid = Give a correct day using numbers 1 to 31
+error.date.month_blank = Enter a month
+error.date.month_invalid = Give a correct month using numbers 1 to 12
+error.date.year_blank = Enter a year
+error.date.year_invalid = Give a correct year
+error.integer = Give an answer in whole numbers
+error.non_numeric = Give a value using only numbers
+error.number = Please enter a valid number
+error.required = Please enter a value
+error.summary.title = There is a problem
+
+index.title = agent-epaye-registration-frontend
+index.heading = agent-epaye-registration-frontend
+index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.
+
+checkYourAnswers.title = Check your answers
+checkYourAnswers.heading = Check your answers
+
+journeyRecovery.continue.title = Sorry, there is a problem with the service
+journeyRecovery.continue.heading = Sorry, there is a problem with the service
+journeyRecovery.continue.guidance = [Add content to explain how to proceed.]
+journeyRecovery.startAgain.title = Sorry, there is a problem with the service
+journeyRecovery.startAgain.heading = Sorry, there is a problem with the service
+journeyRecovery.startAgain.guidance = [Add content to explain why the user needs to start again.]
+
+signedOut.title = For your security, we signed you out
+signedOut.heading = For your security, we signed you out
+signedOut.guidance = We did not save your answers.
+
+unauthorised.title = You can’t access this service with this account
+unauthorised.heading = You can’t access this service with this account
+
+start.title = Get an Agent Reference for PAYE for Agents
+start.heading = Get an Agent Reference for PAYE for Agents
+start.intro = If you are a PAYE agent or payroll bureau, use this service to get a reference so you can register for PAYE for Agents.
+start.helpdesklink.text1 = Contact the online services helpdesk
+start.helpdesklink.text2 = if you need help with a technical problem when using this service.
+
+enterYourAgentName.title =Enter your agent name
+enterYourAgentName.heading = Agent name
+enterYourAgentName.hint=This could be your agency name, payroll bureau name, or your own name if you are acting as an individual.
+enterYourAgentName.checkYourAnswersLabel = Enter your agent name
+enterYourAgentName.error.required = Enter your agent name
+enterYourAgentName.error.length = Agent name must be 100 characters or less
+enterYourAgentName.change.hidden = EnterYourAgentName
+
+yourContactDetails.title = Enter your contact details
+yourContactDetails.heading = Enter your contact details
+yourContactDetails.info = HMRC will treat this as your main contact for PAYE for Agents registration.
+
+yourContactDetails.contactName.heading = Contact name
+yourContactDetails.contactName.error.required = Enter a contact name
+yourContactDetails.contactName.error.length = Contact name must be 100 characters or less
+yourContactDetails.emailAddress.heading = Email address (optional)
+yourContactDetails.emailAddress.error.invalid = Enter a valid email address, like name@example.com
+yourContactDetails.emailAddress.error.length = Email address must be 129 characters or less
+yourContactDetails.telephoneNumber.heading = Telephone (optional)
+yourContactDetails.telephoneNumber.error.invalid = Telephone number must only include numbers or spaces
+yourContactDetails.telephoneNumber.error.length = Telephone number must be 30 characters or less
+
+yourBusinessAddress.title = Enter your business address
+yourBusinessAddress.heading = Enter your business address
+yourBusinessAddress.addressLine1.heading = Address line 1
+yourBusinessAddress.addressLine1.error.required = Enter the first line of your business address
+yourBusinessAddress.addressLine1.error.length = Address line 1 must be 35 characters or less
+yourBusinessAddress.addressLine2.heading = Address line 2
+yourBusinessAddress.addressLine2.error.required = Enter the second line of your business address
+yourBusinessAddress.addressLine2.error.length = Address line 2 must be 35 characters or less
+yourBusinessAddress.addressLine3.heading = Address line 3 (optional)
+yourBusinessAddress.addressLine3.error.length = Address line 3 must be 35 characters or less
+yourBusinessAddress.addressLine4.heading = Address line 4 (optional)
+yourBusinessAddress.addressLine4.error.length = Address line 4 must be 35 characters or less
+yourBusinessAddress.postCode.heading = Postcode
+yourBusinessAddress.postCode.error.required = Enter the postcode of your business address
+yourBusinessAddress.postCode.error.invalid = Enter a valid postcode, like AA1 1AA
+
+agentName.checkYourAnswersLabel = Agency name
+contactDetails.checkYourAnswersLabel = Contact details
+businessAddress.checkYourAnswersLabel = Address
+
+checkYourAnswers.warning = By sending this application you are confirming that, to the best of your knowledge, the details you are providing are correct.
+checkYourAnswers.acceptAndSend = Accept and send application
+
+confirmation.title = Registration complete
+confirmation.label = Your Agent Reference
+confirmation.info = Save this reference and use it to register for PAYE for Agents
+confirmation.what-happens-next = What happens next
+confirmation.what-happens-next-info = We need to add your Agent Reference to your Government Gateway account. This can take up to 4 days. Once added, you will be able to register for PAYE for Agents.
+button.print = Print this page
+
+sessionExpired.title = For your security, this service has been reset
+sessionExpired.heading = For your security, this service has been reset
+sessionExpired.info = The details you have given have been deleted because you did not continue the service for 15 minutes
+sessionExpired.startAgain.link = Restart your registration
+
+details.contact.description=HMRC will treat this as your main contact for PAYE for Agents registration.
+details.contact.contactName.label=Contact name
+details.contact.emailAddress.label=Email address (optional)
+details.contact.telephoneNumber.label=Telephone number (optional)
