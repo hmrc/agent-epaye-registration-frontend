@@ -1,9 +1,0 @@
-#error-summary-display:focus, .button--link-style:focus{
-    outline: 3px solid #ffbf47;
-}
-.button--link-style:focus{
-    background-color: #ffbf47;
-}
-.button--link-style:disabled{
-    background-color: transparent !important;
-}
