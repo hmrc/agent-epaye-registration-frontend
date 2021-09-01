@@ -48,5 +48,5 @@ trait SpecBase
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].to[FakeIdentifierAction],
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers))
-      )
+      ).configure("metrics.jvm" -> false)
 }
