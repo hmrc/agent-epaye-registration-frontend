@@ -32,7 +32,7 @@ trait CheckYourAnswersHelper extends SummaryListRowHelper {
       summaryListRow(
         messages(s"agentName.checkYourAnswersLabel"),
         value,
-        None,
+        Some(messages(s"agentName.checkYourAnswersLabel")),
         controllers.routes.YourAgentNameController.onPageLoad(CheckMode) -> messages("site.change")
       )
     }
@@ -47,7 +47,7 @@ trait CheckYourAnswersHelper extends SummaryListRowHelper {
       summaryListRow(
         messages(s"contactDetails.checkYourAnswersLabel"),
         HtmlContent(sectionLines),
-        None,
+        Some(messages(s"contactDetails.checkYourAnswersLabel")),
         controllers.routes.YourContactDetailsController.onPageLoad(CheckMode) -> messages("site.change")
       )
     }
@@ -62,7 +62,7 @@ trait CheckYourAnswersHelper extends SummaryListRowHelper {
       summaryListRow(
         messages(s"businessAddress.checkYourAnswersLabel"),
         HtmlContent(sectionLines),
-        None,
+        Some(messages(s"businessAddress.checkYourAnswersLabel")),
         controllers.routes.YourBusinessAddressController.onPageLoad(CheckMode) -> messages("site.change")
       )
     }
