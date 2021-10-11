@@ -26,6 +26,7 @@ class YourContactDetailsFormProviderSpec extends StringFieldBehaviours with Emai
   ".contactName" - {
     val requiredKey = "yourContactDetails.contactName.error.required"
     val lengthKey = "yourContactDetails.contactName.error.length"
+    val invalidCharacterKey = "yourContactDetails.contactName.error.invalidCharacters"
     val maxLength = 56
 
     val fieldName = "contactName"
@@ -41,6 +42,13 @@ class YourContactDetailsFormProviderSpec extends StringFieldBehaviours with Emai
       fieldName,
       maxLength = maxLength,
       lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
+
+    behave like fieldWithRegex(
+      form,
+      fieldName,
+      "This & That / Ltd",
+      error = FormError(fieldName, invalidCharacterKey, Seq(validCharacterRegex))
     )
 
     behave like mandatoryField(

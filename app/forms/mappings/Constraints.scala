@@ -22,6 +22,8 @@ import java.time.LocalDate
 
 trait Constraints {
 
+  private val validCharactersPattern = "[a-zA-Z0-9,.()\\-\\!@\\s]+"
+
   protected def firstError[A](constraints: Constraint[A]*): Constraint[A] =
     Constraint {
       input =>
@@ -77,6 +79,8 @@ trait Constraints {
       case _ =>
         Invalid(errorKey, regex)
     }
+
+  protected def validCharacters(errorKey: String): Constraint[String] = regexp(validCharactersPattern, errorKey)
 
   protected def maxLength(maximum: Int, errorKey: String): Constraint[String] =
     Constraint {

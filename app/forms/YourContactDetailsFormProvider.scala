@@ -32,7 +32,8 @@ class YourContactDetailsFormProvider @Inject() extends Mappings {
       "contactName" -> text("yourContactDetails.contactName.error.required").verifying(
         maxLength(
           contactNameMaxLength, "yourContactDetails.contactName.error.length"
-        )
+        ),
+        validCharacters("yourContactDetails.contactName.error.invalidCharacters")
       ),
       "emailAddress" ->
         optional(

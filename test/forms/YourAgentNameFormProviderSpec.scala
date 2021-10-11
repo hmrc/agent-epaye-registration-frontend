@@ -23,6 +23,7 @@ class YourAgentNameFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "enterYourAgentName.error.required"
   val lengthKey = "enterYourAgentName.error.length"
+  val invalidCharactersKey = "enterYourAgentName.error.invalidCharacters"
   val maxLength = 56
 
   val form = new YourAgentNameFormProvider()()
@@ -42,6 +43,13 @@ class YourAgentNameFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       maxLength = maxLength,
       lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
+
+    behave like fieldWithRegex(
+      form,
+      fieldName,
+      "This & That / Ltd",
+      error = FormError(fieldName, invalidCharactersKey, Seq(validCharacterRegex))
     )
 
     behave like mandatoryField(
