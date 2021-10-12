@@ -39,4 +39,5 @@ trait FormSpec extends AnyFreeSpec with Matchers with OptionValues {
   def error(key: String, value: String, args: Any*) = Seq(FormError(key, value, args))
 
   lazy val emptyForm = Map[String, String]()
+  lazy val validCharacterRegex = "[a-zA-Z0-9,.()\\-\\!@\\s]+"
 }

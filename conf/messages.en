@@ -67,7 +67,8 @@ enterYourAgentName.heading = Agent name
 enterYourAgentName.hint=This could be your agency name, payroll bureau name, or your own name if you are acting as an individual.
 enterYourAgentName.checkYourAnswersLabel = Enter your agent name
 enterYourAgentName.error.required = Enter your agent name
-enterYourAgentName.error.length = Agent name must be 100 characters or less
+enterYourAgentName.error.length = Agent name must be 56 characters or less
+enterYourAgentName.error.invalidCharacters = Agent name must only include letters a to z, numbers, commas, full stops, round brackets, hyphens, exclamation marks, @ signs and spaces
 enterYourAgentName.change.hidden = EnterYourAgentName
 
 yourContactDetails.title = Enter your contact details
@@ -76,7 +77,8 @@ yourContactDetails.info = HMRC will treat this as your main contact for PAYE for
 
 yourContactDetails.contactName.heading = Contact name
 yourContactDetails.contactName.error.required = Enter a contact name
-yourContactDetails.contactName.error.length = Contact name must be 100 characters or less
+yourContactDetails.contactName.error.length = Contact name must be 56 characters or less
+yourContactDetails.contactName.error.invalidCharacters = Contact name must only include letters a to z, numbers, commas, full stops, round brackets, hyphens, exclamation marks, @ signs and spaces
 yourContactDetails.emailAddress.heading = Email address (optional)
 yourContactDetails.emailAddress.error.invalid = Enter a valid email address, like name@example.com
 yourContactDetails.emailAddress.error.length = Email address must be 129 characters or less
