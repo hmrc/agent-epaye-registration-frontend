@@ -101,6 +101,11 @@ yourBusinessAddress.addressLine4.error.length = Address line 4 must be 35 charac
 yourBusinessAddress.postCode.heading = Postcode
 yourBusinessAddress.postCode.error.required = Enter the postcode of your business address
 yourBusinessAddress.postCode.error.invalid = Enter a valid postcode, like AA1 1AA
+yourBusinessAddress.addressLine1.error.invalidCharacters = Address line 1 must only include letters a to z, numbers, commas, full stops, round brackets, hyphens, exclamation marks, @ signs and spaces
+yourBusinessAddress.addressLine2.error.invalidCharacters = Address line 2 must only include letters a to z, numbers, commas, full stops, round brackets, hyphens, exclamation marks, @ signs and spaces
+yourBusinessAddress.addressLine3.error.invalidCharacters = Address line 3 must only include letters a to z, numbers, commas, full stops, round brackets, hyphens, exclamation marks, @ signs and spaces
+yourBusinessAddress.addressLine4.error.invalidCharacters = Address line 4 must only include letters a to z, numbers, commas, full stops, round brackets, hyphens, exclamation marks, @ signs and spaces
+
 
 agentName.checkYourAnswersLabel = Agency name
 contactDetails.checkYourAnswersLabel = Contact details
