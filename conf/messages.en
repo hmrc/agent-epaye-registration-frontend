@@ -84,7 +84,7 @@ yourContactDetails.emailAddress.error.invalid = Enter a valid email address, lik
 yourContactDetails.emailAddress.error.length = Email address must be 129 characters or less
 yourContactDetails.telephoneNumber.heading = Telephone (optional)
 yourContactDetails.telephoneNumber.error.invalid = Telephone number must only include numbers or spaces
-yourContactDetails.telephoneNumber.error.length = Telephone number must be 30 characters or less
+yourContactDetails.telephoneNumber.error.length = Telephone number must be 35 characters or less
 
 yourBusinessAddress.title = Enter your business address
 yourBusinessAddress.heading = Enter your business address
