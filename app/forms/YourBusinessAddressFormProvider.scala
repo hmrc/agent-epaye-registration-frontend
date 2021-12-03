@@ -35,14 +35,16 @@ class YourBusinessAddressFormProvider @Inject() extends Mappings {
       ).verifying(
         maxLength(
           maxAddressLineLength, "yourBusinessAddress.addressLine1.error.length"
-        )
+        ),
+        validCharacters("yourBusinessAddress.addressLine1.error.invalidCharacters")
       ),
       "addressLine2" -> text(
         errorKey = "yourBusinessAddress.addressLine2.error.required"
       ).verifying(
         maxLength(
           maxAddressLineLength, "yourBusinessAddress.addressLine2.error.length"
-        )
+        ),
+        validCharacters("yourBusinessAddress.addressLine2.error.invalidCharacters")
       ),
       "addressLine3" -> optional(
         text(
@@ -50,7 +52,8 @@ class YourBusinessAddressFormProvider @Inject() extends Mappings {
         ).verifying(
           maxLength(
             maxAddressLineLength, "yourBusinessAddress.addressLine3.error.length"
-          )
+          ),
+          validCharacters("yourBusinessAddress.addressLine3.error.invalidCharacters")
         )
       ),
       "addressLine4" -> optional(
@@ -59,7 +62,8 @@ class YourBusinessAddressFormProvider @Inject() extends Mappings {
         ).verifying(
           maxLength(
             maxAddressLineLength, "yourBusinessAddress.addressLine4.error.length"
-          )
+          ),
+          validCharacters("yourBusinessAddress.addressLine4.error.invalidCharacters")
         )
       ),
       "postCode" ->
