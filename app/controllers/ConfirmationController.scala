@@ -38,7 +38,7 @@ class ConfirmationController @Inject()(
     implicit request =>
       request.userAnswers.get(PayeAgentReferencePage) match {
         case Some(ref) => Ok(view(ref))
-        case None => Redirect(routes.IndexController.onPageLoad())
+        case None => Redirect(routes.IndexController.onPageLoad)
       }
   }
 

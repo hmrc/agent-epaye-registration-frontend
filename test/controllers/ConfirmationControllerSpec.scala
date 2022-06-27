@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import models.UserAnswers
-import pages.{PayeAgentReferencePage, YourContactDetailsPage}
+import pages.PayeAgentReferencePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.domain.PayeAgentReference
@@ -33,12 +33,12 @@ class ConfirmationControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad.url)
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.IndexController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.IndexController.onPageLoad.url
       }
     }
 
@@ -51,7 +51,7 @@ class ConfirmationControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad.url)
 
         val result = route(application, request).value
 

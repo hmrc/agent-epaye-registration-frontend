@@ -31,7 +31,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad.url)
 
         val result = route(application, request).value
 
@@ -48,12 +48,12 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad.url)
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
       }
     }
   }
