@@ -20,7 +20,7 @@ import models.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
-import pages.{QuestionPage, YourAgentNamePage, YourBusinessAddressPage, YourContactDetailsPage}
+import pages.{QuestionPage, YourAgentNamePage, YourContactDetailsPage}
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
