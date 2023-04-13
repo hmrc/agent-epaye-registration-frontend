@@ -21,9 +21,8 @@ import forms.YourBusinessAddressFormProvider
 import models.{NormalMode, UserAnswers, YourBusinessAddress}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
-import pages.{YourBusinessAddressPage}
+import org.mockito.MockitoSugar
+import pages.YourBusinessAddressPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest

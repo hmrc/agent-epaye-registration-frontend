@@ -30,8 +30,7 @@ import viewmodels.CheckYourAnswersHelper
 import viewmodels.govuk.summarylist._
 import views.html.CheckYourAnswersView
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class CheckYourAnswersController @Inject()(
                                             override val messagesApi: MessagesApi,
@@ -43,7 +42,7 @@ class CheckYourAnswersController @Inject()(
                                             val controllerComponents: MessagesControllerComponents,
                                             agentEpayeRegistrationService: AgentEpayeRegistrationService,
                                             view: CheckYourAnswersView
-                                          ) extends FrontendBaseController with I18nSupport with CheckYourAnswersHelper {
+                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with CheckYourAnswersHelper {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

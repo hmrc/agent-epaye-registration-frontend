@@ -37,7 +37,7 @@ trait Formatters extends Constraints with Transforms {
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = {
         dataFormatter
           .bind(key, data)
-          .right.flatMap {
+          .flatMap {
           case email if email.trim.length > emailLength =>
             Left(Seq(FormError(key, maxLengthKey)))
           case email if EmailAddress.isValid(email) =>
@@ -63,7 +63,7 @@ trait Formatters extends Constraints with Transforms {
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = {
         dataFormatter
           .bind(key, data)
-          .right.flatMap {
+          .flatMap {
           case telephone if telephone.trim.length > telephoneLength =>
             Left(Seq(FormError(key, maxLengthKey)))
           case telephone if telephone.matches(telephoneNumberRegex) =>
@@ -87,7 +87,7 @@ trait Formatters extends Constraints with Transforms {
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] = {
       dataFormatter
         .bind(key, data)
-        .right.flatMap {
+        .flatMap {
         case pc
           if pc.trim == "" =>
           Left(Seq(FormError(key, requiredKey)))
@@ -129,7 +129,7 @@ trait Formatters extends Constraints with Transforms {
       override def bind(key: String, data: Map[String, String]) =
         baseFormatter
           .bind(key, data)
-          .right.flatMap {
+          .flatMap {
           case "true" => Right(true)
           case "false" => Right(false)
           case _ => Left(Seq(FormError(key, invalidKey, args)))
@@ -148,8 +148,8 @@ trait Formatters extends Constraints with Transforms {
       override def bind(key: String, data: Map[String, String]) =
         baseFormatter
           .bind(key, data)
-          .right.map(_.replace(",", ""))
-          .right.flatMap {
+          .map(_.replace(",", ""))
+          .flatMap {
           case s if s.matches(decimalRegexp) =>
             Left(Seq(FormError(key, wholeNumberKey, args)))
           case s =>
@@ -169,7 +169,7 @@ trait Formatters extends Constraints with Transforms {
       private val baseFormatter = stringFormatter(requiredKey, args)
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], A] =
-        baseFormatter.bind(key, data).right.flatMap {
+        baseFormatter.bind(key, data).flatMap {
           str =>
             ev.withName(str)
               .map(Right.apply)
