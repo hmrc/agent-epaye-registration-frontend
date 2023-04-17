@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ class ConfirmationControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad.url)
+        val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
 
         val result = route(application, request).value
 
@@ -51,7 +51,7 @@ class ConfirmationControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad.url)
+        val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
 
         val result = route(application, request).value
 
