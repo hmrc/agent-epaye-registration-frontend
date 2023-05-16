@@ -14,6 +14,10 @@ The OPRA system provides a way for PAYE agents (not otherwise known to PAYE syst
 
     sbt test it:test
 
+## Test Coverage
+
+    sbt clean coverage test coverageReport
+
 ## Running the app locally
 
     ./run_local.sh
