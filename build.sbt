@@ -4,7 +4,7 @@ import scoverage.ScoverageKeys
 import uk.gov.hmrc.DefaultBuildSettings
 
 lazy val appName: String = "agent-epaye-registration-frontend"
-val silencerVersion = "1.7.12"
+val silencerVersion = "1.17.13"
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
