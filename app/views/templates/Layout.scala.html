@@ -33,7 +33,11 @@
     betaBanner: StandardBetaBanner
 )
 
-@(pageTitle: String, showBackLink: Boolean = true, timeout: Boolean = true)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+@(
+        pageTitle: String,
+        showBackLink: Boolean = true,
+        timeout: Boolean = true
+)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @head = {
 
@@ -67,8 +71,8 @@
         ))
     }
 
-    @if(showBackLink) {
-        @govukBackLink(BackLinkViewModel(href = "#"))
+    @if(showBackLink){
+        @govukBackLink(BackLink.mimicsBrowserBackButtonViaJavaScript)
     }
 }
 
