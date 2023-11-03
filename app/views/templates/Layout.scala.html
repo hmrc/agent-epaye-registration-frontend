@@ -16,21 +16,14 @@
 
 @import config.FrontendAppConfig
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
-@import views.html.helper.CSPNonce
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
 
 @this(
     appConfig: FrontendAppConfig,
-    govukLayout: GovukLayout,
-    govukBackLink: GovukBackLink,
-    hmrcHead: HmrcHead,
-    hmrcStandardHeader: HmrcStandardHeader,
-    hmrcStandardFooter: HmrcStandardFooter,
-    hmrcTrackingConsentSnippet: HmrcTrackingConsentSnippet,
-    hmrcLanguageSelect: HmrcLanguageSelect,
-    hmrcTimeoutDialog: HmrcTimeoutDialog,
+    hmrcStandardPage: HmrcStandardPage,
+    hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
     hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
-    hmrcScripts: HmrcScripts,
-    betaBanner: StandardBetaBanner
+    standardBetaBanner: StandardBetaBanner
 )
 
 @(
@@ -40,60 +33,42 @@
 )(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @head = {
+    @if(timeout) {
+        @hmrcTimeoutDialogHelper(
+            timeout = Some(appConfig.timeout),
+            countdown = Some(appConfig.countdown),
+            keepAliveUrl = Some(routes.KeepAliveController.keepAlive.url),
+            keepAliveButtonText = Some(messages("timeout.keepAlive")),
+            signOutUrl = routes.SessionExpiredController.onPageLoad.url,
+            signOutButtonText = Some(messages("timeout.signOut")),
+            title = Some(messages("timeout.title")),
+            message = Some(messages("timeout.message"))
 
-    @hmrcHead(
-        headBlock = if(timeout) { Some(
-            hmrcTimeoutDialog(TimeoutDialog(
-                timeout             = Some(appConfig.timeout),
-                countdown           = Some(appConfig.countdown),
-                keepAliveUrl        = Some(routes.KeepAliveController.keepAlive.url),
-                keepAliveButtonText = Some(messages("timeout.keepAlive")),
-                signOutUrl          = Some(routes.SessionExpiredController.onPageLoad.url),
-                signOutButtonText   = Some(messages("timeout.signOut")),
-                title               = Some(messages("timeout.title")),
-                message             = Some(messages("timeout.message"))
-            )))
-        } else None
-    )
-}
-
-@additionalScripts = {
-    <script @CSPNonce.attr src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
-}
-
-@beforeContent = {
-
-    @if(appConfig.languageTranslationEnabled) {
-        @hmrcLanguageSelect(LanguageSelect(
-            if (messages.lang.code == "cy") Cy else En,
-            (En, routes.LanguageSwitchController.switchToLanguage("en").url),
-            (Cy, routes.LanguageSwitchController.switchToLanguage("cy").url)
-        ))
-    }
-
-    @if(showBackLink){
-        @govukBackLink(BackLink.mimicsBrowserBackButtonViaJavaScript)
+        )
     }
 }
 
 @content = {
     @contentBlock
-
-    <div class="govuk-!-margin-top-8">
-        @hmrcReportTechnicalIssueHelper()
-    </div>
+    </br>
+    @hmrcReportTechnicalIssueHelper()
 }
 
-@govukLayout(
-    pageTitle   = Some(pageTitle),
-    headBlock   = Some(head),
-    headerBlock = Some(hmrcStandardHeader(
-        serviceUrl  = Some(routes.IndexController.onPageLoad.url),
-        signOutUrl  = None,
-        phaseBanner = Some(betaBanner(appConfig.feedbackUrl)),
-        displayHmrcBanner = true
-    )),
-    beforeContentBlock = Some(beforeContent),
-    footerBlock        = Some(hmrcStandardFooter()),
-    scriptsBlock       = Some(hmrcScripts())
+@hmrcStandardPage(
+    HmrcStandardPageParams(
+        pageTitle   = Some(pageTitle),
+        serviceName = Some(messages("service.name")),
+        serviceURLs = ServiceURLs(
+            serviceUrl = Some(routes.IndexController.onPageLoad.url),
+        ),
+        templateOverrides = TemplateOverrides(
+            additionalHeadBlock = Some(head)
+        ),
+        banners = Banners(
+            phaseBanner = Some(standardBetaBanner(url = appConfig.feedbackUrl)),
+            displayHmrcBanner = true
+        ),
+        isWelshTranslationAvailable = appConfig.languageTranslationEnabled,
+        backLink = if (showBackLink) Some(BackLink.mimicsBrowserBackButtonViaJavaScript) else None
+    )
 )(content)

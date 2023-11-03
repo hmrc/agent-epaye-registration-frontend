@@ -25,12 +25,10 @@ trait SummaryListRowHelper {
   def summaryListRow(label: String, value: Content, visuallyHiddenText: Option[String], actions: (Call, String)*): SummaryListRow = {
     SummaryListRow(
       key = Key(
-        content = Text(label),
-        classes = "govuk-!-width-two-thirds"
+        content = Text(label)
       ),
       value = Value(
-        content = value,
-        classes = "govuk-!-width-one-quater"
+        content = value
       ),
       actions = Some(Actions(
         items = actions.map { case (call, linkText) => ActionItem(

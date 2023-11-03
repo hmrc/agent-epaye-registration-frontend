@@ -20,7 +20,11 @@
 
 @()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("sessionExpired.title")), showBackLink = false) {
+@layout(
+ pageTitle = titleNoForm(messages("sessionExpired.title")),
+ showBackLink = false,
+ timeout = false
+) {
 
  <h1 class="govuk-heading-xl">@messages("sessionExpired.title")</h1>
 
