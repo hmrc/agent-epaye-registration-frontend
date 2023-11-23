@@ -41,6 +41,9 @@ index.guidance = Welcome to your new frontend. Please see the README file for a 
 
 checkYourAnswers.title = Check your answers
 checkYourAnswers.heading = Check your answers
+checkYourAnswers.send = Now send your application
+checkYourAnswers.warning = By sending this application you are confirming that, to the best of your knowledge, the details you are providing are correct.
+checkYourAnswers.acceptAndSend = Accept and send application
 
 journeyRecovery.continue.title = Sorry, there is a problem with the service
 journeyRecovery.continue.heading = Sorry, there is a problem with the service
@@ -110,13 +113,9 @@ yourBusinessAddress.addressLine2.error.invalidCharacters = Address line 2 must o
 yourBusinessAddress.addressLine3.error.invalidCharacters = Address line 3 must only include letters a to z, numbers, commas, full stops, round brackets, hyphens, exclamation marks, @ signs and spaces
 yourBusinessAddress.addressLine4.error.invalidCharacters = Address line 4 must only include letters a to z, numbers, commas, full stops, round brackets, hyphens, exclamation marks, @ signs and spaces
 
-
 agentName.checkYourAnswersLabel = Agency name
 contactDetails.checkYourAnswersLabel = Contact details
 businessAddress.checkYourAnswersLabel = Address
-
-checkYourAnswers.warning = By sending this application you are confirming that, to the best of your knowledge, the details you are providing are correct.
-checkYourAnswers.acceptAndSend = Accept and send application
 
 confirmation.title = Registration complete
 confirmation.label = Your Agent Reference
