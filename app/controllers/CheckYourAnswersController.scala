@@ -65,7 +65,7 @@ class CheckYourAnswersController @Inject()(
       val addressLine2 =  request.userAnswers.get(YourBusinessAddressPage).map(_.addressLine2).getOrElse("")
       val addressLine3 =  request.userAnswers.get(YourBusinessAddressPage).flatMap(_.addressLine3)
       val addressLine4 =  request.userAnswers.get(YourBusinessAddressPage).flatMap(_.addressLine4)
-      val postCode =  request.userAnswers.get(YourBusinessAddressPage).map(_.postCode).getOrElse("").replace(" ", "")
+      val postCode =  request.userAnswers.get(YourBusinessAddressPage).map(_.postCode).getOrElse("")
 
 
       for {

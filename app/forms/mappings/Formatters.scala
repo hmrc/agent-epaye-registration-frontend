@@ -23,7 +23,7 @@ import uk.gov.hmrc.emailaddress.EmailAddress
 
 import scala.util.control.Exception.nonFatalCatch
 
-trait Formatters extends Constraints with Transforms {
+trait Formatters extends Constraints {
 
   private[mappings] def emailFormatter(requiredKey: String,
                                        invalidKey: String,
@@ -80,7 +80,7 @@ trait Formatters extends Constraints with Transforms {
   protected def addressPostcodeFormatter(requiredKey: String = "error.postCode.uk.empty", invalidKey: String ): Formatter[String] =
     new Formatter[String] {
 
-    private val regexPostcode = """^[A-Za-z]{1,2}[0-9Rr][0-9A-Za-z]?\s?[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}$"""
+    private val regexPostcode = "^[A-Z]{1,2}[0-9][0-9A-Z]?\\s?[0-9][A-Z]{2}$|BFPO\\s?[0-9]{1,3}$"
 
     private val dataFormatter: Formatter[String] = stringFormatter(requiredKey)
 
@@ -89,17 +89,12 @@ trait Formatters extends Constraints with Transforms {
         .bind(key, data)
         .flatMap {
         case pc
-          if pc.trim == "" =>
+          if pc.trim.matches(regexPostcode) =>
+          Right(pc.trim)
+        case pc
+          if pc.isBlank =>
           Left(Seq(FormError(key, requiredKey)))
-        case pc
-          if !stripSpaces(pc).matches(regexPostcode) =>
-          Left(Seq(FormError(key, invalidKey)))
-        case pc
-          if stripSpaces(pc).matches(regexPostcode) =>
-          Right(validPostCodeFormat(stripSpaces(pc)))
-        case pc
-          if !stripSpaces(pc).isEmpty =>
-          Right(pc)
+        case _ => Left(Seq(FormError(key, invalidKey)))
       }
     }
 
