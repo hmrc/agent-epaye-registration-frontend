@@ -81,7 +81,7 @@ class YourBusinessAddressControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must redirect to the next page when valid data is submitted" in {
-      val someBusinessAddress: YourBusinessAddress = YourBusinessAddress("1", "2", Some("3"), Some("4"), "TF34 NT")
+      val someBusinessAddress: YourBusinessAddress = YourBusinessAddress("1", "2", Some("3"), Some("4"), "TF34 3NT")
 
       val mockSessionRepository = mock[SessionRepository]
 
