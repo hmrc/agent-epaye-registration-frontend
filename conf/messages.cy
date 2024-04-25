@@ -65,7 +65,6 @@ start.intro = Os ydych yn asiant TWE neu’n fiwro’r gyflogres, defnyddiwch y 
 start.helpdesklink.text1 = Cysylltwch â Gwasanaeth Cwsmeriaid Cymraeg CThEF
 start.helpdesklink.text2 = os oes angen help arnoch gyda phroblem dechnegol wrth ddefnyddio’r gwasanaeth hwn.
 
-enterYourAgentName.title =Nodwch eich enw asiant
 enterYourAgentName.heading = Enw Asiant
 enterYourAgentName.hint=Gallai hyn fod yn enw eich asiantaeth, enw biwro’r gyflogres, neu’ch enw eich hun os ydych yn gweithredu fel unigolyn.
 enterYourAgentName.checkYourAnswersLabel = Nodwch eich enw asiant

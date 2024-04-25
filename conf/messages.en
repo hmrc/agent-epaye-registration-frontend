@@ -65,7 +65,6 @@ start.intro = If you are a PAYE agent or payroll bureau, use this service to get
 start.helpdesklink.text1 = Contact the online services helpdesk
 start.helpdesklink.text2 = if you need help with a technical problem when using this service.
 
-enterYourAgentName.title =Enter your agent name
 enterYourAgentName.heading = Agent name
 enterYourAgentName.hint=This could be your agency name, payroll bureau name, or your own name if you are acting as an individual.
 enterYourAgentName.checkYourAnswersLabel = Enter your agent name

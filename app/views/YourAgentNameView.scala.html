@@ -27,7 +27,7 @@
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("enterYourAgentName.title"))) {
+@layout(pageTitle = title(form, messages("enterYourAgentName.heading"))) {
 
     @formHelper(action = routes.YourAgentNameController.onSubmit(mode)) {
 
