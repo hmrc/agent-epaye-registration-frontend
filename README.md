@@ -20,7 +20,7 @@ The OPRA system provides a way for PAYE agents (not otherwise known to PAYE syst
 
 ## Running the app locally
 
-    ./run_local.sh
+    ./run.sh
 
 or
 
