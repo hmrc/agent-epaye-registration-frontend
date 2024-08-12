@@ -16,7 +16,7 @@
 
 package models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class RegistrationRequest(
   agentName: String,
@@ -28,9 +28,9 @@ case class RegistrationRequest(
 case class PageID(pageId: String)
 
 object RegistrationRequest {
-  implicit val registrationRequestFormat = Json.format[RegistrationRequest]
+  implicit val registrationRequestFormat: OFormat[RegistrationRequest] = Json.format[RegistrationRequest]
 }
 
 object PageID {
-  implicit val pageIdFormat = Json.format[PageID]
+  implicit val pageIdFormat: OFormat[PageID] = Json.format[PageID]
 }

@@ -23,7 +23,7 @@ POST       /your-business-address                   controllers.YourBusinessAddr
 GET        /change-your-business-address            controllers.YourBusinessAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-your-business-address            controllers.YourBusinessAddressController.onSubmit(mode: Mode = CheckMode)
 
-GET        /check-your-answers                      controllers.CheckYourAnswersController.onPageLoad
+GET        /check-your-answers                      controllers.CheckYourAnswersController.onPageLoad()
 
 GET        /submit                                  controllers.CheckYourAnswersController.submit()
 

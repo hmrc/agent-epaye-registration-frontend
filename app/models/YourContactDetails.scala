@@ -16,7 +16,7 @@
 
 package models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class YourContactDetails(
                                 contactName: String,
@@ -25,5 +25,5 @@ case class YourContactDetails(
                               )
 
 object YourContactDetails {
-  implicit val format = Json.format[YourContactDetails]
+  implicit val format: OFormat[YourContactDetails] = Json.format[YourContactDetails]
 }
