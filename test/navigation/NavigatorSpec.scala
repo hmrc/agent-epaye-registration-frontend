@@ -43,7 +43,7 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from YourBusinessAddressPage -> CheckYourAnswersPage" in {
-        navigator.nextPage(YourBusinessAddressPage, NormalMode, UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad
+        navigator.nextPage(YourBusinessAddressPage, NormalMode, UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad()
       }
 
       "must go from CheckYourAnswersPage -> PayeAgentReferencePage" in {
@@ -57,7 +57,7 @@ class NavigatorSpec extends SpecBase {
       "must go from a page that doesn't exist in the edit route map to CheckYourAnswers" in {
 
         case object UnknownPage extends Page
-        navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad
+        navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad()
       }
     }
   }

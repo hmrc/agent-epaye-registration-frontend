@@ -16,7 +16,7 @@
 
 package models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class YourBusinessAddress(
                                 addressLine1: String,
@@ -27,6 +27,6 @@ case class YourBusinessAddress(
                               )
 
 object YourBusinessAddress {
-  implicit val format = Json.format[YourBusinessAddress]
+  implicit val format: OFormat[YourBusinessAddress] = Json.format[YourBusinessAddress]
 }
 
