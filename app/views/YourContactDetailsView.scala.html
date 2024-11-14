@@ -58,7 +58,7 @@
                             .withCssClass("govuk-label--m")
                 )
                         .withWidth(Full)
-                        .copy(inputType = "email",attributes = Map("autocomplete" -> "email"))
+                        .copy(inputmode = Some("email"),attributes = Map("autocomplete" -> "email"))
             )
 
             @govukInput(
@@ -68,7 +68,7 @@
                             .withCssClass("govuk-label--m")
                 )
                         .withWidth(Full)
-                        .copy(inputmode= Some("numeric"), attributes = Map("autocomplete" -> "tel"))
+                        .copy(inputmode= Some("tel"), attributes = Map("autocomplete" -> "tel"))
             )
         </div>
 
