@@ -42,6 +42,7 @@
             )
             .withWidth(Full)
             .withHint(HintViewModel(messages("enterYourAgentName.hint")))
+            .copy(attributes = Map("autocomplete" -> "name"))
         )
 
         @govukButton(
