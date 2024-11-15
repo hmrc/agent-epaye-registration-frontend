@@ -26,7 +26,7 @@ import javax.inject.Inject
 class YourBusinessAddressFormProvider @Inject() extends Mappings {
 
   val maxAddressLineLength = 35
-  val maxPostcodeLength = 10
+  val maxPostcodeLength = 15
 
   def apply(): Form[YourBusinessAddress] = Form(
     mapping(
