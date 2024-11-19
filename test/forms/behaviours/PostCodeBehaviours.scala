@@ -26,7 +26,6 @@ trait PostCodeBehaviours extends FormSpec with ScalaCheckPropertyChecks with Gen
   def formWithPostCodeField(
                           form: Form[_],
                           fieldName: String,
-                          keyEmailLength: String,
                           keyEmailInvalid: String
                         ): Unit = {
 

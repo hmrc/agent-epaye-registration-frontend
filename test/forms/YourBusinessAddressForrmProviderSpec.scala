@@ -144,7 +144,6 @@ class YourBusinessAddressFormProviderSpec extends StringFieldBehaviours with Ema
   }
 
   ".postCode" - {
-    val keyLength = "yourBusinessAddress.postCode.error.length"
     val keyInvalid = "yourBusinessAddress.postCode.error.invalid"
 
     val fieldName = "postCode"
@@ -152,7 +151,6 @@ class YourBusinessAddressFormProviderSpec extends StringFieldBehaviours with Ema
     behave like formWithPostCodeField(
       form,
       fieldName,
-      keyLength,
       keyInvalid
     )
   }
