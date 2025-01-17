@@ -19,7 +19,7 @@ package forms.mappings
 import models.Enumerable
 import play.api.data.FormError
 import play.api.data.format.Formatter
-import utils.EmailAddress
+import utils.EmailAddressValidation
 
 import scala.util.control.Exception.nonFatalCatch
 
@@ -40,7 +40,7 @@ trait Formatters extends Constraints {
           .flatMap {
           case email if email.trim.length > emailLength =>
             Left(Seq(FormError(key, maxLengthKey)))
-          case email if EmailAddress.isValid(email) =>
+          case email if new EmailAddressValidation().isValid(email) =>
             Right(email)
           case _ =>
             Left(Seq(FormError(key, invalidKey)))

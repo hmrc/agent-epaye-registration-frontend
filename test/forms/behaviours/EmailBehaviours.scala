@@ -44,7 +44,16 @@ trait EmailBehaviours extends FormSpec with ScalaCheckPropertyChecks with Genera
         "ABC",
         FormError(fieldName, keyEmailInvalid, Seq.empty)
       )
+    }
 
+    "behave like a form with an email field entered with an incomplete domain" - {
+
+      behave like fieldWithRegex(
+        form,
+        fieldName,
+        "abc@test",
+        FormError(fieldName, keyEmailInvalid, Seq.empty)
+      )
     }
   }
 }
