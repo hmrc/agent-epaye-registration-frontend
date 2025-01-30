@@ -20,12 +20,17 @@ The OPRA system provides a way for PAYE agents (not otherwise known to PAYE syst
 
 ## Running the app locally
 
+Start service dependencies with:
+
+    sm2 --start AGENT_EPAYE_REG_ALL
+    sm2 --stop AGENT_EPAYE_REGISTRATION_FRONTEND
+
+And then run the service with:
+
     ./run.sh
 
 or
 
-    sm2 -start AGENT_EPAYE_REG_ALL
-    sm2 -stop AGENT_EPAYE_REGISTRATION_FRONTEND
     sbt -Dplay.http.router=testOnlyDoNotUseInAppConf.Routes run
 
 It should then be listening on port 9446
@@ -34,7 +39,7 @@ It should then be listening on port 9446
 
 ## Stop local upstream services
 
-    sm --stop AGENT_EPAYE_REG
+    sm2 --stop AGENT_EPAYE_REG
 
 ### License
 
