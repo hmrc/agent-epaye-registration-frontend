@@ -29,9 +29,11 @@ class YourAgentNameFormProvider @Inject() extends Mappings {
     Form(
       "value" -> text("enterYourAgentName.error.required").verifying(
         maxLength(
-          maxLength, "enterYourAgentName.error.length"
+          maxLength,
+          "enterYourAgentName.error.length"
         ),
         validCharacters("enterYourAgentName.error.invalidCharacters")
       )
     )
+
 }

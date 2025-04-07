@@ -24,68 +24,83 @@ class YourContactDetailsFormProviderSpec extends StringFieldBehaviours with Emai
   val form = new YourContactDetailsFormProvider()()
 
   ".contactName" - {
-    val requiredKey = "yourContactDetails.contactName.error.required"
-    val lengthKey = "yourContactDetails.contactName.error.length"
+    val requiredKey         = "yourContactDetails.contactName.error.required"
+    val lengthKey           = "yourContactDetails.contactName.error.length"
     val invalidCharacterKey = "yourContactDetails.contactName.error.invalidCharacters"
-    val maxLength = 56
+    val maxLength           = 56
 
     val fieldName = "contactName"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLength(maxLength)
+    behave.like(
+      fieldThatBindsValidData(
+        form,
+        fieldName,
+        stringsWithMaxLength(maxLength)
+      )
     )
 
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    behave.like(
+      fieldWithMaxLength(
+        form,
+        fieldName,
+        maxLength = maxLength,
+        lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      )
     )
 
-    behave like fieldWithRegex(
-      form,
-      fieldName,
-      "This & That / Ltd",
-      error = FormError(fieldName, invalidCharacterKey, Seq(validCharacterRegex))
+    behave.like(
+      fieldWithRegex(
+        form,
+        fieldName,
+        "This & That / Ltd",
+        error = FormError(fieldName, invalidCharacterKey, Seq(validCharacterRegex))
+      )
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+    behave.like(
+      mandatoryField(
+        form,
+        fieldName,
+        requiredError = FormError(fieldName, requiredKey)
+      )
     )
   }
 
   ".telephoneNumber" - {
     val keyEmailInvalid = "yourContactDetails.telephoneNumber.error.invalid"
-    val fieldName = "telephoneNumber"
+    val fieldName       = "telephoneNumber"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      "0121 1234 5678"
+    behave.like(
+      fieldThatBindsValidData(
+        form,
+        fieldName,
+        "0121 1234 5678"
+      )
     )
 
-    behave like fieldWithRegex(
-      form,
-      fieldName,
-      "ONETWOTHREEFOUR",
-      FormError(fieldName, keyEmailInvalid, Seq.empty)
+    behave.like(
+      fieldWithRegex(
+        form,
+        fieldName,
+        "ONETWOTHREEFOUR",
+        FormError(fieldName, keyEmailInvalid, Seq.empty)
+      )
     )
   }
 
   ".emailAddress" - {
-    val fieldName = "emailAddress"
-    val keyEmailLength = "yourContactDetails.emailAddress.error.length"
+    val fieldName       = "emailAddress"
+    val keyEmailLength  = "yourContactDetails.emailAddress.error.length"
     val keyEmailInvalid = "yourContactDetails.emailAddress.error.invalid"
 
-    behave like formWithEmailField(
-      form,
-      fieldName,
-      keyEmailLength,
-      keyEmailInvalid
+    behave.like(
+      formWithEmailField(
+        form,
+        fieldName,
+        keyEmailLength,
+        keyEmailInvalid
+      )
     )
   }
+
 }

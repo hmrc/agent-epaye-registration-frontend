@@ -19,14 +19,13 @@ package models
 import play.api.libs.json.{Json, OFormat}
 
 case class YourBusinessAddress(
-                                addressLine1: String,
-                                addressLine2: String,
-                                addressLine3: Option[String],
-                                addressLine4: Option[String],
-                                postCode: String
-                              )
+    addressLine1: String,
+    addressLine2: String,
+    addressLine3: Option[String],
+    addressLine4: Option[String],
+    postCode: String
+)
 
 object YourBusinessAddress {
   implicit val format: OFormat[YourBusinessAddress] = Json.format[YourBusinessAddress]
 }
-

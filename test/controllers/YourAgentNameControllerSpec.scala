@@ -37,7 +37,7 @@ class YourAgentNameControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new YourAgentNameFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val enterYourAgentNameRoute = routes.YourAgentNameController.onPageLoad(NormalMode).url
 
@@ -81,7 +81,7 @@ class YourAgentNameControllerSpec extends SpecBase with MockitoSugar {
 
       val mockSessionRepository = mock[SessionRepository]
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -153,4 +153,5 @@ class YourAgentNameControllerSpec extends SpecBase with MockitoSugar {
       }
     }
   }
+
 }

@@ -27,22 +27,20 @@ import views.html.StartView
 
 import javax.inject.Inject
 
-class StartController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       sessionRepository: SessionRepository,
-                                       view: StartView
-                                     ) extends FrontendBaseController with I18nSupport {
+class StartController @Inject() (
+    override val messagesApi: MessagesApi,
+    identify: IdentifierAction,
+    val controllerComponents: MessagesControllerComponents,
+    sessionRepository: SessionRepository,
+    view: StartView
+) extends FrontendBaseController
+    with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = identify {
-    implicit request =>
-      Ok(view())
+  def onPageLoad: Action[AnyContent] = identify(implicit request => Ok(view()))
+
+  def onRegistrationStart: Action[AnyContent] = identify { implicit request =>
+    sessionRepository.set(UserAnswers(request.userId, Json.obj()))
+    Redirect(routes.YourAgentNameController.onPageLoad(NormalMode))
   }
 
-  def onRegistrationStart: Action[AnyContent] = identify {
-    implicit request =>
-      sessionRepository.set(UserAnswers(request.userId, Json.obj()))
-      Redirect(routes.YourAgentNameController.onPageLoad(NormalMode))
-  }
 }

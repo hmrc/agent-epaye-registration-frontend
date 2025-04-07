@@ -76,7 +76,10 @@ class YourBusinessAddressControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(someBusinessAddress), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(someBusinessAddress), NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -85,7 +88,7 @@ class YourBusinessAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val mockSessionRepository = mock[SessionRepository]
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -103,7 +106,7 @@ class YourBusinessAddressControllerSpec extends SpecBase with MockitoSugar {
               "addressLine2" -> someBusinessAddress.addressLine2,
               "addressLine3" -> someBusinessAddress.addressLine3.getOrElse(""),
               "addressLine4" -> someBusinessAddress.addressLine4.getOrElse(""),
-              "postCode" -> someBusinessAddress.postCode
+              "postCode"     -> someBusinessAddress.postCode
             )
 
         val result = route(application, request).value
@@ -164,11 +167,12 @@ class YourBusinessAddressControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must redirect to the next page when valid postcode is submitted with lowercase letters and spaces in between" in {
-      val someBusinessAddress: YourBusinessAddress = YourBusinessAddress("1", "2", Some("3"), Some("4"), "t f 3  4 3 n t")
+      val someBusinessAddress: YourBusinessAddress =
+        YourBusinessAddress("1", "2", Some("3"), Some("4"), "t f 3  4 3 n t")
 
       val mockSessionRepository = mock[SessionRepository]
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -186,7 +190,7 @@ class YourBusinessAddressControllerSpec extends SpecBase with MockitoSugar {
               "addressLine2" -> someBusinessAddress.addressLine2,
               "addressLine3" -> someBusinessAddress.addressLine3.getOrElse(""),
               "addressLine4" -> someBusinessAddress.addressLine4.getOrElse(""),
-              "postCode" -> someBusinessAddress.postCode
+              "postCode"     -> someBusinessAddress.postCode
             )
 
         val result = route(application, request).value
@@ -216,4 +220,5 @@ class YourBusinessAddressControllerSpec extends SpecBase with MockitoSugar {
       }
     }
   }
+
 }

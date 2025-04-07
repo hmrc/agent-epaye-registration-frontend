@@ -21,10 +21,10 @@ import play.api.data.FormError
 
 class YourAgentNameFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "enterYourAgentName.error.required"
-  val lengthKey = "enterYourAgentName.error.length"
+  val requiredKey          = "enterYourAgentName.error.required"
+  val lengthKey            = "enterYourAgentName.error.length"
   val invalidCharactersKey = "enterYourAgentName.error.invalidCharacters"
-  val maxLength = 56
+  val maxLength            = 56
 
   val form = new YourAgentNameFormProvider()()
 
@@ -32,30 +32,39 @@ class YourAgentNameFormProviderSpec extends StringFieldBehaviours {
 
     val fieldName = "value"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLength(maxLength)
+    behave.like(
+      fieldThatBindsValidData(
+        form,
+        fieldName,
+        stringsWithMaxLength(maxLength)
+      )
     )
 
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    behave.like(
+      fieldWithMaxLength(
+        form,
+        fieldName,
+        maxLength = maxLength,
+        lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      )
     )
 
-    behave like fieldWithRegex(
-      form,
-      fieldName,
-      "This & That / Ltd",
-      error = FormError(fieldName, invalidCharactersKey, Seq(validCharacterRegex))
+    behave.like(
+      fieldWithRegex(
+        form,
+        fieldName,
+        "This & That / Ltd",
+        error = FormError(fieldName, invalidCharactersKey, Seq(validCharacterRegex))
+      )
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+    behave.like(
+      mandatoryField(
+        form,
+        fieldName,
+        requiredError = FormError(fieldName, requiredKey)
+      )
     )
   }
+
 }

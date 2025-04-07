@@ -19,7 +19,6 @@ package pages
 import models.YourBusinessAddress
 import pages.behaviours.PageBehaviours
 
-
 class YourBusinessAddressPageSpec extends PageBehaviours {
 
   "YourBusinessAddressPageSpec" - {
@@ -30,4 +29,5 @@ class YourBusinessAddressPageSpec extends PageBehaviours {
 
     beRemovable[YourBusinessAddress](YourBusinessAddressPage)
   }
+
 }

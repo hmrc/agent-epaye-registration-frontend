@@ -24,26 +24,30 @@ import play.api.data.{Form, FormError}
 trait PostCodeBehaviours extends FormSpec with ScalaCheckPropertyChecks with Generators with StringFieldBehaviours {
 
   def formWithPostCodeField(
-                          form: Form[_],
-                          fieldName: String,
-                          keyEmailInvalid: String
-                        ): Unit = {
+      form: Form[_],
+      fieldName: String,
+      keyEmailInvalid: String
+  ): Unit =
 
     "behave like a form with a postcode field" - {
 
-      behave like fieldThatBindsValidData(
-        form,
-        fieldName,
-        "TF3 4NT"
+      behave.like(
+        fieldThatBindsValidData(
+          form,
+          fieldName,
+          "TF3 4NT"
+        )
       )
 
-      behave like fieldWithRegex(
-        form,
-        fieldName,
-        "TF3",
-        FormError(fieldName, keyEmailInvalid, Seq.empty)
+      behave.like(
+        fieldWithRegex(
+          form,
+          fieldName,
+          "TF3",
+          FormError(fieldName, keyEmailInvalid, Seq.empty)
+        )
       )
 
     }
-  }
+
 }

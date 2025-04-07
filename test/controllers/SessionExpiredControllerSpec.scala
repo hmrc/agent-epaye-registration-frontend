@@ -41,4 +41,5 @@ class SessionExpiredControllerSpec extends SpecBase {
       }
     }
   }
+
 }

@@ -19,10 +19,10 @@ package models
 import play.api.libs.json.{Json, OFormat}
 
 case class YourContactDetails(
-                                contactName: String,
-                                emailAddress: Option[String],
-                                telephoneNumber: Option[String]
-                              )
+    contactName: String,
+    emailAddress: Option[String],
+    telephoneNumber: Option[String]
+)
 
 object YourContactDetails {
   implicit val format: OFormat[YourContactDetails] = Json.format[YourContactDetails]

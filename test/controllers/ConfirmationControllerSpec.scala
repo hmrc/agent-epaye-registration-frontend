@@ -42,7 +42,6 @@ class ConfirmationControllerSpec extends SpecBase {
       }
     }
 
-
     "must return OK and the correct view for a GET when there is a 'PayeAgentReferencePage' held in the session" in {
       val agentReference = PayeAgentReference("AB1234")
 
@@ -62,7 +61,6 @@ class ConfirmationControllerSpec extends SpecBase {
       }
     }
 
-
-
   }
+
 }
