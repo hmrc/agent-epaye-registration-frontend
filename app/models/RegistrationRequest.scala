@@ -19,11 +19,12 @@ package models
 import play.api.libs.json.{Json, OFormat}
 
 case class RegistrationRequest(
-  agentName: String,
-  contactName: String,
-  emailAddress: Option[String],
-  telephoneNumber: Option[String],
-  address: YourBusinessAddress)
+    agentName: String,
+    contactName: String,
+    emailAddress: Option[String],
+    telephoneNumber: Option[String],
+    address: YourBusinessAddress
+)
 
 case class PageID(pageId: String)
 

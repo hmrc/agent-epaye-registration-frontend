@@ -37,7 +37,7 @@ class YourContactNameControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new YourContactDetailsFormProvider
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val yourContactDetailsRoute = routes.YourContactDetailsController.onPageLoad(NormalMode).url
 
@@ -75,7 +75,10 @@ class YourContactNameControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(someContactDetails), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(someContactDetails), NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -84,7 +87,7 @@ class YourContactNameControllerSpec extends SpecBase with MockitoSugar {
 
       val mockSessionRepository = mock[SessionRepository]
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -156,4 +159,5 @@ class YourContactNameControllerSpec extends SpecBase with MockitoSugar {
       }
     }
   }
+
 }

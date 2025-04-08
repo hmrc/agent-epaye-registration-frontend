@@ -24,18 +24,18 @@ import play.api.mvc.Call
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class Navigator @Inject()() {
+class Navigator @Inject() () {
 
   private val normalRoutes: Page => UserAnswers => Call = {
-    case YourAgentNamePage => _ => routes.YourContactDetailsController.onPageLoad(NormalMode)
-    case YourContactDetailsPage => _ => routes.YourBusinessAddressController.onPageLoad(NormalMode)
+    case YourAgentNamePage       => _ => routes.YourContactDetailsController.onPageLoad(NormalMode)
+    case YourContactDetailsPage  => _ => routes.YourBusinessAddressController.onPageLoad(NormalMode)
     case YourBusinessAddressPage => _ => routes.CheckYourAnswersController.onPageLoad()
-    case CheckYourAnswersPage => _ => routes.ConfirmationController.onPageLoad()
-    case _ => _ => routes.IndexController.onPageLoad
+    case CheckYourAnswersPage    => _ => routes.ConfirmationController.onPageLoad()
+    case _                       => _ => routes.IndexController.onPageLoad
   }
 
-  private val checkRouteMap: Page => UserAnswers => Call = {
-    case _ => _ => routes.CheckYourAnswersController.onPageLoad()
+  private val checkRouteMap: Page => UserAnswers => Call = { case _ =>
+    _ => routes.CheckYourAnswersController.onPageLoad()
   }
 
   def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
@@ -44,4 +44,5 @@ class Navigator @Inject()() {
     case CheckMode =>
       checkRouteMap(page)(userAnswers)
   }
+
 }

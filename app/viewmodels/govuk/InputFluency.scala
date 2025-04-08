@@ -30,33 +30,36 @@ trait InputFluency {
   object InputViewModel extends ErrorMessageAwareness {
 
     def apply(
-               field: Field,
-               label: Label
-             )(implicit messages: Messages): Input =
+        field: Field,
+        label: Label
+    )(implicit messages: Messages): Input =
       Input(
-        id           = field.id,
-        name         = field.name,
-        value        = field.value,
-        label        = label,
+        id = field.id,
+        name = field.name,
+        value = field.value,
+        label = label,
         errorMessage = errorMessage(field)
       )
+
   }
 
   implicit class FluentInput(input: Input) {
 
     def describedBy(value: String): Input =
-      input copy (describedBy = Some(value))
+      input.copy(describedBy = Some(value))
 
     def withHint(hint: Hint): Input =
-      input copy (hint = Some(hint))
+      input.copy(hint = Some(hint))
 
     def withCssClass(newClass: String): Input =
-      input copy (classes = s"${input.classes} $newClass")
+      input.copy(classes = s"${input.classes} $newClass")
 
     def withPrefix(prefix: PrefixOrSuffix): Input =
-      input copy (prefix = Some(prefix))
+      input.copy(prefix = Some(prefix))
 
     def withWidth(inputWidth: InputWidth): Input =
       input.withCssClass(inputWidth.toString)
+
   }
+
 }

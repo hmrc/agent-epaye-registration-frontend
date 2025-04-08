@@ -25,7 +25,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class AgentEpayeRegistrationService @Inject()(registrationConnector: AgentEpayeRegistrationConnector) {
+class AgentEpayeRegistrationService @Inject() (registrationConnector: AgentEpayeRegistrationConnector) {
 
   def register(request: RegistrationRequest)(implicit hc: HeaderCarrier): Future[PayeAgentReference] =
 

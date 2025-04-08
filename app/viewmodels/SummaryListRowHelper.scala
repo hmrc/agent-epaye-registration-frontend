@@ -22,7 +22,12 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 
 trait SummaryListRowHelper {
 
-  def summaryListRow(label: String, value: Content, visuallyHiddenText: Option[String], actions: (Call, String)*): SummaryListRow = {
+  def summaryListRow(
+      label: String,
+      value: Content,
+      visuallyHiddenText: Option[String],
+      actions: (Call, String)*
+  ): SummaryListRow =
     SummaryListRow(
       key = Key(
         content = Text(label)
@@ -30,17 +35,25 @@ trait SummaryListRowHelper {
       value = Value(
         content = value
       ),
-      actions = Some(Actions(
-        items = actions.map { case (call, linkText) => ActionItem(
-          href = call.url,
-          content = Text(linkText),
-          visuallyHiddenText = visuallyHiddenText
-        )}
-      ))
+      actions = Some(
+        Actions(
+          items = actions.map { case (call, linkText) =>
+            ActionItem(
+              href = call.url,
+              content = Text(linkText),
+              visuallyHiddenText = visuallyHiddenText
+            )
+          }
+        )
+      )
     )
-  }
 
-  def summaryListRow(label: String, value: String, visuallyHiddenText: Option[String], actions: (Call, String)*): SummaryListRow =
-    summaryListRow(label, Text(value), visuallyHiddenText, actions :_*)
+  def summaryListRow(
+      label: String,
+      value: String,
+      visuallyHiddenText: Option[String],
+      actions: (Call, String)*
+  ): SummaryListRow =
+    summaryListRow(label, Text(value), visuallyHiddenText, actions: _*)
 
 }

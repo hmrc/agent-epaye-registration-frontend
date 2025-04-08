@@ -33,7 +33,8 @@ class YourBusinessAddressFormProvider @Inject() extends Mappings {
         errorKey = "yourBusinessAddress.addressLine1.error.required"
       ).verifying(
         maxLength(
-          maxAddressLineLength, "yourBusinessAddress.addressLine1.error.length"
+          maxAddressLineLength,
+          "yourBusinessAddress.addressLine1.error.length"
         ),
         validCharacters("yourBusinessAddress.addressLine1.error.invalidCharacters")
       ),
@@ -41,7 +42,8 @@ class YourBusinessAddressFormProvider @Inject() extends Mappings {
         errorKey = "yourBusinessAddress.addressLine2.error.required"
       ).verifying(
         maxLength(
-          maxAddressLineLength, "yourBusinessAddress.addressLine2.error.length"
+          maxAddressLineLength,
+          "yourBusinessAddress.addressLine2.error.length"
         ),
         validCharacters("yourBusinessAddress.addressLine2.error.invalidCharacters")
       ),
@@ -50,7 +52,8 @@ class YourBusinessAddressFormProvider @Inject() extends Mappings {
           errorKey = "yourBusinessAddress.addressLine3.error.required"
         ).verifying(
           maxLength(
-            maxAddressLineLength, "yourBusinessAddress.addressLine3.error.length"
+            maxAddressLineLength,
+            "yourBusinessAddress.addressLine3.error.length"
           ),
           validCharacters("yourBusinessAddress.addressLine3.error.invalidCharacters")
         )
@@ -60,7 +63,8 @@ class YourBusinessAddressFormProvider @Inject() extends Mappings {
           errorKey = "yourBusinessAddress.addressLine4.error.required"
         ).verifying(
           maxLength(
-            maxAddressLineLength, "yourBusinessAddress.addressLine4.error.length"
+            maxAddressLineLength,
+            "yourBusinessAddress.addressLine4.error.length"
           ),
           validCharacters("yourBusinessAddress.addressLine4.error.invalidCharacters")
         )
@@ -72,4 +76,5 @@ class YourBusinessAddressFormProvider @Inject() extends Mappings {
         )
     )(YourBusinessAddress.apply)(YourBusinessAddress.unapply)
   )
+
 }

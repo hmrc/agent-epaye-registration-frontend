@@ -29,18 +29,22 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AgentEpayeRegistrationConnector @Inject()(
-                                                 config: FrontendAppConfig,
-                                                 http: HttpClientV2,
-                                                 implicit val ec: ExecutionContext) {
+class AgentEpayeRegistrationConnector @Inject() (
+    config: FrontendAppConfig,
+    http: HttpClientV2,
+    implicit val ec: ExecutionContext
+) {
 
   private lazy val registrationUrl = config.opraUrl + "/agent-epaye-registration/registrations"
 
-  def register(request: RegistrationRequest)(implicit hc: HeaderCarrier): Future[PayeAgentReference] = {
+  def register(request: RegistrationRequest)(implicit hc: HeaderCarrier): Future[PayeAgentReference] =
     http.post(new URL(registrationUrl)).withBody(Json.toJson(request)).execute[HttpResponse].map {
       case response if response.status >= 400 && response.status <= 599 =>
-        throw UpstreamErrorResponse("[AgentEpayeRegistrationConnector][register]: Failed POST of registration request", response.status)
+        throw UpstreamErrorResponse(
+          "[AgentEpayeRegistrationConnector][register]: Failed POST of registration request",
+          response.status
+        )
       case response => (response.json \ "payeAgentReference").as[PayeAgentReference]
     }
-  }
+
 }

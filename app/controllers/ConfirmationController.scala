@@ -25,22 +25,22 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.CheckYourAnswersHelper
 import views.html.ConfirmationView
 
-class ConfirmationController @Inject()(
-                                            override val messagesApi: MessagesApi,
-                                            identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            val controllerComponents: MessagesControllerComponents,
-                                            view: ConfirmationView
-                                          ) extends FrontendBaseController with I18nSupport with CheckYourAnswersHelper {
+class ConfirmationController @Inject() (
+    override val messagesApi: MessagesApi,
+    identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    val controllerComponents: MessagesControllerComponents,
+    view: ConfirmationView
+) extends FrontendBaseController
+    with I18nSupport
+    with CheckYourAnswersHelper {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-      request.userAnswers.get(PayeAgentReferencePage) match {
-        case Some(ref) => Ok(view(ref))
-        case None => Redirect(routes.IndexController.onPageLoad)
-      }
+  def onPageLoad(): Action[AnyContent] = identify.andThen(getData).andThen(requireData) { implicit request =>
+    request.userAnswers.get(PayeAgentReferencePage) match {
+      case Some(ref) => Ok(view(ref))
+      case None      => Redirect(routes.IndexController.onPageLoad)
+    }
   }
-
 
 }

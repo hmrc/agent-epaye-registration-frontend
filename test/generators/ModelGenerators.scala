@@ -25,20 +25,19 @@ trait ModelGenerators {
   implicit lazy val arbitraryYourContactDetails: Arbitrary[YourContactDetails] =
     Arbitrary {
       for {
-        contactName <- arbitrary[String]
-        emailAddress <- arbitrary[String]
+        contactName     <- arbitrary[String]
+        emailAddress    <- arbitrary[String]
         telephoneNumber <- arbitrary[String]
       } yield YourContactDetails(contactName, Some(emailAddress), Some(telephoneNumber))
     }
 
-
   implicit lazy val arbitraryBusinessAddress: Arbitrary[YourBusinessAddress] =
     Arbitrary {
       for {
-        line1 <- arbitrary[String]
-        line2 <- arbitrary[String]
-        line3 <- arbitrary[String]
-        line4 <- arbitrary[String]
+        line1    <- arbitrary[String]
+        line2    <- arbitrary[String]
+        line3    <- arbitrary[String]
+        line4    <- arbitrary[String]
         postCode <- arbitrary[String]
       } yield YourBusinessAddress(line1, line2, Some(line3), Some(line4), postCode)
     }

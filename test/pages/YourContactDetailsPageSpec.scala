@@ -19,7 +19,6 @@ package pages
 import models.YourContactDetails
 import pages.behaviours.PageBehaviours
 
-
 class YourContactDetailsPageSpec extends PageBehaviours {
 
   "YourContactDetailsPage" - {
@@ -30,4 +29,5 @@ class YourContactDetailsPageSpec extends PageBehaviours {
 
     beRemovable[YourContactDetails](YourContactDetailsPage)
   }
+
 }

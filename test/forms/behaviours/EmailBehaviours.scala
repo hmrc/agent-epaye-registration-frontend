@@ -24,36 +24,41 @@ import play.api.data.{Form, FormError}
 trait EmailBehaviours extends FormSpec with ScalaCheckPropertyChecks with Generators with StringFieldBehaviours {
 
   def formWithEmailField(
-                          form: Form[_],
-                          fieldName: String,
-                          keyEmailLength: String,
-                          keyEmailInvalid: String
-                        ): Unit = {
+      form: Form[_],
+      fieldName: String,
+      keyEmailLength: String,
+      keyEmailInvalid: String
+  ): Unit = {
 
     "behave like a form with an email field" - {
 
-      behave like fieldThatBindsValidData(
-        form,
-        fieldName,
-        "ab@test.com"
+      behave.like(
+        fieldThatBindsValidData(
+          form,
+          fieldName,
+          "ab@test.com"
+        )
       )
 
-      behave like fieldWithRegex(
-        form,
-        fieldName,
-        "ABC",
-        FormError(fieldName, keyEmailInvalid, Seq.empty)
-      )
-    }
-
-    "behave like a form with an email field entered with an incomplete domain" - {
-
-      behave like fieldWithRegex(
-        form,
-        fieldName,
-        "abc@test",
-        FormError(fieldName, keyEmailInvalid, Seq.empty)
+      behave.like(
+        fieldWithRegex(
+          form,
+          fieldName,
+          "ABC",
+          FormError(fieldName, keyEmailInvalid, Seq.empty)
+        )
       )
     }
+
+    "behave like a form with an email field entered with an incomplete domain" -
+      behave.like(
+        fieldWithRegex(
+          form,
+          fieldName,
+          "abc@test",
+          FormError(fieldName, keyEmailInvalid, Seq.empty)
+        )
+      )
   }
+
 }

@@ -28,7 +28,6 @@ trait CheckYourAnswersHelper extends SummaryListRowHelper {
   def makeRow()(implicit request: DataRequest[_], messages: Messages): Option[SummaryListRow] =
 
     request.userAnswers.get(YourAgentNamePage).map { value =>
-
       summaryListRow(
         messages(s"agentName.checkYourAnswersLabel"),
         value,
@@ -37,12 +36,10 @@ trait CheckYourAnswersHelper extends SummaryListRowHelper {
       )
     }
 
-
   def makeContactDetailsRow()(implicit request: DataRequest[_], messages: Messages): Option[SummaryListRow] =
     request.userAnswers.get(YourContactDetailsPage).map { value =>
-
-      val sectionLines = Seq(Some(value.contactName), value.emailAddress, value.telephoneNumber)
-        .flatten.mkString("<br>")
+      val sectionLines =
+        Seq(Some(value.contactName), value.emailAddress, value.telephoneNumber).flatten.mkString("<br>")
 
       summaryListRow(
         messages(s"contactDetails.checkYourAnswersLabel"),
@@ -52,12 +49,15 @@ trait CheckYourAnswersHelper extends SummaryListRowHelper {
       )
     }
 
-
   def makeBusinessAddressRow()(implicit request: DataRequest[_], messages: Messages): Option[SummaryListRow] =
     request.userAnswers.get(YourBusinessAddressPage).map { value =>
-
-      val sectionLines = Seq(Some(value.addressLine1), Some(value.addressLine2), value.addressLine3, value.addressLine4, Some(value.postCode))
-        .flatten.mkString("<br>")
+      val sectionLines = Seq(
+        Some(value.addressLine1),
+        Some(value.addressLine2),
+        value.addressLine3,
+        value.addressLine4,
+        Some(value.postCode)
+      ).flatten.mkString("<br>")
 
       summaryListRow(
         messages(s"businessAddress.checkYourAnswersLabel"),
@@ -67,16 +67,11 @@ trait CheckYourAnswersHelper extends SummaryListRowHelper {
       )
     }
 
-
-  def makeSummary()(implicit request: DataRequest[_], messages: Messages): Seq[SummaryListRow] = {
+  def makeSummary()(implicit request: DataRequest[_], messages: Messages): Seq[SummaryListRow] =
     Seq(
       makeRow(),
       makeContactDetailsRow(),
       makeBusinessAddressRow()
     ).flatten
-
-
-
-  }
 
 }

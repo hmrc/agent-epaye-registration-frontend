@@ -26,120 +26,148 @@ class YourBusinessAddressFormProviderSpec extends StringFieldBehaviours with Ema
   val addressLineMaxLength = 35
 
   ".addressLine1" - {
-    val requiredKey = "yourBusinessAddress.addressLine1.error.required"
-    val lengthKey = "yourBusinessAddress.addressLine1.error.length"
+    val requiredKey          = "yourBusinessAddress.addressLine1.error.required"
+    val lengthKey            = "yourBusinessAddress.addressLine1.error.length"
     val invalidCharactersKey = "yourBusinessAddress.addressLine1.error.invalidCharacters"
-    val fieldName = "addressLine1"
+    val fieldName            = "addressLine1"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLength(addressLineMaxLength)
+    behave.like(
+      fieldThatBindsValidData(
+        form,
+        fieldName,
+        stringsWithMaxLength(addressLineMaxLength)
+      )
     )
 
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = addressLineMaxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(addressLineMaxLength))
+    behave.like(
+      fieldWithMaxLength(
+        form,
+        fieldName,
+        maxLength = addressLineMaxLength,
+        lengthError = FormError(fieldName, lengthKey, Seq(addressLineMaxLength))
+      )
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+    behave.like(
+      mandatoryField(
+        form,
+        fieldName,
+        requiredError = FormError(fieldName, requiredKey)
+      )
     )
 
-    behave like fieldWithRegex(
-      form,
-      fieldName,
-      "anything with /",
-      error = FormError(fieldName, invalidCharactersKey, Seq(validCharacterRegex))
+    behave.like(
+      fieldWithRegex(
+        form,
+        fieldName,
+        "anything with /",
+        error = FormError(fieldName, invalidCharactersKey, Seq(validCharacterRegex))
+      )
     )
   }
 
   ".addressLine2" - {
-    val requiredKey = "yourBusinessAddress.addressLine2.error.required"
-    val lengthKey = "yourBusinessAddress.addressLine2.error.length"
+    val requiredKey          = "yourBusinessAddress.addressLine2.error.required"
+    val lengthKey            = "yourBusinessAddress.addressLine2.error.length"
     val invalidCharactersKey = "yourBusinessAddress.addressLine2.error.invalidCharacters"
-    val fieldName = "addressLine2"
+    val fieldName            = "addressLine2"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLength(addressLineMaxLength)
+    behave.like(
+      fieldThatBindsValidData(
+        form,
+        fieldName,
+        stringsWithMaxLength(addressLineMaxLength)
+      )
     )
 
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = addressLineMaxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(addressLineMaxLength))
+    behave.like(
+      fieldWithMaxLength(
+        form,
+        fieldName,
+        maxLength = addressLineMaxLength,
+        lengthError = FormError(fieldName, lengthKey, Seq(addressLineMaxLength))
+      )
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+    behave.like(
+      mandatoryField(
+        form,
+        fieldName,
+        requiredError = FormError(fieldName, requiredKey)
+      )
     )
 
-    behave like fieldWithRegex(
-      form,
-      fieldName,
-      "anything with /",
-      error = FormError(fieldName, invalidCharactersKey, Seq(validCharacterRegex))
+    behave.like(
+      fieldWithRegex(
+        form,
+        fieldName,
+        "anything with /",
+        error = FormError(fieldName, invalidCharactersKey, Seq(validCharacterRegex))
+      )
     )
   }
 
   ".addressLine3" - {
-    val lengthKey = "yourBusinessAddress.addressLine3.error.length"
+    val lengthKey            = "yourBusinessAddress.addressLine3.error.length"
     val invalidCharactersKey = "yourBusinessAddress.addressLine3.error.invalidCharacters"
-    val fieldName = "addressLine3"
+    val fieldName            = "addressLine3"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLength(addressLineMaxLength)
+    behave.like(
+      fieldThatBindsValidData(
+        form,
+        fieldName,
+        stringsWithMaxLength(addressLineMaxLength)
+      )
     )
 
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = addressLineMaxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(addressLineMaxLength))
+    behave.like(
+      fieldWithMaxLength(
+        form,
+        fieldName,
+        maxLength = addressLineMaxLength,
+        lengthError = FormError(fieldName, lengthKey, Seq(addressLineMaxLength))
+      )
     )
 
-    behave like fieldWithRegex(
-      form,
-      fieldName,
-      "anything with /",
-      error = FormError(fieldName, invalidCharactersKey, Seq(validCharacterRegex))
+    behave.like(
+      fieldWithRegex(
+        form,
+        fieldName,
+        "anything with /",
+        error = FormError(fieldName, invalidCharactersKey, Seq(validCharacterRegex))
+      )
     )
   }
 
   ".addressLine4" - {
-    val lengthKey = "yourBusinessAddress.addressLine4.error.length"
+    val lengthKey            = "yourBusinessAddress.addressLine4.error.length"
     val invalidCharactersKey = "yourBusinessAddress.addressLine4.error.invalidCharacters"
-    val fieldName = "addressLine4"
+    val fieldName            = "addressLine4"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLength(addressLineMaxLength)
+    behave.like(
+      fieldThatBindsValidData(
+        form,
+        fieldName,
+        stringsWithMaxLength(addressLineMaxLength)
+      )
     )
 
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = addressLineMaxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(addressLineMaxLength))
+    behave.like(
+      fieldWithMaxLength(
+        form,
+        fieldName,
+        maxLength = addressLineMaxLength,
+        lengthError = FormError(fieldName, lengthKey, Seq(addressLineMaxLength))
+      )
     )
 
-    behave like fieldWithRegex(
-      form,
-      fieldName,
-      "anything with /",
-      error = FormError(fieldName, invalidCharactersKey, Seq(validCharacterRegex))
+    behave.like(
+      fieldWithRegex(
+        form,
+        fieldName,
+        "anything with /",
+        error = FormError(fieldName, invalidCharactersKey, Seq(validCharacterRegex))
+      )
     )
   }
 
@@ -148,10 +176,13 @@ class YourBusinessAddressFormProviderSpec extends StringFieldBehaviours with Ema
 
     val fieldName = "postCode"
 
-    behave like formWithPostCodeField(
-      form,
-      fieldName,
-      keyInvalid
+    behave.like(
+      formWithPostCodeField(
+        form,
+        fieldName,
+        keyInvalid
+      )
     )
   }
+
 }

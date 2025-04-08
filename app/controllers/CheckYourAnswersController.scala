@@ -32,62 +32,61 @@ import views.html.CheckYourAnswersView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class CheckYourAnswersController @Inject()(
-                                            override val messagesApi: MessagesApi,
-                                            sessionRepository: SessionRepository,
-                                            navigator: Navigator,
-                                            identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            val controllerComponents: MessagesControllerComponents,
-                                            agentEpayeRegistrationService: AgentEpayeRegistrationService,
-                                            view: CheckYourAnswersView
-                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with CheckYourAnswersHelper {
+class CheckYourAnswersController @Inject() (
+    override val messagesApi: MessagesApi,
+    sessionRepository: SessionRepository,
+    navigator: Navigator,
+    identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    val controllerComponents: MessagesControllerComponents,
+    agentEpayeRegistrationService: AgentEpayeRegistrationService,
+    view: CheckYourAnswersView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
+    with I18nSupport
+    with CheckYourAnswersHelper {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = identify.andThen(getData).andThen(requireData) { implicit request =>
+    val list = SummaryListViewModel(
+      rows = makeSummary()
+    )
 
-      val list = SummaryListViewModel(
-        rows = makeSummary()
-      )
-
-      Ok(view(list))
+    Ok(view(list))
   }
 
-  def submit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def submit(): Action[AnyContent] = identify.andThen(getData).andThen(requireData).async { implicit request =>
+    val agentName       = request.userAnswers.get(YourAgentNamePage).get
+    val contactName     = request.userAnswers.get(YourContactDetailsPage).map(_.contactName).getOrElse("")
+    val emailAddress    = request.userAnswers.get(YourContactDetailsPage).flatMap(_.emailAddress)
+    val telephoneNumber = request.userAnswers.get(YourContactDetailsPage).flatMap(_.telephoneNumber)
+    val addressLine1    = request.userAnswers.get(YourBusinessAddressPage).map(_.addressLine1).getOrElse("")
+    val addressLine2    = request.userAnswers.get(YourBusinessAddressPage).map(_.addressLine2).getOrElse("")
+    val addressLine3    = request.userAnswers.get(YourBusinessAddressPage).flatMap(_.addressLine3)
+    val addressLine4    = request.userAnswers.get(YourBusinessAddressPage).flatMap(_.addressLine4)
+    val postCode =
+      request.userAnswers.get(YourBusinessAddressPage).map(_.postCode.toUpperCase.replaceAll("\\s+", "")).getOrElse("")
 
-      val agentName = request.userAnswers.get(YourAgentNamePage).get
-      val contactName = request.userAnswers.get(YourContactDetailsPage).map(_.contactName).getOrElse("")
-      val emailAddress =  request.userAnswers.get(YourContactDetailsPage).flatMap(_.emailAddress)
-      val telephoneNumber =  request.userAnswers.get(YourContactDetailsPage).flatMap(_.telephoneNumber)
-      val addressLine1 =  request.userAnswers.get(YourBusinessAddressPage).map(_.addressLine1).getOrElse("")
-      val addressLine2 =  request.userAnswers.get(YourBusinessAddressPage).map(_.addressLine2).getOrElse("")
-      val addressLine3 =  request.userAnswers.get(YourBusinessAddressPage).flatMap(_.addressLine3)
-      val addressLine4 =  request.userAnswers.get(YourBusinessAddressPage).flatMap(_.addressLine4)
-      val postCode =  request.userAnswers.get(YourBusinessAddressPage).map(_.postCode.toUpperCase.replaceAll("\\s+", "")).getOrElse("")
-
-
-      for {
-        agentRef <-
-          agentEpayeRegistrationService.register(
-            RegistrationRequest(
-              agentName,
-              contactName,
-              emailAddress,
-              telephoneNumber,
-              YourBusinessAddress(
-                addressLine1,
-                addressLine2,
-                addressLine3,
-                addressLine4,
-                postCode
-              )
+    for {
+      agentRef <-
+        agentEpayeRegistrationService.register(
+          RegistrationRequest(
+            agentName,
+            contactName,
+            emailAddress,
+            telephoneNumber,
+            YourBusinessAddress(
+              addressLine1,
+              addressLine2,
+              addressLine3,
+              addressLine4,
+              postCode
             )
           )
-        updatedAnswers <- Future.fromTry(request.userAnswers.set(PayeAgentReferencePage, agentRef))
-        _ <- sessionRepository.set(updatedAnswers)
-      } yield Redirect(navigator.nextPage(CheckYourAnswersPage, NormalMode, updatedAnswers))
+        )
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(PayeAgentReferencePage, agentRef))
+      _              <- sessionRepository.set(updatedAnswers)
+    } yield Redirect(navigator.nextPage(CheckYourAnswersPage, NormalMode, updatedAnswers))
   }
 
 }
