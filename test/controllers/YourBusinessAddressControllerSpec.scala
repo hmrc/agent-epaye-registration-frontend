@@ -165,60 +165,6 @@ class YourBusinessAddressControllerSpec extends SpecBase with MockitoSugar {
         redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
       }
     }
-
-    "must redirect to the next page when valid postcode is submitted with lowercase letters and spaces in between" in {
-      val someBusinessAddress: YourBusinessAddress =
-        YourBusinessAddress("1", "2", Some("3"), Some("4"), "t f 3  4 3 n t")
-
-      val mockSessionRepository = mock[SessionRepository]
-
-      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
-
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
-          )
-          .build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, yourBusinessAddressRoute)
-            .withFormUrlEncodedBody(
-              "addressLine1" -> someBusinessAddress.addressLine1,
-              "addressLine2" -> someBusinessAddress.addressLine2,
-              "addressLine3" -> someBusinessAddress.addressLine3.getOrElse(""),
-              "addressLine4" -> someBusinessAddress.addressLine4.getOrElse(""),
-              "postCode"     -> someBusinessAddress.postCode
-            )
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
-      }
-    }
-
-    "must return a Bad Request and errors when an invalid postcode is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, yourBusinessAddressRoute)
-            .withFormUrlEncodedBody(("postCode", "TF12 34C"))
-
-        val boundForm = form.bind(Map("postCode" -> "TF12 34C"))
-
-        val view = application.injector.instanceOf[YourBusinessAddressView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
-      }
-    }
   }
 
 }

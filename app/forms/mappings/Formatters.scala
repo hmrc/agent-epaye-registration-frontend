@@ -79,8 +79,7 @@ trait Formatters extends Constraints {
   ): Formatter[String] =
     new Formatter[String] {
 
-      private val regexPostcode =
-        "^([A-Za-z]\\s*){1,2}[0-9]\\s*[0-9A-Za-z]?\\s*[0-9]\\s*([A-Za-z]\\s*){2}$|[Bb]\\s*[Ff]\\s*[Pp]\\s*[Oo]\\s*([0-9]\\s*){1,3}$"
+      private val regexPostcode = "^[A-Z]{1,2}[0-9][0-9A-Z]?\\s?[0-9][A-Z]{2}$|BFPO\\s?[0-9]{1,3}$"
 
       private val dataFormatter: Formatter[String] = stringFormatter(requiredKey)
 
