@@ -90,6 +90,9 @@
                             .withCssClass("govuk-label--m")
                 )
                         .withWidth(OneThird)
+                        .withHint(Hint(
+                            content = Text(messages("yourBusinessAddress.postCode.hint"))
+                ))
                         .copy(attributes = Map("autocomplete" -> "postal-code"))
             )
 
