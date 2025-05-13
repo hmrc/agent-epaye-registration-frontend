@@ -56,7 +56,7 @@ class CheckYourAnswersController @Inject() (
   }
 
   def submit(): Action[AnyContent] = identify.andThen(getData).andThen(requireData).async { implicit request =>
-    val agentName       = request.userAnswers.get(YourAgentNamePage).get
+    val agentName       = request.userAnswers.get(YourAgentNamePage).getOrElse("")
     val contactName     = request.userAnswers.get(YourContactDetailsPage).map(_.contactName).getOrElse("")
     val emailAddress    = request.userAnswers.get(YourContactDetailsPage).flatMap(_.emailAddress)
     val telephoneNumber = request.userAnswers.get(YourContactDetailsPage).flatMap(_.telephoneNumber)
