@@ -17,10 +17,13 @@
 package controllers
 
 import base.SpecBase
+import models.{NormalMode, UserAnswers, YourContactDetails}
+import pages.{YourAgentNamePage, YourContactDetailsPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.govuk.SummaryListFluency
 import views.html.CheckYourAnswersView
+import play.api.libs.json._
 
 class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
@@ -58,4 +61,19 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
     }
   }
 
+  "redirect to SessionExpiredController when YourAgentNamePage is None in userAnswers" in {
+
+    val userAnswers = UserAnswers(userAnswersId).remove(YourAgentNamePage).success.value
+    val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+    running(application) {
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.submit().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
+    }
+  }
 }

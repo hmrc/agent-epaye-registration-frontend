@@ -18,10 +18,12 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import models.requests.DataRequest
 import models.{NormalMode, RegistrationRequest, YourBusinessAddress}
 import navigation.Navigator
 import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.Results.Redirect
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.AgentEpayeRegistrationService
@@ -56,36 +58,41 @@ class CheckYourAnswersController @Inject() (
   }
 
   def submit(): Action[AnyContent] = identify.andThen(getData).andThen(requireData).async { implicit request =>
-    val agentName       = request.userAnswers.get(YourAgentNamePage).getOrElse("")
-    val contactName     = request.userAnswers.get(YourContactDetailsPage).map(_.contactName).getOrElse("")
-    val emailAddress    = request.userAnswers.get(YourContactDetailsPage).flatMap(_.emailAddress)
-    val telephoneNumber = request.userAnswers.get(YourContactDetailsPage).flatMap(_.telephoneNumber)
-    val addressLine1    = request.userAnswers.get(YourBusinessAddressPage).map(_.addressLine1).getOrElse("")
-    val addressLine2    = request.userAnswers.get(YourBusinessAddressPage).map(_.addressLine2).getOrElse("")
-    val addressLine3    = request.userAnswers.get(YourBusinessAddressPage).flatMap(_.addressLine3)
-    val addressLine4    = request.userAnswers.get(YourBusinessAddressPage).flatMap(_.addressLine4)
-    val postCode        = request.userAnswers.get(YourBusinessAddressPage).map(_.postCode).getOrElse("")
+    request.userAnswers.get(YourAgentNamePage) match {
+      case None =>
+        Future.successful(Redirect(routes.SessionExpiredController.onPageLoad))
+      case Some(agentName) =>
+        val contactName     = request.userAnswers.get(YourContactDetailsPage).map(_.contactName).getOrElse("")
+        val emailAddress    = request.userAnswers.get(YourContactDetailsPage).flatMap(_.emailAddress)
+        val telephoneNumber = request.userAnswers.get(YourContactDetailsPage).flatMap(_.telephoneNumber)
+        val addressLine1    = request.userAnswers.get(YourBusinessAddressPage).map(_.addressLine1).getOrElse("")
+        val addressLine2    = request.userAnswers.get(YourBusinessAddressPage).map(_.addressLine2).getOrElse("")
+        val addressLine3    = request.userAnswers.get(YourBusinessAddressPage).flatMap(_.addressLine3)
+        val addressLine4    = request.userAnswers.get(YourBusinessAddressPage).flatMap(_.addressLine4)
+        val postCode        = request.userAnswers.get(YourBusinessAddressPage).map(_.postCode).getOrElse("")
 
-    for {
-      agentRef <-
-        agentEpayeRegistrationService.register(
-          RegistrationRequest(
-            agentName,
-            contactName,
-            emailAddress,
-            telephoneNumber,
-            YourBusinessAddress(
-              addressLine1,
-              addressLine2,
-              addressLine3,
-              addressLine4,
-              postCode
+        for {
+          agentRef <-
+            agentEpayeRegistrationService.register(
+              RegistrationRequest(
+                agentName,
+                contactName,
+                emailAddress,
+                telephoneNumber,
+                YourBusinessAddress(
+                  addressLine1,
+                  addressLine2,
+                  addressLine3,
+                  addressLine4,
+                  postCode
+                )
+              )
             )
-          )
-        )
-      updatedAnswers <- Future.fromTry(request.userAnswers.set(PayeAgentReferencePage, agentRef))
-      _              <- sessionRepository.set(updatedAnswers)
-    } yield Redirect(navigator.nextPage(CheckYourAnswersPage, NormalMode, updatedAnswers))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(PayeAgentReferencePage, agentRef))
+          _              <- sessionRepository.set(updatedAnswers)
+        } yield Redirect(navigator.nextPage(CheckYourAnswersPage, NormalMode, updatedAnswers))
+    }
+
   }
 
 }
