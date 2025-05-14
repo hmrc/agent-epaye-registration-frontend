@@ -75,4 +75,5 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
   }
+
 }
