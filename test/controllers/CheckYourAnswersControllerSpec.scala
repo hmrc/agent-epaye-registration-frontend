@@ -17,13 +17,12 @@
 package controllers
 
 import base.SpecBase
-import models.{NormalMode, UserAnswers, YourContactDetails}
-import pages.{YourAgentNamePage, YourContactDetailsPage}
+import models.UserAnswers
+import pages.YourAgentNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.govuk.SummaryListFluency
 import views.html.CheckYourAnswersView
-import play.api.libs.json._
 
 class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
@@ -76,5 +75,4 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad.url
     }
   }
-
 }
