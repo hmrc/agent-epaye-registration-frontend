@@ -142,6 +142,7 @@ package object models {
                   _.remove(JsPath(second :: rest)).flatMap(newValue => oldValue.set(JsPath(first :: Nil), newValue))
                 }
             }
+        case _ => JsError("unhandled path structure")
       }
 
   }

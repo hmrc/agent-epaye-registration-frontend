@@ -63,7 +63,8 @@ lazy val root = (project in file("."))
   )
   .settings(
     scalacOptions += "-Wconf:cat=unused-imports&src=html/.*:s",
-    scalacOptions += "-Wconf:cat=unused-imports&src=routes/.*:s"
+    scalacOptions += "-Wconf:src=routes/.*:s",
+    scalacOptions += "-Wconf:msg=Flag.*repeatedly:s"
   )
   .settings(
     isPublicArtefact := true
