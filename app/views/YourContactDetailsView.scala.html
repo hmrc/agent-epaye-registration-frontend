@@ -57,8 +57,9 @@
                     label = LabelViewModel(messages("yourContactDetails.emailAddress.heading"))
                             .withCssClass("govuk-label--m")
                 )
+                        .withType("email")
                         .withWidth(Full)
-                        .copy(inputmode = Some("email"),attributes = Map("autocomplete" -> "email"))
+                        .copy(attributes = Map("autocomplete" -> "email"))
             )
 
             @govukInput(
