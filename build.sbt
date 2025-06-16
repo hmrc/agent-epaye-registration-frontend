@@ -39,17 +39,6 @@ lazy val root = (project in file("."))
     scalacOptions ++= Seq("-feature"),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,
-    update / evictionWarningOptions :=
-      EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-    // concatenate js
-    Concat.groups := Seq(
-      "javascripts/application.js" ->
-        group(
-          Seq(
-            "javascripts/app.js"
-          )
-        )
-    ),
     // prevent removal of unused code which generates warning errors due to use of third-party libs
     uglifyCompressOptions := Seq("unused=false", "dead_code=false"),
     pipelineStages        := Seq(digest),
