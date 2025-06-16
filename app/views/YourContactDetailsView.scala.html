@@ -68,7 +68,8 @@
                             .withCssClass("govuk-label--m")
                 )
                         .withWidth(Full)
-                        .copy(inputmode= Some("tel"), attributes = Map("autocomplete" -> "tel"))
+                        .withType("tel")
+                        .copy(attributes = Map("autocomplete" -> "tel", "type" -> "tel"))
             )
         </div>
 
