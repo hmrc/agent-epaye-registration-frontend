@@ -60,6 +60,9 @@ trait InputFluency {
     def withWidth(inputWidth: InputWidth): Input =
       input.withCssClass(inputWidth.toString)
 
+    def withType(inputType: String): Input =
+      input.copy(inputType = inputType)
+
   }
 
 }
