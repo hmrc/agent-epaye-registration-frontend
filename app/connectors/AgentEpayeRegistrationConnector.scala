@@ -24,7 +24,7 @@ import uk.gov.hmrc.http.HttpReadsInstances._
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, UpstreamErrorResponse}
 
-import java.net.URL
+import java.net.URI
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -38,13 +38,18 @@ class AgentEpayeRegistrationConnector @Inject() (
   private lazy val registrationUrl = config.opraUrl + "/agent-epaye-registration/registrations"
 
   def register(request: RegistrationRequest)(implicit hc: HeaderCarrier): Future[PayeAgentReference] =
-    http.post(new URL(registrationUrl)).withBody(Json.toJson(request)).execute[HttpResponse].map {
-      case response if response.status >= 400 && response.status <= 599 =>
-        throw UpstreamErrorResponse(
-          "[AgentEpayeRegistrationConnector][register]: Failed POST of registration request",
-          response.status
-        )
-      case response => (response.json \ "payeAgentReference").as[PayeAgentReference]
-    }
+    http
+      .post(URI.create(registrationUrl).toURL)
+      .withBody(Json.toJson(request))
+      .execute[HttpResponse]
+      .map {
+        case response if response.status >= 400 && response.status <= 599 =>
+          throw UpstreamErrorResponse(
+            "[AgentEpayeRegistrationConnector][register]: Failed POST of registration request",
+            response.status
+          )
+        case response =>
+          (response.json \ "payeAgentReference").as[PayeAgentReference]
+      }
 
 }
