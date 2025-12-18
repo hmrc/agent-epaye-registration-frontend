@@ -36,7 +36,7 @@ trait EmailBehaviours extends FormSpec with ScalaCheckPropertyChecks with Genera
         fieldThatBindsValidData(
           form,
           fieldName,
-          "ab@test.com"
+          "name@example.com"
         )
       )
 
