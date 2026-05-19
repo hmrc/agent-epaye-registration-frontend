@@ -41,7 +41,7 @@
             @govukInput(
                 InputViewModel(
                     field = form("addressLine1"),
-                    label = LabelViewModel(messages("yourBusinessAddress.addressLine1.heading"))
+                    label = LabelViewModel(Text(messages("yourBusinessAddress.addressLine1.heading")))
                             .withCssClass("govuk-label--m")
                 )
                         .withWidth(Full)
@@ -52,7 +52,7 @@
             @govukInput(
                 InputViewModel(
                     field = form("addressLine2"),
-                    label = LabelViewModel(messages("yourBusinessAddress.addressLine2.heading"))
+                    label = LabelViewModel(Text(messages("yourBusinessAddress.addressLine2.heading")))
                             .withCssClass("govuk-label--m")
                 )
                         .withWidth(Full)
@@ -63,7 +63,7 @@
             @govukInput(
                 InputViewModel(
                     field = form("addressLine3"),
-                    label = LabelViewModel(messages("yourBusinessAddress.addressLine3.heading"))
+                    label = LabelViewModel(Text(messages("yourBusinessAddress.addressLine3.heading")))
                             .withCssClass("govuk-label--m")
                 )
                         .withWidth(Full)
@@ -74,7 +74,7 @@
             @govukInput(
                 InputViewModel(
                     field = form("addressLine4"),
-                    label = LabelViewModel(messages("yourBusinessAddress.addressLine4.heading"))
+                    label = LabelViewModel(Text(messages("yourBusinessAddress.addressLine4.heading")))
                             .withCssClass("govuk-label--m")
                 )
                         .withWidth(Full)
@@ -85,7 +85,7 @@
             @govukInput(
                 InputViewModel(
                     field = form("postCode"),
-                    label = LabelViewModel(messages("yourBusinessAddress.postCode.heading"))
+                    label = LabelViewModel(Text(messages("yourBusinessAddress.postCode.heading")))
                             .withCssClass("govuk-label--m")
                 )
                         .withWidth(OneThird)
@@ -99,7 +99,7 @@
 
         @govukButton(
             Button(
-                content = messages("site.continue"),
+                content = Text(messages("site.continue")),
                 name = Some(messages("site.continue"))
             )
         )

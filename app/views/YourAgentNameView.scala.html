@@ -37,16 +37,16 @@
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("enterYourAgentName.heading")).asPageHeading
+                label = LabelViewModel(Text(messages("enterYourAgentName.heading"))).asPageHeading
             )
             .withWidth(Full)
-            .withHint(HintViewModel(messages("enterYourAgentName.hint")))
+            .withHint(HintViewModel(Text(messages("enterYourAgentName.hint"))))
             .copy(attributes = Map("autocomplete" -> "name"))
         )
 
         @govukButton(
             Button(
-                content = messages("site.continue"),
+                content = Text(messages("site.continue")),
                 name = Some(messages("site.continue"))
             )
         )
