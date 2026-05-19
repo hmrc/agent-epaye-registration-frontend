@@ -41,7 +41,7 @@ object MappingsSpec {
 
 class MappingsSpec extends AnyFreeSpec with Matchers with OptionValues with Mappings {
 
-  import MappingsSpec._
+  import MappingsSpec.*
 
   "text" - {
 

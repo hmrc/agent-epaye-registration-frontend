@@ -16,7 +16,7 @@
 
 package controllers
 
-import controllers.actions._
+import controllers.actions.*
 import forms.YourContactDetailsFormProvider
 import models.Mode
 import navigation.Navigator

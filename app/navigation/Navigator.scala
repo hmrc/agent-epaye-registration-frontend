@@ -17,8 +17,8 @@
 package navigation
 
 import controllers.routes
-import models._
-import pages._
+import models.*
+import pages.*
 import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}

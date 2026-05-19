@@ -16,7 +16,7 @@
 
 package controllers
 
-import controllers.actions._
+import controllers.actions.*
 import forms.YourBusinessAddressFormProvider
 import models.Mode
 import navigation.Navigator

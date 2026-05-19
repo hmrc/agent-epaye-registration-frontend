@@ -16,7 +16,7 @@
 
 package models
 
-import play.api.libs.json._
+import play.api.libs.json.*
 import queries.{Gettable, Settable}
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 

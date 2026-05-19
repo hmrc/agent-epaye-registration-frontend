@@ -21,7 +21,7 @@ import models.RegistrationRequest
 import play.api.libs.json.Json
 import play.api.libs.ws.writeableOf_JsValue
 import uk.gov.hmrc.domain.PayeAgentReference
-import uk.gov.hmrc.http.HttpReadsInstances._
+import uk.gov.hmrc.http.HttpReadsInstances.*
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, UpstreamErrorResponse}
 

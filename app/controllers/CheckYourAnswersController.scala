@@ -20,14 +20,14 @@ import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.{NormalMode, RegistrationRequest, YourBusinessAddress}
 import navigation.Navigator
-import pages._
+import pages.*
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.AgentEpayeRegistrationService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.CheckYourAnswersHelper
-import viewmodels.govuk.summarylist._
+import viewmodels.govuk.summarylist.*
 import views.html.CheckYourAnswersView
 
 import scala.concurrent.{ExecutionContext, Future}

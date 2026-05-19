@@ -33,7 +33,7 @@ trait UserAnswersGenerator extends TryValues {
 
   implicit lazy val arbitraryUserData: Arbitrary[UserAnswers] = {
 
-    import models._
+    import models.*
 
     Arbitrary {
       for {

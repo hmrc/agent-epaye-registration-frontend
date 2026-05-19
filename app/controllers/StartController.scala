@@ -16,8 +16,8 @@
 
 package controllers
 
-import controllers.actions._
 import models.{NormalMode, UserAnswers}
+import controllers.actions.*
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
