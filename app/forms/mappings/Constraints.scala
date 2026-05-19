@@ -32,7 +32,7 @@ trait Constraints {
         .getOrElse(Valid)
     }
 
-  protected def minimumValue[A](minimum: A, errorKey: String)(implicit ev: Ordering[A]): Constraint[A] =
+  protected def minimumValue[A](minimum: A, errorKey: String)(using ev: Ordering[A]): Constraint[A] =
     Constraint { input =>
       import ev.*
 
@@ -43,7 +43,7 @@ trait Constraints {
       }
     }
 
-  protected def maximumValue[A](maximum: A, errorKey: String)(implicit ev: Ordering[A]): Constraint[A] =
+  protected def maximumValue[A](maximum: A, errorKey: String)(using ev: Ordering[A]): Constraint[A] =
     Constraint { input =>
       import ev.*
 
@@ -54,7 +54,7 @@ trait Constraints {
       }
     }
 
-  protected def inRange[A](minimum: A, maximum: A, errorKey: String)(implicit ev: Ordering[A]): Constraint[A] =
+  protected def inRange[A](minimum: A, maximum: A, errorKey: String)(using ev: Ordering[A]): Constraint[A] =
     Constraint { input =>
       import ev.*
 

@@ -40,7 +40,7 @@ class YourContactDetailsController @Inject() (
     formProvider: YourContactDetailsFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: YourContactDetailsView
-)(implicit ec: ExecutionContext)
+)(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 

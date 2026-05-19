@@ -42,7 +42,7 @@ class CheckYourAnswersController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     agentEpayeRegistrationService: AgentEpayeRegistrationService,
     view: CheckYourAnswersView
-)(implicit ec: ExecutionContext)
+)(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
     with CheckYourAnswersHelper {

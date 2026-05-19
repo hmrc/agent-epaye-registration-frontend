@@ -40,7 +40,7 @@ class YourAgentNameController @Inject() (
     formProvider: YourAgentNameFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: YourAgentNameView
-)(implicit ec: ExecutionContext)
+)(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 

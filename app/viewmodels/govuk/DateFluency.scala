@@ -32,7 +32,7 @@ trait DateFluency {
     def apply(
         field: Field,
         legend: Legend
-    )(implicit messages: Messages): DateInput =
+    )(using Messages): DateInput =
       apply(
         field = field,
         fieldset = Fieldset(legend = Some(legend))
@@ -41,7 +41,7 @@ trait DateFluency {
     def apply(
         field: Field,
         fieldset: Fieldset
-    )(implicit messages: Messages): DateInput = {
+    )(using messages: Messages): DateInput = {
 
       val errorClass = if (errorMessage(field).isDefined) "govuk-input--error" else ""
 

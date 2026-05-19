@@ -22,7 +22,7 @@ import org.scalacheck.Arbitrary.arbitrary
 
 trait ModelGenerators {
 
-  implicit lazy val arbitraryYourContactDetails: Arbitrary[YourContactDetails] =
+  given arbitraryYourContactDetails: Arbitrary[YourContactDetails] =
     Arbitrary {
       for {
         contactName     <- arbitrary[String]
@@ -31,7 +31,7 @@ trait ModelGenerators {
       } yield YourContactDetails(contactName, Some(emailAddress), Some(telephoneNumber))
     }
 
-  implicit lazy val arbitraryBusinessAddress: Arbitrary[YourBusinessAddress] =
+  given arbitraryBusinessAddress: Arbitrary[YourBusinessAddress] =
     Arbitrary {
       for {
         line1    <- arbitrary[String]

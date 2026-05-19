@@ -40,7 +40,7 @@ class YourBusinessAddressController @Inject() (
     formProvider: YourBusinessAddressFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: YourBusinessAddressView
-)(implicit ec: ExecutionContext)
+)(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
