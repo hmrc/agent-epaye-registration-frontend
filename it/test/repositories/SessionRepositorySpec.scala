@@ -31,7 +31,7 @@ import org.mockito.MockitoSugar
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class SessionRepositorySpec
+class SessionRepositoryISpec
     extends AnyFreeSpec
     with Matchers
     with DefaultPlayMongoRepositorySupport[UserAnswers]
