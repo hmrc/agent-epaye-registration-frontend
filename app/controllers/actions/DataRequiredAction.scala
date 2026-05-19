@@ -29,7 +29,7 @@ class DataRequiredActionImpl @Inject() (implicit val executionContext: Execution
 
   override protected def refine[A](request: OptionalDataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
 
-    val currentlyOnTheConfirmationPage = request.uri contains routes.ConfirmationController.onPageLoad().url
+    val currentlyOnTheConfirmationPage = request.uri.contains(routes.ConfirmationController.onPageLoad().url)
 
     request.userAnswers match {
       case None =>
