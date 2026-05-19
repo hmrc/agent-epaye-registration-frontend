@@ -25,7 +25,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 
 trait CheckYourAnswersHelper extends SummaryListRowHelper {
 
-  def makeRow()(implicit request: DataRequest[_], messages: Messages): Option[SummaryListRow] =
+  def makeRow()(implicit request: DataRequest[?], messages: Messages): Option[SummaryListRow] =
 
     request.userAnswers.get(YourAgentNamePage).map { value =>
       summaryListRow(
@@ -36,7 +36,7 @@ trait CheckYourAnswersHelper extends SummaryListRowHelper {
       )
     }
 
-  def makeContactDetailsRow()(implicit request: DataRequest[_], messages: Messages): Option[SummaryListRow] =
+  def makeContactDetailsRow()(implicit request: DataRequest[?], messages: Messages): Option[SummaryListRow] =
     request.userAnswers.get(YourContactDetailsPage).map { value =>
       val sectionLines =
         Seq(Some(value.contactName), value.emailAddress, value.telephoneNumber).flatten.mkString("<br>")
@@ -49,7 +49,7 @@ trait CheckYourAnswersHelper extends SummaryListRowHelper {
       )
     }
 
-  def makeBusinessAddressRow()(implicit request: DataRequest[_], messages: Messages): Option[SummaryListRow] =
+  def makeBusinessAddressRow()(implicit request: DataRequest[?], messages: Messages): Option[SummaryListRow] =
     request.userAnswers.get(YourBusinessAddressPage).map { value =>
       val sectionLines = Seq(
         Some(value.addressLine1),
@@ -67,7 +67,7 @@ trait CheckYourAnswersHelper extends SummaryListRowHelper {
       )
     }
 
-  def makeSummary()(implicit request: DataRequest[_], messages: Messages): Seq[SummaryListRow] =
+  def makeSummary()(implicit request: DataRequest[?], messages: Messages): Seq[SummaryListRow] =
     Seq(
       makeRow(),
       makeContactDetailsRow(),
