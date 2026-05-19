@@ -79,7 +79,7 @@ trait DateFluency {
 
   }
 
-  implicit class FluentDate(date: DateInput) {
+  extension (date: DateInput) {
 
     def withHint(hint: Hint): DateInput =
       date.copy(hint = Some(hint))

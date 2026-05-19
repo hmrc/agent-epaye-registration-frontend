@@ -43,7 +43,7 @@ trait InputFluency {
 
   }
 
-  implicit class FluentInput(input: Input) {
+  extension (input: Input) {
 
     def describedBy(value: String): Input =
       input.copy(describedBy = Some(value))

@@ -89,7 +89,7 @@ trait RadiosFluency {
 
   }
 
-  implicit class FluentRadios(radios: Radios) {
+  extension (radios: Radios) {
 
     def withHint(hint: Hint): Radios =
       radios.copy(hint = Some(hint))
