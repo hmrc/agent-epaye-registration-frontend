@@ -54,6 +54,6 @@ trait SummaryListRowHelper {
       visuallyHiddenText: Option[String],
       actions: (Call, String)*
   ): SummaryListRow =
-    summaryListRow(label, Text(value), visuallyHiddenText, actions: _*)
+    summaryListRow(label, Text(value), visuallyHiddenText, actions*)
 
 }
