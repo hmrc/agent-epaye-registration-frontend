@@ -47,7 +47,7 @@ class UserAnswersSpec extends AnyWordSpec with Matchers {
   val jsValue: JsValue = Json.parse(jsonString)
 
   val userAnswers = UserAnswers(
-    id = "some_id_123",
+    _id = "some_id_123",
     data = Json.obj(
       "key1" -> JsString("value1"),
       "key2" -> JsNumber(2),
