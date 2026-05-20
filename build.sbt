@@ -6,7 +6,7 @@ import uk.gov.hmrc.DefaultBuildSettings
 lazy val appName: String = "agent-epaye-registration-frontend"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.18"
+ThisBuild / scalaVersion := "3.3.7"
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
@@ -48,9 +48,12 @@ lazy val root = (project in file("."))
     uglify / includeFilter := GlobFilter("application.js")
   )
   .settings(
-    scalacOptions += "-Wconf:cat=unused-imports&src=html/.*:s",
-    scalacOptions += "-Wconf:src=routes/.*:s",
-    scalacOptions += "-Wconf:msg=Flag.*repeatedly:s"
+    scalacOptions ++= Seq(
+      "-Wconf:cat=unused-imports&src=html/.*:s",
+      "-Wconf:src=routes/.*:s",
+      "-Wconf:msg=Flag.*repeatedly:s",
+      "-explain"
+    )
   )
   .settings(
     isPublicArtefact := true

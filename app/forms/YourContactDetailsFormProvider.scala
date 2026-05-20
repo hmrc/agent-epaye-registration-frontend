@@ -52,7 +52,7 @@ class YourContactDetailsFormProvider @Inject() extends Mappings {
             "yourContactDetails.telephoneNumber.error.length"
           )
         )
-    )(YourContactDetails.apply)(YourContactDetails.unapply)
+    )(YourContactDetails.apply)(x => Some(Tuple.fromProductTyped(x)))
   )
 
 }
