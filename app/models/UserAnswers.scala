@@ -24,7 +24,7 @@ import java.time.Instant
 import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(
-    id: String,
+    _id: String,
     data: JsObject = Json.obj(),
     lastUpdated: Instant = Instant.now
 ) {
@@ -66,25 +66,8 @@ final case class UserAnswers(
 
 object UserAnswers {
 
-  val reads: Reads[UserAnswers] = {
+  private implicit val instantFormat: Format[Instant] = MongoJavatimeFormats.instantFormat
 
-    import play.api.libs.functional.syntax._
+  implicit val format: OFormat[UserAnswers] = Json.format[UserAnswers]
 
-    (__ \ "_id")
-      .read[String]
-      .and((__ \ "data").read[JsObject])
-      .and((__ \ "lastUpdated").read(MongoJavatimeFormats.instantFormat))(UserAnswers.apply _)
-  }
-
-  val writes: OWrites[UserAnswers] = {
-
-    import play.api.libs.functional.syntax._
-
-    (__ \ "_id")
-      .write[String]
-      .and((__ \ "data").write[JsObject])
-      .and((__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat))(unlift(UserAnswers.unapply))
-  }
-
-  implicit val format: OFormat[UserAnswers] = OFormat(reads, writes)
 }

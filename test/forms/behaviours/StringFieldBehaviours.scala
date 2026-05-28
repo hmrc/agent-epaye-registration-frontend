@@ -33,7 +33,7 @@ trait StringFieldBehaviours extends FieldBehaviours {
 
     "not bind strings invalidated by regex" in {
       val result = form.bind(Map(fieldName -> invalidString)).apply(fieldName)
-      result.errors shouldEqual Seq(error)
+      result.errors mustEqual Seq(error)
     }
 
 }
