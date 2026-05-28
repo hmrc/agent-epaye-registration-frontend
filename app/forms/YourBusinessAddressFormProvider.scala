@@ -80,7 +80,7 @@ class YourBusinessAddressFormProvider @Inject() extends Mappings {
             "yourBusinessAddress.postCode.error.length"
           )
         )
-    )(YourBusinessAddress.apply)(YourBusinessAddress.unapply)
+    )(YourBusinessAddress.apply)(x => Some(Tuple.fromProductTyped(x)))
   )
 
 }
