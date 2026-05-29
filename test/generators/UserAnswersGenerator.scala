@@ -31,9 +31,9 @@ trait UserAnswersGenerator extends TryValues {
       arbitrary[(YourContactDetailsPage.type, JsValue)] ::
       Nil
 
-  implicit lazy val arbitraryUserData: Arbitrary[UserAnswers] = {
+  given arbitraryUserData: Arbitrary[UserAnswers] = {
 
-    import models._
+    import models.*
 
     Arbitrary {
       for {

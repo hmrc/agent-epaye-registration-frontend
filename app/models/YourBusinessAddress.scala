@@ -27,5 +27,5 @@ case class YourBusinessAddress(
 )
 
 object YourBusinessAddress {
-  implicit val format: OFormat[YourBusinessAddress] = Json.format[YourBusinessAddress]
+  given format: OFormat[YourBusinessAddress] = Json.format[YourBusinessAddress]
 }

@@ -18,7 +18,7 @@ package viewmodels
 
 import play.api.mvc.Call
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{Content, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.*
 
 trait SummaryListRowHelper {
 
@@ -54,6 +54,6 @@ trait SummaryListRowHelper {
       visuallyHiddenText: Option[String],
       actions: (Call, String)*
   ): SummaryListRow =
-    summaryListRow(label, Text(value), visuallyHiddenText, actions: _*)
+    summaryListRow(label, Text(value), visuallyHiddenText, actions*)
 
 }

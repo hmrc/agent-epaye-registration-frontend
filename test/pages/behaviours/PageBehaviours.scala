@@ -25,7 +25,7 @@ import org.scalatest.{OptionValues, TryValues}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import pages.QuestionPage
-import play.api.libs.json._
+import play.api.libs.json.*
 
 trait PageBehaviours
     extends AnyFreeSpec
@@ -37,7 +37,7 @@ trait PageBehaviours
 
   class BeRetrievable[A] {
 
-    def apply[P <: QuestionPage[A]](genP: Gen[P])(implicit ev1: Arbitrary[A], ev2: Format[A]): Unit =
+    def apply[P <: QuestionPage[A]](genP: Gen[P])(using Arbitrary[A], Format[A]): Unit =
 
       "when being retrieved from UserAnswers" - {
 
@@ -79,7 +79,7 @@ trait PageBehaviours
 
   class BeSettable[A] {
 
-    def apply[P <: QuestionPage[A]](genP: Gen[P])(implicit ev1: Arbitrary[A], ev2: Format[A]): Unit =
+    def apply[P <: QuestionPage[A]](genP: Gen[P])(using Arbitrary[A], Format[A]): Unit =
 
       "must be able to be set on UserAnswers" in {
 
@@ -100,7 +100,7 @@ trait PageBehaviours
 
   class BeRemovable[A] {
 
-    def apply[P <: QuestionPage[A]](genP: Gen[P])(implicit ev1: Arbitrary[A], ev2: Format[A]): Unit =
+    def apply[P <: QuestionPage[A]](genP: Gen[P])(using Arbitrary[A], Format[A]): Unit =
 
       "must be able to be removed from UserAnswers" in {
 

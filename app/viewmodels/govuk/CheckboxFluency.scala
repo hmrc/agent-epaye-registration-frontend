@@ -37,7 +37,7 @@ trait CheckboxFluency {
         name: String,
         items: Seq[CheckboxItem],
         legend: Legend
-    )(implicit messages: Messages): Checkboxes =
+    )(using Messages): Checkboxes =
       apply(
         form = form,
         name = name,
@@ -50,7 +50,7 @@ trait CheckboxFluency {
         name: String,
         items: Seq[CheckboxItem],
         fieldset: Fieldset
-    )(implicit messages: Messages): Checkboxes =
+    )(using Messages): Checkboxes =
       Checkboxes(
         fieldset = Some(fieldset),
         name = name,
@@ -62,7 +62,7 @@ trait CheckboxFluency {
 
   }
 
-  implicit class FluentCheckboxes(checkboxes: Checkboxes) {
+  extension (checkboxes: Checkboxes) {
 
     def describedBy(value: String): Checkboxes =
       checkboxes.copy(describedBy = Some(value))
@@ -86,7 +86,7 @@ trait CheckboxFluency {
 
   }
 
-  implicit class FluentCheckboxItem(item: CheckboxItem) {
+  extension (item: CheckboxItem) {
 
     def withLabel(label: Label): CheckboxItem =
       item.copy(label = Some(label))
@@ -96,9 +96,6 @@ trait CheckboxFluency {
 
     def withConditionalHtml(html: Html): CheckboxItem =
       item.copy(conditionalHtml = Some(html))
-
-    def disabled(): CheckboxItem =
-      item.copy(disabled = true)
 
     def withAttribute(attribute: (String, String)): CheckboxItem =
       item.copy(attributes = item.attributes + attribute)

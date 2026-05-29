@@ -16,7 +16,7 @@
 
 package controllers
 
-import controllers.actions._
+import controllers.actions.*
 import forms.YourBusinessAddressFormProvider
 import models.Mode
 import navigation.Navigator
@@ -40,7 +40,7 @@ class YourBusinessAddressController @Inject() (
     formProvider: YourBusinessAddressFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: YourBusinessAddressView
-)(implicit ec: ExecutionContext)
+)(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 

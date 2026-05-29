@@ -16,7 +16,7 @@
 
 package controllers
 
-import controllers.actions._
+import controllers.actions.*
 import forms.YourContactDetailsFormProvider
 import models.Mode
 import navigation.Navigator
@@ -40,7 +40,7 @@ class YourContactDetailsController @Inject() (
     formProvider: YourContactDetailsFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: YourContactDetailsView
-)(implicit ec: ExecutionContext)
+)(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 

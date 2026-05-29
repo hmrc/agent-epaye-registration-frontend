@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import play.api.libs.json._
+import play.api.libs.json.*
 
 package object models {
 
-  implicit class RichJsObject(jsObject: JsObject) {
+  extension (jsObject: JsObject) {
 
     def setObject(path: JsPath, value: JsValue): JsResult[JsObject] =
       jsObject.set(path, value).flatMap(_.validate[JsObject])
@@ -28,7 +28,7 @@ package object models {
 
   }
 
-  implicit class RichJsValue(jsValue: JsValue) {
+  extension (jsValue: JsValue) {
 
     def set(path: JsPath, value: JsValue): JsResult[JsValue] =
       (path.path, jsValue) match {
@@ -95,7 +95,7 @@ package object models {
             .slice(0, index) ++ valueToRemoveFrom.value.slice(index + 1, valueToRemoveFrom.value.size)
           JsSuccess(JsArray(updatedJsArray))
         case valueToRemoveFrom: JsArray => JsError(s"array index out of bounds: $index, $valueToRemoveFrom")
-        case _                          => JsError(s"cannot set an index on $valueToRemoveFrom")
+        case null                       => JsError(s"cannot set an index on $valueToRemoveFrom")
       }
     }
 

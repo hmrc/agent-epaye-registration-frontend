@@ -29,9 +29,9 @@ case class RegistrationRequest(
 case class PageID(pageId: String)
 
 object RegistrationRequest {
-  implicit val registrationRequestFormat: OFormat[RegistrationRequest] = Json.format[RegistrationRequest]
+  given registrationRequestFormat: OFormat[RegistrationRequest] = Json.format[RegistrationRequest]
 }
 
 object PageID {
-  implicit val pageIdFormat: OFormat[PageID] = Json.format[PageID]
+  given pageIdFormat: OFormat[PageID] = Json.format[PageID]
 }

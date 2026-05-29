@@ -30,7 +30,7 @@ trait HintFluency {
 
   }
 
-  implicit class FluentHint(hint: Hint) {
+  extension (hint: Hint) {
 
     def withId(id: String): Hint =
       hint.copy(id = Some(id))

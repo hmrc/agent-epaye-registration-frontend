@@ -32,7 +32,7 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
   private val contactHost                  = configuration.get[String]("contact-frontend.host")
   private val contactFormServiceIdentifier = "agent-epaye-registration-frontend"
 
-  def feedbackUrl(implicit request: RequestHeader): String =
+  def feedbackUrl(using request: RequestHeader): String =
     s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${URLEncoder.encode(host + request.uri, "UTF-8")}"
 
   val loginUrl: String         = configuration.get[String]("urls.login")

@@ -164,7 +164,7 @@ trait Formatters extends Constraints {
     }
 
   private[mappings] def enumerableFormatter[A](requiredKey: String, invalidKey: String, args: Seq[String] = Seq.empty)(
-      implicit ev: Enumerable[A]
+      using enumerable: Enumerable[A]
   ): Formatter[A] =
     new Formatter[A] {
 
@@ -172,7 +172,8 @@ trait Formatters extends Constraints {
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], A] =
         baseFormatter.bind(key, data).flatMap { str =>
-          ev.withName(str)
+          enumerable
+            .withName(str)
             .map(Right.apply)
             .getOrElse(Left(Seq(FormError(key, invalidKey, args))))
         }

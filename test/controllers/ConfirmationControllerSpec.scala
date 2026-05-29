@@ -20,7 +20,7 @@ import base.SpecBase
 import models.UserAnswers
 import pages.PayeAgentReferencePage
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.domain.PayeAgentReference
 import views.html.ConfirmationView
 

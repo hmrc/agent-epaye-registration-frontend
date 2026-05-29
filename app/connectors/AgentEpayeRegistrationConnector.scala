@@ -21,7 +21,7 @@ import models.RegistrationRequest
 import play.api.libs.json.Json
 import play.api.libs.ws.writeableOf_JsValue
 import uk.gov.hmrc.domain.PayeAgentReference
-import uk.gov.hmrc.http.HttpReadsInstances._
+import uk.gov.hmrc.http.HttpReadsInstances.*
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, UpstreamErrorResponse}
 
@@ -32,13 +32,12 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class AgentEpayeRegistrationConnector @Inject() (
     config: FrontendAppConfig,
-    http: HttpClientV2,
-    implicit val ec: ExecutionContext
-) {
+    http: HttpClientV2
+)(using ExecutionContext) {
 
   private lazy val registrationUrl = config.opraUrl + "/agent-epaye-registration/registrations"
 
-  def register(request: RegistrationRequest)(implicit hc: HeaderCarrier): Future[PayeAgentReference] =
+  def register(request: RegistrationRequest)(using hc: HeaderCarrier): Future[PayeAgentReference] =
     http
       .post(URI.create(registrationUrl).toURL)
       .withBody(Json.toJson(request))

@@ -16,7 +16,7 @@
 
 package models
 
-import play.api.libs.json._
+import play.api.libs.json.*
 import queries.{Gettable, Settable}
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
@@ -29,10 +29,10 @@ final case class UserAnswers(
     lastUpdated: Instant = Instant.now
 ) {
 
-  def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] =
+  def get[A](page: Gettable[A])(using Reads[A]): Option[A] =
     Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
 
-  def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
+  def set[A](page: Settable[A], value: A)(using Writes[A]): Try[UserAnswers] = {
 
     val updatedData = data.setObject(page.path, Json.toJson(value)) match {
       case JsSuccess(jsValue, _) =>
@@ -66,8 +66,8 @@ final case class UserAnswers(
 
 object UserAnswers {
 
-  private implicit val instantFormat: Format[Instant] = MongoJavatimeFormats.instantFormat
+  private given instantFormat: Format[Instant] = MongoJavatimeFormats.instantFormat
 
-  implicit val format: OFormat[UserAnswers] = Json.format[UserAnswers]
+  given format: OFormat[UserAnswers] = Json.format[UserAnswers]
 
 }
