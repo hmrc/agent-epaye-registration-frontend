@@ -18,6 +18,7 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import models.requests.DataRequest
 import pages.PayeAgentReferencePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -36,7 +37,9 @@ class ConfirmationController @Inject() (
     with I18nSupport
     with CheckYourAnswersHelper {
 
-  def onPageLoad(): Action[AnyContent] = identify.andThen(getData).andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = identify.andThen(getData).andThen(requireData) { request =>
+    given DataRequest[AnyContent] = request
+
     request.userAnswers.get(PayeAgentReferencePage) match {
       case Some(ref) => Ok(view(ref))
       case None      => Redirect(routes.IndexController.onPageLoad)

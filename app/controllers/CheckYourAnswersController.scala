@@ -18,6 +18,7 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import models.requests.DataRequest
 import models.{NormalMode, RegistrationRequest, YourBusinessAddress}
 import navigation.Navigator
 import pages.*
@@ -47,7 +48,9 @@ class CheckYourAnswersController @Inject() (
     with I18nSupport
     with CheckYourAnswersHelper {
 
-  def onPageLoad(): Action[AnyContent] = identify.andThen(getData).andThen(requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = identify.andThen(getData).andThen(requireData) { request =>
+    given DataRequest[AnyContent] = request
+
     val list = SummaryListViewModel(
       rows = makeSummary()
     )
@@ -55,7 +58,9 @@ class CheckYourAnswersController @Inject() (
     Ok(view(list))
   }
 
-  def submit(): Action[AnyContent] = identify.andThen(getData).andThen(requireData).async { implicit request =>
+  def submit(): Action[AnyContent] = identify.andThen(getData).andThen(requireData).async { request =>
+    given DataRequest[AnyContent] = request
+
     request.userAnswers.get(YourAgentNamePage) match {
       case None =>
         Future.successful(Redirect(routes.SessionExpiredController.onPageLoad))
