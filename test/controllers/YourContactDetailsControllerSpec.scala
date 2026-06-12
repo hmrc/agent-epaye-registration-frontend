@@ -32,7 +32,7 @@ import views.html.YourContactDetailsView
 
 import scala.concurrent.Future
 
-class YourContactNameControllerSpec extends SpecBase with MockitoSugar {
+class YourContactDetailsControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -41,7 +41,7 @@ class YourContactNameControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val yourContactDetailsRoute = routes.YourContactDetailsController.onPageLoad(NormalMode).url
 
-  "YourContactName Controller" - {
+  "YourContactDetailsController" - {
 
     "must return OK and the correct view for a GET" in {
 
