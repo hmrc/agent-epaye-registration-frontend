@@ -23,7 +23,7 @@
         appConfig: FrontendAppConfig
 )
 
-@(payeAgentReference: PayeAgentReference)(implicit request: Request[?], messages: Messages)
+@(payeAgentReference: PayeAgentReference)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("confirmation.title")), showBackLink = false) {
 
