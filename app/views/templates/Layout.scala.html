@@ -30,7 +30,7 @@
         pageTitle: String,
         showBackLink: Boolean = true,
         timeout: Boolean = true
-)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+)(contentBlock: Html)(using request: RequestHeader, messages: Messages)
 
 @head = {
     @if(timeout) {

@@ -18,7 +18,7 @@
         layout: templates.Layout
 )
 
-@()(implicit request: Request[?], messages: Messages)
+@()(using request: Request[?], messages: Messages)
 
 @layout(
  pageTitle = titleNoForm(messages("sessionExpired.title")),

@@ -18,6 +18,7 @@ package controllers
 
 import models.{NormalMode, UserAnswers}
 import controllers.actions.*
+import models.requests.IdentifierRequest
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -26,6 +27,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.StartView
 
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext
 
 class StartController @Inject() (
     override val messagesApi: MessagesApi,
@@ -33,14 +35,20 @@ class StartController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     sessionRepository: SessionRepository,
     view: StartView
-) extends FrontendBaseController
+)(using ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = identify(implicit request => Ok(view()))
+  def onPageLoad: Action[AnyContent] = identify { request =>
+    given IdentifierRequest[AnyContent] = request
 
-  def onRegistrationStart: Action[AnyContent] = identify { implicit request =>
-    sessionRepository.set(UserAnswers(request.userId, Json.obj()))
-    Redirect(routes.YourAgentNameController.onPageLoad(NormalMode))
+    Ok(view())
+  }
+
+  def onRegistrationStart: Action[AnyContent] = identify.async { request =>
+    sessionRepository.set(UserAnswers(request.userId, Json.obj())).map { _ =>
+      Redirect(routes.YourAgentNameController.onPageLoad(NormalMode))
+    }
   }
 
 }

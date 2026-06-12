@@ -20,7 +20,7 @@
     govukWarningText: GovukWarningText
 )
 
-@(list: SummaryList)(implicit request: Request[?], messages: Messages)
+@(list: SummaryList)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
 

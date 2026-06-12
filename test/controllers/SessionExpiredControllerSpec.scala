@@ -37,7 +37,7 @@ class SessionExpiredControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[SessionExpiredView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(request, messages(application)).toString
+        contentAsString(result) mustEqual view()(using request, messages(application)).toString
       }
     }
   }

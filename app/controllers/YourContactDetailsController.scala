@@ -19,6 +19,7 @@ package controllers
 import controllers.actions.*
 import forms.YourContactDetailsFormProvider
 import models.Mode
+import models.requests.DataRequest
 import navigation.Navigator
 import pages.YourContactDetailsPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -46,7 +47,9 @@ class YourContactDetailsController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = identify.andThen(getData).andThen(requireData) { implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = identify.andThen(getData).andThen(requireData) { request =>
+    given DataRequest[AnyContent] = request
+
     val preparedForm = request.userAnswers.get(YourContactDetailsPage) match {
       case None        => form
       case Some(value) => form.fill(value)
@@ -56,7 +59,9 @@ class YourContactDetailsController @Inject() (
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] =
-    identify.andThen(getData).andThen(requireData).async { implicit request =>
+    identify.andThen(getData).andThen(requireData).async { request =>
+      given DataRequest[AnyContent] = request
+
       form
         .bindFromRequest()
         .fold(
