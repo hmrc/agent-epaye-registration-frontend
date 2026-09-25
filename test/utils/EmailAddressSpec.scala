@@ -30,6 +30,7 @@ class EmailAddressSpec extends AnyFreeSpec with Matchers with MockitoSugar {
 
   class Harness {
     val context: DirContext = mock[DirContext]
+
     val validator: EmailAddressValidation = new EmailAddressValidation {
       override protected def dnsContext: DirContext = context
     }
@@ -46,7 +47,7 @@ class EmailAddressSpec extends AnyFreeSpec with Matchers with MockitoSugar {
         case "present" =>
           val exampleMailServer  = "10 mail.example.com"
           val exampleIpv4Address = "192.0.2.1"
-          val value = if (recordType == mailExchangeRecordType) exampleMailServer else exampleIpv4Address
+          val value              = if (recordType == mailExchangeRecordType) exampleMailServer else exampleIpv4Address
           when(context.getAttributes("example.com", Array(recordType)))
             .thenReturn(new BasicAttributes(recordType, value))
         case "absent" =>
@@ -54,6 +55,7 @@ class EmailAddressSpec extends AnyFreeSpec with Matchers with MockitoSugar {
         case _ =>
           when(context.getAttributes("example.com", Array(recordType))).thenThrow(new NamingException("Lookup failed"))
       }
+
   }
 
   "isValid" - {
@@ -283,4 +285,5 @@ class EmailAddressSpec extends AnyFreeSpec with Matchers with MockitoSugar {
       }
     }
   }
+
 }
