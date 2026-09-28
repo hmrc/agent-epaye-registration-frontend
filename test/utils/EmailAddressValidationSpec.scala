@@ -23,7 +23,7 @@ import org.scalatest.matchers.must.Matchers
 import javax.naming.NamingException
 import javax.naming.directory.{BasicAttributes, DirContext}
 
-class EmailAddressSpec extends AnyFreeSpec with Matchers with MockitoSugar {
+class EmailAddressValidationSpec extends AnyFreeSpec with Matchers with MockitoSugar {
 
   private val mailExchangeRecordType = "MX"
   private val addressRecordType      = "A"
